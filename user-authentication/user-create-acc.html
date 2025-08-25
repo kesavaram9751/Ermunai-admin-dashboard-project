@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Create Account</title>
+    <link rel="stylesheet" href="user-create-acc.css" />
+</head>
+
+<body>
+    <div class="wrap">
+        <h2>Create Account</h2>
+        <form id="signupForm">
+            <input type="email" id="email" placeholder="Email" required />
+            <input type="password" id="password" placeholder="Password (min 6 chars)" required />
+            <button type="submit">Sign Up</button>
+        </form>
+        <p>Already have an account? <a href="user-login.html">Login</a></p>
+        <p id="msg" class="msg"></p>
+    </div>
+
+    <!-- Firebase shared config -->
+    <script type="module" src="firebase-config.js"></script>
+
+    <!-- Page logic -->
+    <script type="module">
+        import { auth } from './firebase-config.js';
+        import { createUserWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+
+        // If already logged in, go to home
+        onAuthStateChanged(auth, (user) => {
+            if (user) window.location.href = "home-page.html";
+        });
+
+        const form = document.getElementById('signupForm');
+        const msg = document.getElementById('msg');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            msg.textContent = '';
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+
+            try {
+                await createUserWithEmailAndPassword(auth, email, password);
+                msg.textContent = "Account created ✅ Redirecting…";
+                msg.style.color = 'green';
+                setTimeout(() => (window.location.href = "home-page.html"), 800);
+            } catch (err) {
+                msg.textContent = err.message;
+                msg.style.color = 'crimson';
+            }
+        });
+    </script>
+</body>
+
+</html>

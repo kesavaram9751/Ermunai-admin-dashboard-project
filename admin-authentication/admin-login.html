@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Login</title>
+  <link rel="stylesheet" href="admin-login.css" />
+</head>
+
+<body>
+  <div class="login-box">
+    <h2>Admin Login</h2>
+    <form id="adminLoginForm">
+      <input type="email" id="email" placeholder="Admin Email" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <button type="submit">Login</button>
+    </form>
+    <p id="msg" class="msg"></p>
+  </div>
+
+  <script>
+    const form = document.getElementById('adminLoginForm');
+    const msg = document.getElementById('msg');
+
+    // 🔑 Set your default admin email + password here
+    const ADMIN_EMAIL = "ermunai.12543@gmail.com";
+    const ADMIN_PASSWORD = "admin.12543";
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      msg.textContent = "";
+
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      // Check if matches the default admin credentials
+      if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+        window.location.href = "admin-dashboard.html";
+      } else {
+        msg.textContent = "⚠️ Only admin can access!";
+        msg.style.color = "crimson";
+      }
+    });
+  </script>
+</body>
+
+</html>
