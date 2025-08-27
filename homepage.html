@@ -1,0 +1,1887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Boostimize AI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+     html {
+          scroll-behavior: smooth;
+       }
+
+   * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0a182f;
+      color:  #e2e8f0;
+      position: relative;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+.main1 {
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    /* Transparent background image layer */
+    .main1::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('2.png');
+  background-repeat: no-repeat;
+  background-size: 70%;
+  background-position: center top 200%; /* moved slightly upward */
+  opacity: 0.2;
+  z-index: 0;
+}
+
+
+    /* Dark overlay (more transparent) */
+    .main1::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.3); /* lighter dark overlay */
+      z-index: 1;
+    }
+
+    .main1 > * {
+      position: relative;
+      z-index: 2;
+    }
+
+    .main1 .overlay-top,
+    .main1 .overlay-bottom {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .main1 .overlay-top {
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, #1c9a94, transparent);
+      top: -100px;
+      left: -100px;
+      filter: blur(120px);
+      z-index: 0;
+    }
+
+    .main1 .overlay-bottom {
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, #023d4b, transparent);
+      bottom: -80px;
+      right: -80px;
+      filter: blur(180px); /* increased blur */
+      z-index: 0;
+    }
+ header {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 60px;
+  background-color: black;
+}
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .logo img {
+    height: 50px; /* Adjust size as needed */
+  }
+
+  .ai-text {
+    font-size: 24px;
+    font-weight: 800;
+    color: white;
+  }
+
+.nav-and-btn {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  position: relative;
+}
+
+.nav-links a,
+.dropdown-toggle {
+  text-decoration: none;
+  color: white;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  position: relative;
+  display: inline-block;
+}
+
+.nav-links a:hover,
+.dropdown-toggle:hover {
+  color: #04aaa2;
+}
+.dropdown {
+  position: relative;
+}
+
+.dropdown-toggle {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+  cursor: pointer;
+}
+
+.dropdown-toggle .dropdown-check {
+  appearance: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  cursor: pointer;
+  z-index: 2;
+  opacity: 0;
+}
+
+.dropdown-menu {
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  background-color: #1a1a2f;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 10px;
+  top: 30px;
+  left: 0;
+  min-width: 200px;
+  z-index: 1;
+}
+
+.dropdown-toggle .dropdown-check:checked + .dropdown-menu {
+  display: flex;
+}
+
+.dropdown-menu a {
+  display: block;
+  padding: 8px 12px;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background 0.2s;
+}
+
+.dropdown-menu a:hover {
+  background-color: #04aaa2;
+  color: white;
+}
+
+.nav-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.btn {
+  padding: 10px 24px;
+  border: 2px solid transparent;
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 16px;
+  color: white;
+  background: none;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  transition: transform 0.3s ease;
+}
+
+.btn span {
+  position: relative;
+  z-index: 2;
+}
+
+.btn::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  z-index: 0;
+  border-radius: 25px;
+  background: linear-gradient(to right, #01738e, #04aaa2);
+}
+
+.btn::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+  border-radius: 20px;
+  background-color: black;
+  z-index: 1;
+}
+
+.btn:hover {
+   transform: scale(1.03);
+  box-shadow: 0 0 15px white, 0 0 30px white;
+}
+
+    .hero {
+      text-align: center;
+      padding: 80px 30px 60px;
+      margin-top: 0;    /* Removed gap */
+      margin-bottom: 0; /* Removed gap */
+      border-radius: 24px;
+      max-width: 1100px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+.typewriter-heading {
+  font-size: 60px;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 30px;
+  color: white;
+  text-align: center;
+}
+
+.line {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 2px solid transparent;
+}
+
+.line1 {
+  width: 0;
+  animation: typing 2s steps(30, end) forwards;
+}
+
+.line2 {
+  width: 0;
+  animation: typing 2.5s steps(40, end) 2s forwards;
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+/* Highlight “SaaS Growth” in strong orange 
+.highlight-orange {
+background: linear-gradient(to right, #f48706, #fadb35);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  color: #f48706;
+  font-weight: 800;
+}
+*/
+/* CTA Gradient for “Leaders” gradient-text*/
+ .highlight-orange {
+  background: linear-gradient(to right, #01738e, #04aaa2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  font-weight: 800;
+}
+
+
+
+    .hero p {
+      font-size: 22px;
+      max-width: 850px;
+      margin: 0 auto 50px;
+      color: #f1f5f9;
+      padding: 10px 20px;
+    }
+
+  .hero .buttons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.hero .buttons button {
+  padding: 14px 32px;
+  font-size: 16px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Primary button with full gradient */
+.hero .buttons .primary {
+  background: linear-gradient(to right, #01738e, #04aaa2);
+  color: white;
+  border: none;
+}
+
+.hero .buttons .primary:hover {
+  background: linear-gradient(to right, #04aaa2, #01738e);
+  box-shadow: 0 0 15px #04aaa2, 0 0 25px #04aaa2;
+  transform: scale(1.03);
+}
+
+/* Secondary button: gradient border initially, fills with gradient on hover */
+.hero .buttons .secondary {
+  background: black;
+  color: white;
+  border: 2px solid transparent;
+  background-image: linear-gradient(black, black),
+    linear-gradient(to right, #01738e, #04aaa2);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  position: relative;
+  z-index: 1;
+}
+
+.hero .buttons .secondary:hover {
+  color: white;
+  background: linear-gradient(to right, #01738e, #04aaa2);
+  border: none;
+  box-shadow: 0 0 15px #04aaa2, 0 0 25px #04aaa2;
+  transform: scale(1.03);
+}
+
+/* Shine effect */
+.hero .buttons .primary::before,
+.hero .buttons .secondary::before {
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  right: 4px;
+  bottom: 4px;
+  border-radius: 45px;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.8) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  z-index: 1;
+  transform: skewX(-25deg);
+  animation: shine 2.5s infinite;
+  pointer-events: none;
+}
+
+.hero .buttons .primary span,
+.hero .buttons .secondary span {
+  position: relative;
+  z-index: 2;
+}
+
+@keyframes shine {
+  0% {
+    left: -75%;
+  }
+  100% {
+    left: 125%;
+  }
+}
+
+
+
+.marketing-card {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  justify-content: center;
+  align-items: stretch;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 30px;
+  max-width: 1000px;
+  border-radius: 20px;
+  background: rgba(255, 244, 229, 0.15); /* Light warm orange tint */
+  backdrop-filter: blur(20px);
+  color: white;
+  border: 1px solid rgba(244, 135, 6, 0.3); /* Warm border tone */
+  box-shadow: 0 0 40px rgba(244, 135, 6, 0.2); /* Soft orange glow */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.marketing-card .left,
+.marketing-card .right {
+  flex: 1 1 400px;
+}
+
+.marketing-card .left h2 {
+  font-size: 28px;
+  font-weight: 800;
+  margin-bottom: 15px;
+  color: #ffffff;
+}
+
+.marketing-card .left p {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.marketing-card .left p strong {
+  color: #f48706 ; /* Highlight in yellow-orange */
+}
+
+.marketing-card .right p {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.card-button {
+  margin-top: 20px;
+  padding: 10px 24px;
+  background: #f48706; /* Orange gradient */
+  border: none;
+  border-radius: 25px;
+  font-weight: 600;
+  cursor: pointer;
+  color: #000;
+  transition: 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.card-button:hover {
+  box-shadow: 0 0 15px #f48706, 0 0 25px #fadb35;
+  transform: scale(1.03);
+}
+
+/* Shine effect */
+.card-button::before {
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  right: 4px;
+  bottom: 4px;
+  border-radius: 45px;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.8) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  z-index: 1;
+  transform: skewX(-25deg);
+  animation: shine 2.5s infinite;
+  pointer-events: none;
+}
+
+.card-button span {
+  position: relative;
+  z-index: 2;
+}
+
+@keyframes shine {
+  0% {
+    left: -75%;
+  }
+  100% {
+    left: 125%;
+  }
+}
+.f1 {
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color:white;
+  margin-top: 40px;
+  opacity: 0.8;
+}
+
+
+/* === Unified Layout and Card Styling Based on Image Reference === */
+
+/* Grid Container with Uniform Layout */
+.grid-container {
+  max-width: 1300px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 30px 60px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+  align-items: stretch;
+}
+
+/* Card Base Style */
+.card,
+.challenge-item,
+.agent-card {
+  background: #1a1c22; /* Dark, smooth tone */
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
+  padding: 28px;
+  color: #e2e8f0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
+}
+.card,.challenge-item,.card h3,
+.challenge-item h3
+{
+text-align:center;
+}
+.agent-card {text-align:left;}
+
+.card:hover,
+.challenge-item:hover,
+.agent-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 24px rgba(1, 115, 142, 0.3);
+}
+
+/* Card Headings */
+.agent-card h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.card p,
+.challenge-item p,
+.agent-card p {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  color: #cbd5e1;
+  margin: 0;
+}
+
+/* Card Icons */
+.card-icon,
+.challenge-item i {
+ text-align:center;
+  font-size: 2rem;
+  color: #34b2bf;
+  margin-bottom: 14px;
+  display: block;
+  transition: color 0.3s ease;
+}
+
+.card:hover .card-icon,
+.challenge-item:hover i {
+  color: #04aaa2;
+}
+
+/* Section Titles */
+.section-title,
+.agents-title,
+.challenges-section h2 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 40px;
+  background: linear-gradient(to right, #01738e, #04aaa2);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* Section Containers */
+.challenges-section,
+.why-us,
+.ai-marketing-agents {
+  background-color: #08101f;
+  margin: 0;
+  padding: 60px 30px;
+  width: 100%;
+  text-align: center;
+}
+
+
+.challenge-item {
+  text-align: center;
+}
+.ai-marketing-agents {
+  background-color:#03060b;
+  margin: 0;
+  padding: 60px 30px;
+  width: 100%;
+  text-align: center;
+}
+
+.agent-card {
+  background: #1f2128;
+  text-align: left;
+}
+
+/* ROI Section - Professional Dark Navy Theme */
+#roi {
+  padding: 60px 20px;
+ background-color:#000d10;
+/* Dark navy-teal */
+  color: #e2e8f0;
+  text-align: center;
+}
+
+#roi h1 {
+  font-size: 2.8rem;
+   background: linear-gradient(to right, #01738e, #04aaa2);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 10px;
+}
+
+#roi .subtitle {
+  color: white ;
+  font-size: 1.2rem;
+  margin-bottom: 40px;
+}
+
+#roi .main {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+#roi .left1,
+#roi .right1 {
+  flex: 1;
+  min-width: 300px;
+  background:#1f2128; /* Muted dark-teal box */
+  padding: 30px;
+  border-radius: 16px;
+  border: 1px solid rgba(52, 178, 191, 0.15);
+  box-shadow: 0 0 20px rgba(52, 178, 191, 0.05);
+}
+
+#roi h2 {
+  font-size: 1.5rem;
+  color: #34b2bf;
+  margin-bottom: 20px;
+}
+
+#roi h2 i {
+  margin-right: 10px;
+}
+
+.slider-group {
+  margin-bottom: 25px;
+}
+
+.slider-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #e2e8f0;
+}
+
+.slider-group input[type="range"] {
+  width: 100%;
+  accent-color: #34b2bf;
+}
+
+.slider-value {
+  font-weight: bold;
+  color: #34b2bf;
+  margin-top: 5px;
+}
+
+.roi-box {
+  background-color: #0d1010;
+  padding: 25px;
+  border-radius: 12px;
+  text-align: center;
+  margin-bottom: 20px;
+  border: 1px solid #1c5e6e;
+}
+
+.roi-number {
+  font-size: 3rem;
+  color: #34b2bf;
+  font-weight: bold;
+}
+
+.roi-label {
+  font-size: 1.1rem;
+  color: #a5bfcf;
+  margin-top: 5px;
+}
+
+.roi-details {
+  margin-top: 20px;
+}
+
+.roi-details p {
+  margin: 10px 0;
+  font-size: 1rem;
+  color: #e2e8f0;
+}
+
+.roi-details p strong {
+  color: #4ab0c6;
+}
+
+#roi .footer1 {
+  text-align: center;
+  margin-top: 50px;
+  color: #e2e8f0;
+  font-size: 1.25rem;
+  padding-top: 20px;
+}
+/* AI Team Section */
+/* AI Team Section */
+#team {
+  padding: 60px 20px;
+  background-color: #000f10; /* Dark navy blue */
+  color: #e2e8f0;
+  text-align: center;
+}
+
+#team h1 {
+  font-size: 2.8rem;
+  margin-bottom: 10px;
+  background: linear-gradient(to right, #01738e, #04aaa2);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+#team .subtitle {
+  color:white;
+  font-size: 1.2rem;
+  margin-bottom: 40px;
+}
+
+.agent-filters {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+}
+
+.agent-filters button {
+  background-color: transparent;
+  color: #34b2bf;
+  padding: 12px 24px;
+  font-size: 1rem;
+  border: 2px solid #34b2bf;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.agent-filters button.active {
+  background-color: #34b2bf;
+  color: #032539;
+}
+
+.agent-panel {
+  display: none;
+}
+
+.agent-panel.active {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: left;
+  background: #1e1e1e;
+  border-radius: 16px;
+  padding: 30px;
+  border: 1px solid rgba(52, 178, 191, 0.15);
+  box-shadow: 0 0 20px rgba(52, 178, 191, 0.05);
+}
+
+.agent-info, .agent-demo {
+  flex: 1;
+  min-width: 280px;
+}
+
+.agent-info h2, .agent-demo h3 {
+  color: #20acd8;
+  margin-bottom: 10px;
+}
+
+.agent-info ul {
+  list-style: none;
+  padding-left: 20px;
+}
+
+.agent-info ul li {
+  margin-bottom: 8px;
+  color: #e2e8f0;
+}
+
+.demo-box {
+  background-color:#000709;
+  border: 1px solid #1d4f5b;
+  border-radius: 8px;
+  padding: 16px;
+  height: 180px;
+  color: #a5bfcf;
+  font-family: monospace;
+  font-size: 0.9rem;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  position: relative;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+.demo-box::after {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 14px;
+  background-color: #a5bfcf;
+  animation: blink 1s step-start infinite;
+  position: absolute;
+  bottom: 12px;
+  left: 14px;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  #roi .main,
+  .agent-panel.active {
+    flex-direction: column;
+  }
+}
+
+
+/* Base Section Styling */
+.who-can-use,
+.why-choose {
+  background-color: #0d0d0d;
+  padding: 4rem 2rem;
+  color: white;
+  text-align: center;
+}
+
+/* Container for max-width control */
+.section-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Section Titles */
+.section-title,
+.why-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 3rem;
+  background: linear-gradient(to right, #01738e, #04aaa2);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+}
+
+/* Card Container – stacked by default */
+.cards1,
+.why-cards {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  width: 100%;
+}
+
+/* Individual Cards – consistent full width */
+.card1,
+.why-card {
+  background-color: #1e1e1e;
+  padding: 2rem;
+  border-radius: 1rem;
+  width: 100%;
+  max-width: 800px;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+  transition: all 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 300px;
+}
+
+/* Hover Effect */
+.card1:hover,
+.why-card:hover {
+  transform: translateY(-10px);
+  background-color: #2a2a2a;
+}
+
+/* Card Icons */
+.card1-icon i,
+.why-icon i {
+  font-size: 2.5rem;
+  color: #00c3ff;
+  margin-bottom: 1rem;
+  transition: color 0.3s ease;
+}
+
+.card1:hover .card1-icon i,
+.why-card:hover .why-icon i {
+  color:#f89818;
+}
+
+/* Card Headings */
+.card1 h3,
+.why-card h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: white;
+  transition: color 0.3s ease;
+}
+
+/* Card Paragraphs */
+.card1 p,
+.why-card p {
+  font-size: 1.25rem;
+  line-height: 1.5;
+  color: #ccc;
+  transition: color 0.3s ease;
+}
+
+.card1:hover p,
+.why-card:hover p {
+  color: #eee;
+}
+
+/* Footer Text */
+.f1 {
+text-align: center;
+  margin-top: 3rem;
+  font-size: 2rem;
+  color :white;
+}
+
+/* Responsive Grid Layout – 3 columns on desktop */
+@media (min-width: 992px) {
+  .cards1,
+  .why-cards {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .card1,
+  .why-card {
+    width: calc(33.333% - 2rem);
+    max-width: none;
+  }
+}
+
+
+.faqs-section {
+    background-color: #0d0d0d;
+    padding: 3rem 2rem 4rem;
+    color: #7da7ff;
+    text-align: center;
+    width: 100%;
+}
+
+.faq-item {
+    max-width: 900px;
+    margin: 0 auto 1.5rem;
+    border-bottom: 1px solid #222;
+    text-align: left;
+}
+
+/* Hide the checkbox */
+.faq-toggle {
+    display: none;
+}
+
+.faq-question {
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 1.25rem; /* increased from 1.05rem */
+    padding: 1.2rem 0;
+    color: white;
+    user-select: none;
+}
+
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    color: #ccc;
+    font-weight: 400;
+    font-size: 1.1rem; /* increased from 0.95rem */
+    transition: max-height 0.35s ease;
+}
+
+
+
+.arrow {
+    transition: transform 0.3s ease;
+    color: #04aaa2;
+}
+
+/* Rotate arrow when checkbox is checked */
+.faq-toggle:checked + .faq-question .arrow {
+    transform: rotate(180deg);
+}
+
+
+
+/* Show answer when checkbox is checked */
+.faq-toggle:checked ~ .faq-answer {
+    max-height: 200px; /* enough height for answer */
+    margin-bottom: 1rem;
+}
+
+
+.contact-section {
+  text-align: center;
+  padding: 60px 20px;
+  background-color: #0d0d0d;
+  color: #e2e8f0;
+}
+
+.contact-section h1 {
+  font-weight: 900;
+  font-size: 2.5rem;
+  margin-bottom: 40px;
+  background: linear-gradient(to right, #01738e, #04aaa2);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+}
+
+.contact-container {
+  background-color: #2e2e2e;
+  border-radius: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.contact-box {
+  flex: 1;
+  color: white;
+  min-width: 200px;
+  text-align: center;
+}
+
+.contact-icon {
+  font-size: 50px;
+  margin-bottom: 15px;
+  stroke: #94a3b8; /* Matches footer icon color */
+}
+
+.ceo-icon {
+  color:#01738e;
+}
+
+.support-icon {
+  color: #04aaa2;
+}
+
+.contact-box h2 {
+  font-weight: 900;
+  margin-bottom: 10px;
+}
+
+.ceo-contact a {
+  color: #01738e;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.support-contact a {
+  color: #04aaa2;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.btn-get-started {
+   background: linear-gradient(to right, #01738e, #04aaa2);
+  color: white;
+  font-weight: 700;
+  padding: 15px 40px;
+  border-radius: 40px;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  margin-top: 30px;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 0 transparent;
+  position: relative;     /* Required for shine */
+  overflow: hidden;       /* Keeps shine inside the button */
+}
+
+.btn-get-started:hover {
+  background: linear-gradient(to right, #01738e, #04aaa2);
+box-shadow: 0 4px 15px rgba(1, 115, 142, 0.4), 0 0 10px rgba(1, 115, 142, 0.3);
+  transform: scale(1.03);
+}
+
+/* Shine effect */
+.btn-get-started::before {
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  right: 4px;
+  bottom: 4px;
+  border-radius: 45px;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.8) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  z-index: 1;
+  transform: skewX(-25deg);
+  animation: shine 2.5s infinite;
+  pointer-events: none;
+}
+
+.btn-get-started span {
+  position: relative;
+  z-index: 2;
+}
+@keyframes shine {
+  0% {
+    left: -75%;
+  }
+  100% {
+    left: 125%;
+  }
+}
+.footer {
+  background-color: #0f1b21;
+  color: #e2e8f0;
+  padding: 40px 20px;
+  font-family: sans-serif;
+}
+
+.footer-top {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2rem;
+}
+
+.footer-brand h2 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+
+
+.footer-brand p {
+  font-size: 1.1rem;
+  color: #f1f5f9;
+}
+
+.footer-icons a {
+  margin-left: 10px;
+  transition: transform 0.3s ease;
+}
+
+.footer-icons a:hover {
+  transform: scale(1.2);
+}
+
+.footer-divider {
+  margin: 30px 0;
+  border: none;
+  height: 1px;
+  background-color: #64748b;
+  opacity: 0.5;
+}
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: center;
+  color: #94a3b8;
+  font-size: 0.95rem;
+}
+
+.footer-links a {
+  margin-left: 20px;
+  color: #cbd5e1;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.footer-links a:hover {
+  color: #ffffff;
+}
+
+ 
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .nav-and-btn {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+      }
+
+      .hero h1 {
+        font-size: 40px;
+      }
+
+      .hero p {
+        font-size: 18px;
+      }
+
+      .card-container {
+        grid-template-columns: 1fr;
+        padding: 0 20px;
+      }
+
+      .marketing-card {
+        flex-direction: column;
+        text-align: center;
+      }
+      .agent-card-grid {
+        grid-template-columns: 1fr;
+        padding: 0 20px 40px;
+      }
+.card1,
+      .why-card {
+        width: 100%;
+        padding: 2rem 1.5rem;
+      }
+    
+
+    .f1 {
+      text-align: center;
+
+      font-size: 2rem;
+      margin-top: 2rem;
+      color: white;
+    }
+    }
+  
+.card:hover .card-icon {
+  color: #8deaf8;
+}
+
+.card1:hover .card-icon,
+.why-card:hover .card-icon {
+  color: #f89818 ;
+}
+
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">
+  <img src="1.png" alt="Boostimize Logo">
+  <span class="ai-text">AI</span>
+</div>
+  <div class="nav-and-btn">
+    <nav class="nav-links">
+      <a href="homepage.html#main1">About Us</a>
+      <div class="dropdown">
+        <label class="dropdown-toggle">AI Agents ▼
+          <input type="checkbox" class="dropdown-check" />
+          <div class="dropdown-menu">
+            <a href="cmoAI.html"> CMO Agents</a>
+            <a href="seo.html"> SEO Agents</a>
+            <a href="ads.html"> Ad Optimizer</a>
+            <a href="cm.html"> Content Agents</a>
+          </div>
+        </label>
+      </div>
+      <div class="dropdown">
+        <label class="dropdown-toggle">Resources ▼
+          <input type="checkbox" class="dropdown-check" />
+          <div class="dropdown-menu">
+            <a href="#blogs">Blogs</a>
+            <a href="#checklist">Checklist</a>
+            <a href="#playbooks">Playbooks</a>
+          </div>
+        </label>
+      </div>
+      <a href="homepage.html#contact">Contact Us</a>
+    </nav>
+    <div class="nav-buttons">
+      <button class="btn"><span>Sign In</span></button>
+      <button class="btn"><span>Get Started Free</span></button>
+      <button class="btn"><span>Get Demo</span></button>
+    </div>
+  </div>
+</header>
+<section class="main1" id="main1">
+  <div class="overlay-top"></div>
+  <div class="overlay-bottom"></div>
+
+  <section class="hero">
+    <h1 class="typewriter-heading">
+  <span class="line line1">The AI Marketing Team</span><br />
+  <span class="line line2">
+    Built for 
+    <span class="highlight-orange">SaaS Growth</span> 
+    Leaders
+  </span><br />
+</h1>
+ <p>
+      Struggling to scale pipeline with limited resources? Boostimize AI delivers experts-level
+      marketing execution at a fraction of the cost, so you can focus on strategy and results
+    </p>
+    <div class="buttons">
+      <button class="primary"><span>Get Started</span></button>
+      <button class="secondary"><span>Learn More</span></button>
+    </div>
+  </section>
+
+  <section class="marketing-card">
+    <div class="left">
+      <h2>Your AI-powered marketing team</h2>
+      <p>Saves costs by up to <strong>80%</strong> compared to hiring a full-time expert-level team.</p>
+      <button class="card-button"><span>Get Demo</span></button>
+    </div>
+    <div class="right">
+      <p>
+        You don’t need a massive budget to run a high-performing marketing team.
+        Boostimize AI’s agents are built by seasoned marketers to help you scale your growth
+        without hiring more people. From SEO to LinkedIn to content, our AI-powered agents do the
+        heavy lifting – responsibly.
+      </p>
+    </div>
+  </section>
+ <p class="f1"> Built with❤️ by Marketers for Marketers</p>
+<br><br>
+<br>
+</section>
+<section class="challenges-section">
+    <h2>Are you facing these challenges?</h2>
+    <br>
+    <div class="grid-container">
+      <div class="challenge-item">
+        <i class="fas fa-dollar-sign card-icon"></i>
+        <p>Marketing costs are rising, but results are not scaling</p>
+      </div>
+      <div class="challenge-item">
+        <i class="fas fa-clock card-icon"></i>
+        <p>Campaign execution is slow and resource-intensive</p>
+      </div>
+      <div class="challenge-item">
+        <i class="fa fa-user-tie card-icon"></i>
+        <p>Hard to find and retain expert marketers</p>
+      </div>
+      <div class="challenge-item">
+        <i class="fas fa-chart-line card-icon"></i>
+        <p>Pressure to deliver pipeline and prove ROI every quarter</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Boostimize Section -->
+  <section class="why-us" id="why-us">
+    <br>
+    <h2 class="section-title">Why Boostimize AI</h2>
+    <div class="grid-container">
+      <div class="card">
+        <i class="fas fa-user card-icon"></i>
+        <h3>No Annual Commitment</h3>
+        <p>We understand your business strategies change. Hire and fire AI agents based on your business needs.</p>
+      </div>
+      <div class="card">
+        <i class="fas fa-dollar-sign card-icon"></i>
+        <h3>Cost - Effective Marketing</h3>
+        <p>Access expert-level marketing operations for less than the cost of a single hire, without sacrificing quality.</p>
+      </div>
+      <div class="card">
+        <i class="fas fa-gear card-icon"></i>
+        <h3>Built by Marketers</h3>
+        <p>AI trained with real-world marketing expertise, not just generic marketing data.</p>
+      </div>
+      <div class="card">
+        <i class="fas fa-clock card-icon"></i>
+        <h3>24/7 Availability</h3>
+        <p>Your AI marketing team is always on, delivering results whenever you need them.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI Marketing Agents Section -->
+  <section class="ai-marketing-agents" id="ai">
+    <h2 class="agents-title">Meet Your AI Marketing Agents</h2>
+    <div class="grid-container">
+      <div class="agent-card">
+        <h3>AI SEO Agent</h3>
+        <p>
+        More than just automation, our AI SEO Agent leverages real-world expertise to handle on-page SEO, technical optimizations, and backlink building. Unlike generic tools, it adapts to the latest SEO trends, ensuring you don’t miss Google’s evolving algorithm updates to your strategy while delivering long-term growth.
+      </p>
+      </div>
+      <div class="agent-card">
+        <h3>AI CMO Agent</h3>
+       <p>
+        Trained on top SaaS CMO’s expertise, this agent helps you craft GTM plans, marketing strategies, and campaign ideas. The agents have been trained by a selected few 50 CMOs who are expert-level marketers in SaaS. These data gets updated periodically to be on trend.
+      </p>
+      </div>
+      <div class="agent-card">
+        <h3>AI LinkedIn Agent</h3>
+         <p>
+        Need engaging posts? Our AI LinkedIn Agent crafts viral content ideas and high-performing posts, leveraging data from thousands of successful LinkedIn strategies.
+      </p>
+      </div>
+      <div class="agent-card">
+        <h3>AI Content Agent</h3>
+         <p>
+        Create 25+ types of content in seconds, including blogs, PPC ads, and social media posts. Keyword research and competitor analysis are built-in. Creating a high-converting SaaS PPC landing page is one of the key USPs of our Agents. We heavily rely on our agent to get us the landing page.
+      </p>
+      </div>
+    </div>
+  </section>
+   <section id="roi">
+      <h1>Calculate Your ROI</h1>
+      <p class="subtitle">See how much you could save and earn with our AI marketing agents compared to traditional methods.</p>
+      <div class="main">
+        <div class="left1">
+          <h2><i class="fas fa-sliders"></i> Input Your Current Metrics</h2>
+          <div class="slider-group">
+            <label for="traffic">Monthly Organic Traffic</label>
+            <input id="traffic" max="50000" min="0" type="range" value="5000" />
+            <div class="slider-value" id="trafficVal">5,000 visits</div>
+          </div>
+          <div class="slider-group">
+            <label for="conversion">Conversion Rate (%)</label>
+            <input id="conversion" max="5" min="0" step="0.1" type="range" value="2.0" />
+            <div class="slider-value" id="conversionVal">2.0%</div>
+          </div>
+          <div class="slider-group">
+            <label for="value">Average Customer Value ($)</label>
+            <input id="value" max="1000" min="0" type="range" value="200" />
+            <div class="slider-value" id="valueVal">$200</div>
+          </div>
+          <div class="slider-group">
+            <label for="budget">Current Monthly Marketing Budget ($)</label>
+            <input id="budget" max="50000" min="0" type="range" value="10000" />
+            <div class="slider-value" id="budgetVal">$10,000</div>
+          </div>
+        </div>
+        <div class="right1">
+          <h2><i class="fas fa-chart-line"></i> Your Projected ROI</h2>
+          <div class="roi-box">
+            <div class="roi-number" id="roiPercent">1200%</div>
+            <div class="roi-label">Return on Investment</div>
+            <div style="margin-top: 20px;">
+              <p><strong id="costSavings">$8,000</strong> Monthly Cost Savings</p>
+              <p><strong id="revenueLift">$16,000</strong> Monthly Revenue Lift</p>
+            </div>
+          </div>
+          <div class="roi-details">
+            <p>Traditional Marketing Cost: <strong>$10,000/mo</strong></p>
+            <p>AI Marketing Agents Cost: <strong>$2,000/mo</strong></p>
+            <p>Current Monthly Revenue: <strong id="currentRevenue">$20,000</strong></p>
+            <p>Projected Monthly Revenue: <strong id="projectedRevenue">$36,000</strong></p>
+            <p>Total Monthly Benefit: <strong id="totalBenefit">$24,000</strong></p>
+          </div>
+        </div>
+      </div>
+<div class="footer1">
+<p><strong>Get Your Personalized ROI Analysis</strong><br>Our team will provide a detailed breakdown based on your specific business metrics.</br></p>
+</div>
+
+    </section>
+
+    <!-- AI Team Details Section -->
+    <section id="team">
+      <h1 class="agents-title">Meet Your AI Marketing Team</h1>
+      <p class="subtitle">Specialized agents for SEO, content generation, and marketing automation</p>
+      <div class="agent-filters">
+        <button class="active" aria-controls="seo">AI SEO Agent</button>
+        <button aria-controls="content">AI Content Agent</button>
+        <button aria-controls="ads">AI CMO Agent</button>
+        <button aria-controls="linkedin">AI LinkedIn Agent</button>
+      </div>
+
+   <div class="agent-panel agent-card active" id="seo">
+      <div class="agent-info">
+        <h2>AI SEO Agent</h2>
+        <p>Continuously optimizes your website’s SEO performance with real-time adjustments and strategic recommendations.</p>
+        <ul>
+          <li>🔍 Keyword research and competitive analysis</li>
+          <li>🛠️ On-page SEO optimization</li>
+          <li>📊 Content gap analysis</li>
+          <li>🔗 Backlink opportunity identification</li>
+          <li>⚙️ Technical SEO audits and fixes</li>
+        </ul>
+      </div>
+      <div class="agent-demo">
+        <h3>AI SEO Agent Demo</h3>
+        <div class="demo-box">
+&gt; Run SEO analysis for example.com
+
+Analyzing competitor keyword strategy...
+Found 23 high-opportunity keywords with low competition.
+Recommending content optimization for 5 
+existing pages to target these keywords.
+        </div>
+      </div>
+    </div>
+
+    <div class="agent-panel" id="content">
+      <div class="agent-info">
+        <h2>AI Content Agent</h2>
+        <p>Generates compelling marketing content tailored to your brand.</p>
+        <ul>
+          <li>📝 Blog writing</li>
+          <li>📧 Email campaigns</li>
+          <li>✒️ Ad copy</li>
+          <li>📱 Social media posts</li>
+          <li>🛍️ Product descriptions</li>
+        </ul>
+      </div>
+      <div class="agent-demo">
+        <h3>AI Content Agent Demo</h3>
+        <div class="demo-box">
+Give a topic and tone, get a 500-word draft blog post instantly.
+
+Topic: AI in Marketing
+Tone: Professional
+→ [Generated content preview...]
+        </div>
+      </div>
+    </div>
+
+    <div class="agent-panel" id="ads">
+      <div class="agent-info">
+        <h2>AI CMO Agent</h2>
+        <p>Designs and tests high-converting ad creatives for various platforms.</p>
+        <ul>
+          <li>🔍 Google Ads</li>
+          <li>📘 Facebook Ads</li>
+          <li>🧪 A/B testing</li>
+          <li>💸 Ad spend optimization</li>
+          <li>📈 Campaign performance reports</li>
+        </ul>
+      </div>
+      <div class="agent-demo">
+        <h3>AI CMO Agent Demo</h3>
+        <div class="demo-box">
+Input: Product, Target Audience, Budget
+
+Output: Ad copy + CTA + Image prompt + Budget plan
+
+Example:
+"Boost your brand with smart AI tools. Try it free!"
+        </div>
+      </div>
+    </div>
+
+    <div class="agent-panel" id="linkedin">
+      <div class="agent-info">
+        <h2>AI LinkedIn Agent</h2>
+        <p>Builds your professional brand and grows engagement on LinkedIn.</p>
+        <ul>
+          <li>👤 Optimized LinkedIn profiles</li>
+          <li>📅 Content scheduling and engagement</li>
+          <li>🤖 AI-generated LinkedIn posts</li>
+          <li>💬 Connection message templates</li>
+          <li>📊 Analytics and growth tracking</li>
+        </ul>
+      </div>
+      <div class="agent-demo">
+        <h3>AI LinkedIn Agent Demo</h3>
+        <div class="demo-box">
+Upload your resume or LinkedIn URL.
+
+Output:
+- Profile headline suggestion
+- Weekly content calendar
+- Top 3 networking tips for your industry
+        </div>
+      </div>
+    </div>
+    </section>
+  </section>
+
+  <script>
+    const traffic = document.getElementById("traffic");
+    const conversion = document.getElementById("conversion");
+    const value = document.getElementById("value");
+    const budget = document.getElementById("budget");
+
+    const trafficVal = document.getElementById("trafficVal");
+    const conversionVal = document.getElementById("conversionVal");
+    const valueVal = document.getElementById("valueVal");
+    const budgetVal = document.getElementById("budgetVal");
+
+    const currentRevenue = document.getElementById("currentRevenue");
+    const projectedRevenue = document.getElementById("projectedRevenue");
+    const totalBenefit = document.getElementById("totalBenefit");
+    const costSavings = document.getElementById("costSavings");
+    const revenueLift = document.getElementById("revenueLift");
+    const roiPercent = document.getElementById("roiPercent");
+
+    const TRADITIONAL_COST = 10000;
+    const AI_COST = 2000;
+
+    function formatCurrency(value) {
+      return "$" + value.toLocaleString();
+    }
+
+    function updateValues() {
+      const t = parseInt(traffic.value);
+      const c = parseFloat(conversion.value);
+      const v = parseFloat(value.value);
+
+      const currentRev = t * (c / 100) * v;
+      const projectedRev = currentRev * 1.8;
+      const savings = TRADITIONAL_COST - AI_COST;
+      const benefit = (projectedRev - currentRev) + savings;
+      const roi = (benefit / AI_COST) * 100;
+
+      trafficVal.textContent = t.toLocaleString() + " visits";
+      conversionVal.textContent = c.toFixed(1) + "%";
+      valueVal.textContent = "$" + v.toLocaleString();
+      budgetVal.textContent = "$" + parseInt(budget.value).toLocaleString();
+
+      currentRevenue.textContent = formatCurrency(currentRev);
+      projectedRevenue.textContent = formatCurrency(projectedRev);
+      costSavings.textContent = formatCurrency(savings);
+      revenueLift.textContent = formatCurrency(projectedRev - currentRev);
+      totalBenefit.textContent = formatCurrency(benefit);
+      roiPercent.textContent = Math.round(roi) + "%";
+    }
+
+    [traffic, conversion, value, budget].forEach(el => el.addEventListener("input", updateValues));
+    updateValues();
+
+    const teamTabs = document.querySelectorAll('.agent-filters button');
+    const teamPanels = document.querySelectorAll('.agent-panel');
+
+    teamTabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        teamTabs.forEach((t) => t.classList.remove('active'));
+        tab.classList.add('active');
+        teamPanels.forEach((panel) => panel.classList.remove('active'));
+        const selectedPanel = document.getElementById(tab.getAttribute('aria-controls'));
+        selectedPanel.classList.add('active');
+      });
+    });
+  </script>
+  <!-- Who Can Use Section -->
+<section class="who-can-use">
+  <div class="section-container">
+   <h2 class="agents-title"><span>Who Can Use This</span></h2>
+    <div class="cards1">
+      <div class="card1">
+        <i class="fas fa-building card-icon" aria-hidden="true"></i>
+        <h3>Growth-Stage Companies</h3>
+        <p>Looking to scale content, SEO, and social media marketing without adding headcount.</p>
+      </div>
+      <div class="card1">
+        <i class="fas fa-users card-icon" aria-hidden="true"></i>
+        <h3>Agencies</h3>
+        <p>That need to deliver more with fewer resources.</p>
+      </div>
+      <div class="card1">
+        <i class="fas fa-user-tie card-icon" aria-hidden="true"></i>
+        <h3>Solopreneurs & Startups</h3>
+        <p>Who lack marketing expertise but need results.</p>
+      </div>
+    </div>
+<br><br>
+    <p class="f1">If that sounds like you, you’re in the right place.</p>
+  </div>
+</section>
+
+<!-- Why Choose Section -->
+<section class="why-choose">
+  <div class="section-container">
+    <h2 class="agents-title"><span>Why Choose Boostimize AI</span></h2>
+    <div class="why-cards">
+      <div class="why-card">
+        <div class="card-icon"><i class="fas fa-sliders-h"></i></div>
+        <h3>Build by Marketers Not Just AI</h3>
+        <p>Our agents are trained on real-world expertise, not just scraped data.</p>
+      </div>
+      <div class="why-card">
+        <div class="card-icon"><i class="fas fa-chart-line"></i></div>
+        <h3>Responsible AI</h3>
+        <p>Our models follow ethical marketing principles, integrating best practices, compliance safeguards, and adaptive learning for reliable, accurate execution.</p>
+      </div>
+      <div class="why-card">
+        <div class="card-icon"><i class="fas fa-check-circle"></i></div>
+        <h3>End-to-End Execution</h3>
+        <p>From strategy to execution, our AI agents don’t just generate ideas, they get things done.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="faqs-section" id="faqs">
+  <h2 class="agents-title"><span>FAQs</span></h2>
+  <div class="faq-item">
+    <input type="checkbox" id="faq1" class="faq-toggle" />
+    <label for="faq1" class="faq-question">
+      Is it safe to use AI SEO agents? Will Google penalize me?
+      <span class="arrow">▼</span>
+    </label>
+    <div class="faq-answer">
+      <p>Absolutely. We’ve automated SEO best practices based on years of hands-on
+experience with white-hat SEO, including natural link-building strategies, structured
+data optimization, and ethical content creation that aligns with Google’s guidelines.
+Our AI follows Google’s guidelines, ensuring safe and effective SEO execution.</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <input type="checkbox" id="faq2" class="faq-toggle" />
+    <label for="faq2" class="faq-question">
+      Will AI-generated content rank on Google?
+      <span class="arrow">▼</span>
+    </label>
+    <div class="faq-answer">
+      <p>For best results, we recommend using our AI-generated content as a foundation and
+adding at least 40% human-written content for organic blogs. However, for PPC, emails,
+and social posts, AI content works great as-is.</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <input type="checkbox" id="faq3" class="faq-toggle" />
+    <label for="faq3" class="faq-question">
+      Can the LinkedIn Agent help grow my followers?
+      <span class="arrow">▼</span>
+    </label>
+    <div class="faq-answer">
+      <p>Yes! Studies show that posting relevant content daily significantly boosts engagement
+and follower growth. Our AI ensures you always have high-quality, engaging content
+ready to go.</p>
+    </div>
+  </div>
+</section>
+<section class="contact-section" id="contact">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <br><h1>Contact Us</h1>
+<br>
+  <div class="contact-container">
+    <div class="contact-box ceo-contact">
+      <div class="contact-icon ceo-icon">
+        <i class="fa fa-envelope" aria-hidden="true"></i>
+      </div>
+      <h2>CEO Contact</h2>
+      <a href="mailto:ceo@boostinise.ai">ceo@boostinise.ai</a>
+    </div>
+
+    <div class="contact-box support-contact">
+      <div class="contact-icon support-icon">
+        <i class="fa fa-envelope" aria-hidden="true"></i>
+      </div>
+      <h2>Support Contact</h2>
+      <a href="mailto:support@boostimize.ai">support@boostimize.ai</a>
+    </div>
+  </div>
+ <button class="btn-get-started"><span>Get Start Today</span></button>
+</section>
+<footer class="footer">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <h2 class="logo">Boostimize AI</h2>
+      <p>AI powered marketing agents for SaaS businesses</p>
+    </div>
+    <div class="footer-icons">
+      <a href="https://www.instagram.com/boostimize.ai" target="_blank" rel="noopener" aria-label="Instagram">
+        <!-- Instagram SVG -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+          <path d="M16 11.37a4 4 0 1 1-4.73-4.73 4 4 0 0 1 4.73 4.73z"></path>
+          <line x1="17.5" y1="6.5" x2="17.5" y2="6.5"></line>
+        </svg>
+      </a>
+      <a href="https://www.linkedin.com/company/boostimize-ai" target="_blank" rel="noopener" aria-label="LinkedIn">
+        <!-- LinkedIn SVG -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-14h4v2"></path>
+          <rect x="2" y="9" width="4" height="12"></rect>
+          <circle cx="4" cy="4" r="2"></circle>
+        </svg>
+      </a>
+    </div>
+  </div>
+
+  <hr class="footer-divider" />
+
+  <div class="footer-bottom">
+    <p>© 2025 Boostimize AI. All rights reserved.</p>
+    <div class="footer-links">
+      <a href="#">Terms</a>
+      <a href="#">Privacy</a>
+      <a href="#">Contact</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
