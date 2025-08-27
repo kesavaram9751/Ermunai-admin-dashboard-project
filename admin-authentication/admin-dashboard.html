@@ -3,65 +3,385 @@
 
 <head>
     <meta charset="UTF-8" />
-    <title>Admin Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Erumunai Organic Farm — Admin Dashboard</title>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        crossorigin="anonymous" />
+
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f6f7fb;
+        :root {
+            --primary: #4a7c59;
+            --accent: #f0ad4e;
+            --text: #333;
+            --bg: #f7f7f7;
+            --white: #fff;
+            --radius: 8px;
+            --transition: 0.3s ease;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", sans-serif;
+            color: var(--text);
+            background: var(--bg);
+            display: flex;
             height: 100vh;
-            display: grid;
-            place-items: center;
+            overflow: hidden;
         }
 
-        .card {
-            background: #fff;
-            padding: 36px;
-            border-radius: 16px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-            text-align: center;
-            max-width: 520px;
+        a {
+            text-decoration: none;
+            color: inherit;
         }
 
-        h1 {
-            margin: 0 0 8px;
+        .sidebar {
+            width: 250px;
+            background: var(--primary);
+            color: var(--white);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 1rem;
         }
 
-        .sub {
-            color: #666;
-            margin: 0 0 20px;
+        .sidebar h2 {
+            margin-bottom: 2rem;
+            font-size: 1.25rem;
+        }
+
+        .nav {
+            list-style: none;
+            width: 100%;
+        }
+
+        .nav li+li {
+            margin-top: 1rem;
+        }
+
+        .nav a {
+            display: block;
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius);
+        }
+
+        .nav a:hover,
+        .nav a.active {
+            background: var(--accent);
         }
 
         .logout-btn {
-            background: crimson;
-            color: white;
-            padding: 10px 20px;
+            background: #ff5f5f;
+            color: var(--white);
             border: none;
-            border-radius: 8px;
+            padding: 8px 16px;
+            border-radius: var(--radius);
             cursor: pointer;
-            font-size: 16px;
+            font-size: 0.95rem;
+            transition: var(--transition);
         }
 
         .logout-btn:hover {
-            background: darkred;
+            background: #e65050;
+        }
+
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: var(--white);
+            padding: 1rem 2rem;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        header .logo {
+            height: 80px;
+            width: auto;
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            flex-grow: 1;
+        }
+
+        .content {
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 1.25rem;
+        }
+
+        .card .label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .card .value {
+            font-size: 2rem;
+            color: var(--accent);
+        }
+
+        .card .sub {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .chart-container {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        thead {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        th,
+        td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        tbody tr:hover {
+            background: #fafafa;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .grid-2x2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        @media(max-width:768px) {
+            .grid-2x2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        footer {
+            background: var(--primary);
+            color: var(--white);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        footer i {
+            font-size: 1.2rem;
+            transition: transform var(--transition);
+        }
+
+        footer i:hover {
+            transform: scale(1.2);
+            color: var(--accent);
         }
     </style>
 </head>
 
 <body>
-    <div class="card">
-        <h1>Welcome, Admin 👑</h1>
-        <p class="sub">Admin Dashboard</p>
-        <!-- Future admin tools go here (add products, view orders, etc.) -->
 
-        <button class="logout-btn" onclick="logout()">Logout</button>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <h2>Erumunai Admin</h2>
+        <ul class="nav">
+            <li><a href="#" data-page="dashboard" class="active">Dashboard</a></li>
+            <li><a href="#" data-page="products">Product Details</a></li>
+            <li><a href="#" data-page="orders">Order Details</a></li>
+            <li><a href="#" data-page="payments">Payment Details</a></li>
+            <li><a href="#" data-page="settings">Settings</a></li>
+        </ul>
+    </aside>
+
+    <!-- Main -->
+    <div class="main">
+        <header>
+            <img src="../images/logo.jpeg.jpg" alt="Erumunai Logo" class="logo" />
+            <h1>Dashboard</h1>
+
+
+             <button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        </header>
+
+        
+
+        <div class="content">
+            <!-- Dashboard -->
+            <section id="dashboard" class="page active">
+                <div class="section-title">Overview</div>
+
+                <!-- Summary Cards -->
+                <div class="card-grid" id="summaryCards"></div>
+
+                <!-- Charts & Tables -->
+                <div class="grid-2x2">
+                    <div class="chart-container"><canvas id="salesChart" height="120"></canvas></div>
+                    <div class="chart-container"><canvas id="ordersChart" height="120"></canvas></div>
+                    <div>
+                        <div class="section-title">Best Selling Products</div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Sales</th>
+                                    <th>Revenue (₹)</th>
+                                    <th>Stock</th>
+                                </tr>
+                            </thead>
+                            <tbody id="productTable"></tbody>
+                        </table>
+                    </div>
+                    <div>
+                        <div class="section-title">Recent Orders</div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Customer</th>
+                                    <th>Status</th>
+                                    <th>Amount (₹)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ordersTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <footer>
+            <a href="https://wa.me/919840752833" target="_blank"><i class="fab fa-whatsapp"></i></a>
+            <a href="https://instagram.com/ermunaifarm" target="_blank"><i class="fab fa-instagram"></i></a>
+            <span><i class="fas fa-envelope"></i> info@ermunai.com</span>
+            <span><i class="fas fa-phone"></i> +91 98407 52833</span>
+        </footer>
     </div>
 
     <script>
-        function logout() {
-            // Just go back to login page
-            window.location.href = "admin-login.html";
-        }
+        // ===== Dummy Data =====
+        const summaryData = [
+            { label: "Total Revenue (₹)", value: "45,231", sub: "↑ ₹3,231 this month" },
+            { label: "Total Orders", value: "1,234", sub: "↑ 234 this month" },
+            { label: "Products", value: "87", sub: "" },
+            { label: "Customers", value: "1,024", sub: "↑ 120 this month" },
+        ];
+
+        const productData = [
+            { name: "Aavaram Poo Soup Mix", sales: 1234, revenue: 2100, stock: 87 },
+            { name: "Aavaram Poo Face Pack", sales: 1123, revenue: 1980, stock: 65 },
+            { name: "Traditional Rice Porridge Mix", sales: 1100, revenue: 1900, stock: 43 },
+            { name: "Curry Leaves Porridge Mix", sales: 1080, revenue: 1850, stock: 32 },
+            { name: "Vazhaipoo Porridge Mix", sales: 1050, revenue: 1800, stock: 20 },
+        ];
+
+        const ordersData = [
+            { id: "#ORD-001", customer: "Dhanalakshmi", status: "Shipped", amount: "123.00" },
+            { id: "#ORD-002", customer: "Meenakshmi", status: "Processing", amount: "98.00" },
+            { id: "#ORD-003", customer: "Boomika", status: "Delivered", amount: "150.00" },
+            { id: "#ORD-004", customer: "Siva", status: "Cancelled", amount: "75.00" },
+            { id: "#ORD-005", customer: "Monesh Raj", status: "Shipped", amount: "200.00" },
+        ];
+
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const salesData = [2000, 3500, 2800, 4000, 3600, 4200, 5000, 4700, 5200, 6100, 7200, 6800];
+        const ordersChartData = [150, 180, 200, 240, 220, 260, 310, 300, 340, 370, 420, 390];
+
+        // ===== Render Summary Cards =====
+        const summaryContainer = document.getElementById("summaryCards");
+        summaryData.forEach(item => {
+            summaryContainer.innerHTML += `
+        <div class="card">
+          <div class="label">${item.label}</div>
+          <div class="value">${item.value}</div>
+          <div class="sub">${item.sub || ""}</div>
+        </div>`;
+        });
+
+        // ===== Render Products =====
+        const productTable = document.getElementById("productTable");
+        productData.forEach(p => {
+            productTable.innerHTML += `<tr>
+        <td>${p.name}</td><td>${p.sales}</td><td>${p.revenue}</td><td>${p.stock}</td>
+      </tr>`;
+        });
+
+        // ===== Render Orders =====
+        const ordersTable = document.getElementById("ordersTable");
+        ordersData.forEach(o => {
+            ordersTable.innerHTML += `<tr>
+        <td>${o.id}</td><td>${o.customer}</td><td>${o.status}</td><td>${o.amount}</td>
+      </tr>`;
+        });
+
+        // ===== Charts =====
+        new Chart(document.getElementById('salesChart'), {
+            type: 'line',
+            data: {
+                labels: months, datasets: [{
+                    label: 'Sales (₹)', data: salesData,
+                    borderColor: '#f0ad4e', backgroundColor: 'rgba(240,173,78,0.2)', tension: 0.4, pointRadius: 4
+                }]
+            },
+            options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true }, x: { grid: { display: false } } } }
+        });
+
+        new Chart(document.getElementById('ordersChart'), {
+            type: 'bar',
+            data: { labels: months, datasets: [{ label: 'Orders', data: ordersChartData, backgroundColor: '#4a7c59' }] },
+            options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+        });
     </script>
 </body>
 
