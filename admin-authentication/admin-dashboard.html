@@ -79,27 +79,13 @@
             background: var(--accent);
         }
 
-        .logout-btn {
-            background: #ff5f5f;
-            color: var(--white);
-            border: none;
-            padding: 8px 16px;
-            border-radius: var(--radius);
-            cursor: pointer;
-            font-size: 0.95rem;
-            transition: var(--transition);
-        }
-
-        .logout-btn:hover {
-            background: #e65050;
-        }
-
+        
         .main {
             flex: 1;
             display: flex;
             flex-direction: column;
         }
-
+        
         header {
             background: var(--white);
             padding: 1rem 2rem;
@@ -114,13 +100,28 @@
             height: 80px;
             width: auto;
         }
-
+        
         header h1 {
             font-size: 1.5rem;
             color: var(--primary);
             flex-grow: 1;
         }
+        
+        .logout-btn {
+            background: #ff5f5f;
+            color: var(--white);
+            border: none;
+            padding: 8px 16px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
 
+        .logout-btn:hover {
+            background: #e65050;
+        }
+        
         .content {
             padding: 2rem;
             overflow-y: auto;
@@ -239,7 +240,7 @@
         <ul class="nav">
             <li><a href="admin-dashboard.html" data-page="dashboard" class="active">Dashboard</a></li>
             <li><a href="dashboard-product-page.html" data-page="products">Product Details</a></li>
-            <li><a href="#" data-page="orders">Order Details</a></li>
+            <li><a href="dashboard-order-page.html" data-page="orders">Order Details</a></li>
             <li><a href="#" data-page="payments">Payment Details</a></li>
             <li><a href="#" data-page="settings">Settings</a></li>
         </ul>

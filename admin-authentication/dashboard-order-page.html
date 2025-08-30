@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Erumunai Admin — Orders</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    crossorigin="anonymous" />
+
+  <style>
+    :root {
+      --primary: #4a7c59;
+      --accent: #f0ad4e;
+      --text: #333;
+      --bg: #f7f7f7;
+      --white: #fff;
+      --radius: 8px;
+      --transition: 0.3s ease;
+      --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Segoe UI", sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 250px;
+      background: var(--primary);
+      color: var(--white);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+    }
+
+    .sidebar h2 {
+      margin-bottom: 2rem;
+      font-size: 1.25rem;
+    }
+
+    .nav {
+      list-style: none;
+      width: 100%;
+    }
+
+    .nav li+li {
+      margin-top: 1rem;
+    }
+
+    .nav a {
+      display: block;
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius);
+      transition: background var(--transition);
+    }
+
+    .nav a:hover,
+    .nav a.active {
+      background: var(--accent);
+    }
+
+    /* Main content */
+    .main {
+      flex: 1;
+      background: #f7f7f7;
+      padding: 2rem;
+      overflow-y: auto;
+    }
+
+    .main h1 {
+      color: #4a7c59;
+      margin-bottom: 1.5rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      box-shadow: var(--shadow);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    thead {
+      background: #4a7c59;
+      color: #fff;
+    }
+
+    th,
+    td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+      vertical-align: top;
+    }
+
+    tbody tr:hover {
+      background: #fafafa;
+    }
+
+    select {
+      padding: 6px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      cursor: pointer;
+    }
+
+    .products-list {
+      font-size: 0.9rem;
+      color: #333;
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 768px) {
+      body {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-around;
+        padding: 1rem;
+      }
+
+      .main {
+        padding: 1rem;
+      }
+
+      table {
+        font-size: 0.85rem;
+      }
+
+      th,
+      td {
+        padding: 8px 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <h2>Erumunai Admin</h2>
+    <ul class="nav">
+      <li><a href="admin-dashboard.html" data-page="dashboard">Dashboard</a></li>
+      <li><a href="dashboard-product-page.html" data-page="products">Product Details</a></li>
+      <li><a href="dashboard-order-page.html" data-page="orders" class="active">Order Details</a></li>
+      <li><a href="#" data-page="payments">Payment Details</a></li>
+      <li><a href="#" data-page="settings">Settings</a></li>
+    </ul>
+  </aside>
+
+  <!-- Main content -->
+  <div class="main">
+    <h1>Customer Orders</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Customer</th>
+          <th>Address</th>
+          <th>Payment</th>
+          <th>Date</th>
+          <th>Products</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="ordersTable">
+        <tr>
+          <td colspan="7" style="text-align:center; padding:20px;">⏳ Loading orders...</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, collection, getDocs, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+// 🔑 Firebase Config
+    const firebaseConfig = {
+      apiKey: "AIzaSyCbfdG2XU302FuZx0MapVTRmb3Qtaa-hA8",
+      authDomain: "ermunai-e-commerce-project.firebaseapp.com",
+      projectId: "ermunai-e-commerce-project",
+      storageBucket: "ermunai-e-commerce-project.appspot.com",
+      messagingSenderId: "365240050790",
+      appId: "1:365240050790:web:2d4867d6ab4f93a661f9a7",
+      measurementId: "G-CZJZ4HLCMR"
+    };
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+
+const ordersTable = document.getElementById("ordersTable");
+
+// 🔹 Check Auth
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    console.log("✅ Logged in as:", user.email);
+    loadOrders(); // load only after login
+  } else {
+    console.log("❌ No user is logged in");
+    ordersTable.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:20px;">🚫 Please log in as admin</td></tr>`;
+  }
+});
+
+
+
+    // 🔹 Fetch orders
+    async function loadOrders() {
+      try {
+        const querySnapshot = await getDocs(collection(db, "orders"));
+        ordersTable.innerHTML = "";
+
+        if (querySnapshot.empty) {
+          ordersTable.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:20px;">🚫 No orders found</td></tr>`;
+          return;
+        }
+
+        querySnapshot.forEach(docSnap => {
+          const order = docSnap.data();
+
+          const itemsHtml = order.items && Array.isArray(order.items)
+            ? order.items.map(i => `${i.name} (x${i.quantity})`).join("<br>")
+            : "No items";
+
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${docSnap.id}</td>
+            <td>${order.customerName || "N/A"}</td>
+            <td>${order.address || "N/A"}</td>
+            <td>${order.paymentMethod || "N/A"} - ₹${order.amount || 0}</td>
+            <td>${order.date || new Date().toLocaleString()}</td>
+            <td class="products-list">${itemsHtml}</td>
+            <td>
+              <select data-id="${docSnap.id}">
+                <option value="Pending" ${order.status === "Pending" ? "selected" : ""}>Pending</option>
+                <option value="Shipped" ${order.status === "Shipped" ? "selected" : ""}>Shipped</option>
+                <option value="Delivered" ${order.status === "Delivered" ? "selected" : ""}>Delivered</option>
+                <option value="Cancelled" ${order.status === "Cancelled" ? "selected" : ""}>Cancelled</option>
+              </select>
+            </td>
+          `;
+          ordersTable.appendChild(tr);
+        });
+
+        // 🔹 Status update
+        document.querySelectorAll("select").forEach(sel => {
+          sel.addEventListener("change", async (e) => {
+            const id = e.target.dataset.id;
+            const newStatus = e.target.value;
+            await updateDoc(doc(db, "orders", id), { status: newStatus });
+            alert("✅ Order status updated to " + newStatus);
+          });
+        });
+      } catch (error) {
+        console.error("❌ Error loading orders:", error);
+        ordersTable.innerHTML = `<tr><td colspan="7" style="text-align:center; color:red; padding:20px;">⚠️ Error loading orders</td></tr>`;
+      }
+    }
+
+    // loadOrders();
+  </script>
+</body>
+</html>
