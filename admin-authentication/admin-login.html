@@ -4,7 +4,60 @@
 <head>
   <meta charset="UTF-8" />
   <title>Admin Login</title>
-  <link rel="stylesheet" href="admin-login.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .login-box {
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      width: 300px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    input {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px;
+      width: 100%;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background: #45a049;
+    }
+
+    .msg {
+      margin-top: 10px;
+      font-size: 14px;
+    }
+  </style>
 </head>
 
 <body>
@@ -18,30 +71,62 @@
     <p id="msg" class="msg"></p>
   </div>
 
-  <script>
-    const form = document.getElementById('adminLoginForm');
-    const msg = document.getElementById('msg');
+  <!-- Firebase SDKs -->
+  <script type="module">
+    // Import Firebase
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-    // 🔑 Set your default admin email + password here
+    // ✅ Your Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyCbfdG2XU302FuZx0MapVTRmb3Qtaa-hA8",
+      authDomain: "ermunai-e-commerce-project.firebaseapp.com",
+      projectId: "ermunai-e-commerce-project",
+      storageBucket: "ermunai-e-commerce-project.appspot.com",
+      messagingSenderId: "365240050790",
+      appId: "1:365240050790:web:2d4867d6ab4f93a661f9a7",
+      measurementId: "G-CZJZ4HLCMR"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // 🔑 Set your admin email
     const ADMIN_EMAIL = "ermunai.12543@gmail.com";
-    const ADMIN_PASSWORD = "admin.12543";
 
-    form.addEventListener('submit', (e) => {
+    // Handle login
+    const form = document.getElementById("adminLoginForm");
+    const msg = document.getElementById("msg");
+
+    form.addEventListener("submit", async (e) => {
       e.preventDefault();
       msg.textContent = "";
 
-      const email = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value;
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
 
-      // Check if matches the default admin credentials
-      if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
-        window.location.href = "admin-dashboard.html";
-      } else {
-        msg.textContent = "⚠️ Only admin can access!";
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        // ✅ Check if logged-in user is the admin
+        if (user.email === ADMIN_EMAIL) {
+          msg.style.color = "green";
+          msg.textContent = "✅ Login successful! Redirecting...";
+          setTimeout(() => {
+            window.location.href = "admin-dashboard.html";
+          }, 1200);
+        } else {
+          msg.style.color = "crimson";
+          msg.textContent = "⚠️ You are not admin!";
+          await signOut(auth); // logout non-admin user
+        }
+      } catch (error) {
         msg.style.color = "crimson";
+        msg.textContent = "❌ " + error.message;
       }
     });
   </script>
 </body>
-
 </html>
