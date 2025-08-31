@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop - Ermunai Organic Farm Foods</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  /* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", sans-serif;
+  line-height: 1.6;
+  background: #fff;
+  color: #333;
+}
+
+/* ✅ Header */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  padding: 15px 40px;
+  border-bottom: 2px solid #eee;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+header .logo {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  color: green;
+  font-size: 18px;
+}
+
+header .logo img {
+  height: 80px;
+  margin-right: 10px;
+}
+
+header nav ul {
+  display: flex;
+  list-style: none;
+}
+
+header nav ul li {
+  margin: 0 15px;
+}
+
+header nav ul li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+header nav ul li a:hover,
+header nav ul li a.active {
+  color: green;
+}
+
+header .cart {
+  font-size: 22px;
+  color: #333;
+  cursor: pointer;
+}
+
+/* Header Right Section */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* Cart */
+.cart {
+  font-size: 22px;
+  color: #333;
+  cursor: pointer;
+}
+
+/* Buttons */
+.btn-login, .btn-signup {
+  padding: 8px 16px;
+  font-size: 14px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.btn-login {
+  background: transparent;
+  border: 2px solid green;
+  color: green;
+}
+
+.btn-login:hover {
+  background: green;
+  color: white;
+}
+
+.btn-signup {
+  background: green;
+  border: 2px solid green;
+  color: white;
+}
+
+.btn-signup:hover {
+  background: #244021;
+  border-color: #244021;
+}
+
+
+/* ===== Hero Section ===== */
+.hero {
+  text-align: center;
+  padding: 60px 20px;
+  background: #f9faf6;
+}
+
+.hero h1 {
+  font-size: 32px;
+  color: #2f6f31;
+  margin-bottom: 10px;
+}
+
+.hero p {
+  color: #555;
+}
+
+/* ===== Categories ===== */
+.categories {
+  padding: 60px 80px;
+  text-align: center;
+}
+
+.categories h2 {
+  font-size: 28px;
+  margin-bottom: 10px;
+  color: #2f2f2f;
+}
+
+.categories p {
+  margin-bottom: 30px;
+  color: #666;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 25px;
+}
+
+.category-card {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  padding: 15px;
+  text-align: left;
+  position: relative;
+  transition: 0.3s ease;
+}
+
+.category-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.category-card img {
+  width: 100%;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+.category-card .badge {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: #2f6f31;
+  color: #fff;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 20px;
+}
+
+.category-card h3 {
+  margin-bottom: 8px;
+  color: #222;
+}
+
+.category-card p {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.category-card a {
+  font-weight: bold;
+  font-size: 14px;
+  color: #2f6f31;
+  text-decoration: none;
+}
+
+/* ===== Featured Products ===== */
+.featured {
+  padding: 60px 80px;
+  text-align: center;
+  background: #fafafa;
+}
+
+.featured h2 {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.featured p {
+  color: #666;
+  margin-bottom: 30px;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 25px;
+}
+
+.product-card {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  padding: 15px;
+  text-align: center;
+  position: relative;
+  transition: 0.3s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.product-card img {
+  width: 100%;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.product-card .tag {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: #ff6f3c;
+  color: #fff;
+  font-size: 12px;
+  padding: 3px 8px;
+  border-radius: 15px;
+}
+
+.product-card h3 {
+  margin-bottom: 6px;
+  font-size: 16px;
+  color: #222;
+}
+
+.product-card .rating {
+  font-size: 14px;
+  margin-bottom: 5px;
+  color: #444;
+}
+
+.product-card .price {
+  font-size: 16px;
+  color: #2f6f31;
+  margin-bottom: 10px;
+}
+
+.product-card .price span {
+  text-decoration: line-through;
+  color: #999;
+  margin-left: 5px;
+}
+
+.product-card button {
+  background: #2f6f31;
+  color: #fff;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.product-card button:hover {
+  background: #245824;
+}
+
+.view-all {
+  margin-top: 30px;
+}
+
+.view-all a {
+  text-decoration: none;
+  font-weight: bold;
+  background: #2f6f31;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 6px;
+}
+
+/* Footer */
+footer { background: green; color: white; padding: 30px 20px; }
+.footer-container {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;
+}
+.footer-section h3, .footer-section h4 { margin-bottom: 10px; }
+.footer-section ul { list-style: none; }
+.footer-section ul li { margin-bottom: 8px; }
+.footer-section ul li a { color: white; text-decoration: none; }
+
+.social { margin-top: 20px; text-align: center; }
+.social a { color: white; font-size: 18px; margin: 0 10px; text-decoration: none; }
+
+.whatsapp { margin: 15px 0; text-align: center; }
+.whatsapp a {
+  background: #25D366; color: white;
+  padding: 10px 20px; border-radius: 5px;
+  font-weight: bold; text-decoration: none;
+}
+
+.footer-bottom { text-align: center; margin-top: 20px; border-top: 1px solid white; padding-top: 10px; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  header nav ul { flex-direction: column; text-align: center; }
+  header nav ul li { margin: 10px 0; }
+  .slide img { height: 250px; }
+}
+
+@media (max-width: 480px) {
+  header { flex-direction: column; }
+  header .logo img { height: 30px; }
+  .slide img { height: 200px; }
+  .banner-buttons .btn { padding: 8px 15px; font-size: 14px; }
+}
+
+</style>
+</head>
+<body>
+
+  <!-- ===== Header ===== -->
+<header>
+  <div class="logo">
+    <img src="logo.jpg" alt="Logo">
+    <span>Erumunai Organic Farm Foods</span>
+  </div>
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="shop.html" class="active">Shop</a></li>
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="contact.html" >Contact</a></li>
+    </ul>
+  </nav>
+  <div class="header-right">
+    <div class="cart"><i class="fa-solid fa-cart-shopping"></i></div>
+    <a href="login.html" class="btn-login">Login</a>
+    <a href="signup.html" class="btn-signup">Sign Up</a>
+  </div>
+</header>
+
+  <!-- ===== Hero Section ===== -->
+  <section class="hero">
+    <h1>Shop Our Products</h1>
+    <p>Discover our range of authentic organic products, from traditional spice powders to modern ready-to-cook mixes.</p>
+  </section>
+
+  <!-- ===== Product Categories ===== -->
+  <section class="categories">
+    <h2>Our Product Categories</h2>
+    <p>Explore our wide range of organic farm products, each crafted with traditional methods and modern quality standards to bring you the best of nature.</p>
+    <div class="category-grid">
+      <div class="category-card">
+        <img src="images/cat1.jpg" alt="Idli Podi">
+        <div class="badge">12+ varieties</div>
+        <h3>Idli Milagai Podi Varieties</h3>
+        <p>Traditional South Indian spice powders made with authentic recipes</p>
+        <a href="#">Explore Category →</a>
+      </div>
+      <div class="category-card">
+        <img src="images/cat2.jpg" alt="Instant Mix Soups">
+        <div class="badge">8+ flavors</div>
+        <h3>Instant Mix Soups</h3>
+        <p>Healthy and nutritious soup mixes with organic vegetables</p>
+        <a href="#">Explore Category →</a>
+      </div>
+      <div class="category-card">
+        <img src="images/cat3.jpg" alt="Masala Milk">
+        <div class="badge">5+ varieties</div>
+        <h3>Masala Milk Malt</h3>
+        <p>Nutritious and delicious malt powder with traditional spices</p>
+        <a href="#">Explore Category →</a>
+      </div>
+      <div class="category-card">
+        <img src="images/cat4.jpg" alt="Herbal Products">
+        <div class="badge">15+ products</div>
+        <h3>Herbal Products</h3>
+        <p>Natural ayurvedic herbs and wellness products</p>
+        <a href="#">Explore Category →</a>
+      </div>
+      <div class="category-card">
+        <img src="images/cat5.jpg" alt="Thokku">
+        <div class="badge">10+ varieties</div>
+        <h3>Thokku Collection</h3>
+        <p>Traditional South Indian pickles and chutneys</p>
+        <a href="#">Explore Category →</a>
+      </div>
+      <div class="category-card">
+        <img src="images/cat6.jpg" alt="Ready Mix">
+        <div class="badge">20+ mixes</div>
+        <h3>Ready-to-Cook Varieties</h3>
+        <p>Convenient and healthy cooking mixes for busy lifestyles</p>
+        <a href="#">Explore Category →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Featured Products ===== -->
+  <section class="featured">
+    <h2>Featured Products</h2>
+    <p>Handpicked favorites from our organic collection, loved by thousands of customers for their authentic taste and superior quality.</p>
+    <div class="product-grid">
+      <div class="product-card">
+        <div class="tag">Best Seller</div>
+        <img src="images/f1.jpg" alt="Idli Podi">
+        <h3>Traditional Milagai Podi</h3>
+        <p class="rating">⭐ 4.8 (124)</p>
+        <p class="price">₹299 <span>₹349</span></p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <div class="tag">Organic</div>
+        <img src="images/f2.jpg" alt="Ashwagandha">
+        <h3>Ashwagandha Powder</h3>
+        <p class="rating">⭐ 4.9 (89)</p>
+        <p class="price">₹499 <span>₹599</span></p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <div class="tag">Traditional</div>
+        <img src="images/f3.jpg" alt="Mango Thokku">
+        <h3>Mango Thokku</h3>
+        <p class="rating">⭐ 4.7 (156)</p>
+        <p class="price">₹179 <span>₹199</span></p>
+        <button>Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <div class="tag">Popular</div>
+        <img src="images/f4.jpg" alt="Dosa Mix">
+        <h3>Dosa Mix Combo</h3>
+        <p class="rating">⭐ 4.6 (203)</p>
+        <p class="price">₹249 <span>₹299</span></p>
+        <button>Add to Cart</button>
+      </div>
+    </div>
+    <div class="view-all">
+      <a href="#">View All Products</a>
+    </div>
+  </section>
+
+  <!-- ===== Footer ===== -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-section about">
+        <h3>Erumunai Organic Farm Foods</h3>
+        <p>Bringing you the finest organic farm products with traditional recipes and modern quality standards for healthy living.</p>
+        <p><i class="fa fa-map-marker-alt"></i> 123 Farm Road, Organic Valley, Tamil Nadu 600001</p>
+        <p><i class="fa fa-phone"></i> +91 98765 43210</p>
+        <p><i class="fa fa-envelope"></i> hello@ermunaiorganicfarms.com</p>
+      </div>
+
+      <div class="footer-section company">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Our Story</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Press</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section products">
+        <h4>Products</h4>
+        <ul>
+          <li><a href="#">Spice Powders</a></li>
+          <li><a href="#">Herbal Products</a></li>
+          <li><a href="#">Ready Mixes</a></li>
+          <li><a href="#">Pickles & Thokku</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section support">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Shipping Info</a></li>
+          <li><a href="#">Returns</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Social & WhatsApp -->
+    <div class="social">
+      <a href="#"><i class="fab fa-facebook-f"></i></a>
+      <a href="#"><i class="fab fa-instagram"></i></a>
+      <a href="#"><i class="fab fa-twitter"></i></a>
+      <a href="#"><i class="fab fa-youtube"></i></a>
+    </div>
+    <div class="whatsapp">
+      <a href="https://wa.me/919876543210" target="_blank">
+        <i class="fab fa-whatsapp"></i> Order on WhatsApp
+      </a>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2024 Ermunai Organic Farm Foods. All rights reserved.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

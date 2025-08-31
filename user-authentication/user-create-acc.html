@@ -19,39 +19,55 @@
         <p id="msg" class="msg"></p>
     </div>
 
-    <!-- Firebase shared config -->
-    <script type="module" src="firebase-config.js"></script>
 
     <!-- Page logic -->
-    <script type="module">
-        import { auth } from './firebase-config.js';
-        import { createUserWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+<script type="module">
+  // Firebase v9 modular imports
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged } 
+    from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
-        // If already logged in, go to home
-        onAuthStateChanged(auth, (user) => {
-            if (user) window.location.href = "home-page.html";
-        });
+  // Firebase config
+  const firebaseConfig = {
+    apiKey: "AIzaSyCbfdG2XU302FuZx0MapVTRmb3Qtaa-hA8",
+    authDomain: "ermunai-e-commerce-project.firebaseapp.com",
+    projectId: "ermunai-e-commerce-project",
+    storageBucket: "ermunai-e-commerce-project.appspot.com",
+    messagingSenderId: "365240050790",
+    appId: "1:365240050790:web:2d4867d6ab4f93a661f9a7",
+    measurementId: "G-CZJZ4HLCMR"
+  };
 
-        const form = document.getElementById('signupForm');
-        const msg = document.getElementById('msg');
+  // Init Firebase
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
 
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            msg.textContent = '';
-            const email = document.getElementById('email').value.trim();
-            const password = document.getElementById('password').value;
+  // If already logged in, go to home
+  onAuthStateChanged(auth, (user) => {
+    if (user) window.location.href = "index.html";
+  });
 
-            try {
-                await createUserWithEmailAndPassword(auth, email, password);
-                msg.textContent = "Account created ✅ Redirecting…";
-                msg.style.color = 'green';
-                setTimeout(() => (window.location.href = "home-page.html"), 800);
-            } catch (err) {
-                msg.textContent = err.message;
-                msg.style.color = 'crimson';
-            }
-        });
-    </script>
+  const form = document.getElementById('signupForm');
+  const msg = document.getElementById('msg');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    msg.textContent = '';
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      msg.textContent = "Account created ✅ Redirecting…";
+      msg.style.color = 'green';
+      setTimeout(() => (window.location.href = "index.html"), 800);
+    } catch (err) {
+      msg.textContent = err.message;
+      msg.style.color = 'crimson';
+    }
+  });
+</script>
+
 </body>
 
 </html>

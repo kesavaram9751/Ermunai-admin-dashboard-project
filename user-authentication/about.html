@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us - Ermunai Organic Farm Foods</title>
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  /* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: Arial, sans-serif;
+  color: #333;
+  line-height: 1.6;
+  background: #fff;
+}
+
+/* ✅ Header */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  padding: 15px 40px;
+  border-bottom: 2px solid #eee;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+header .logo {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  color: green;
+  font-size: 18px;
+}
+
+header .logo img {
+  height: 80px;
+  margin-right: 10px;
+}
+
+header nav ul {
+  display: flex;
+  list-style: none;
+}
+
+header nav ul li {
+  margin: 0 15px;
+}
+
+header nav ul li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+header nav ul li a:hover,
+header nav ul li a.active {
+  color: green;
+}
+
+header .cart {
+  font-size: 22px;
+  color: #333;
+  cursor: pointer;
+}
+
+/* Header Right Section */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* Cart */
+.cart {
+  font-size: 22px;
+  color: #333;
+  cursor: pointer;
+}
+
+/* Buttons */
+.btn-login, .btn-signup {
+  padding: 8px 16px;
+  font-size: 14px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.btn-login {
+  background: transparent;
+  border: 2px solid green;
+  color: green;
+}
+
+.btn-login:hover {
+  background: green;
+  color: white;
+}
+
+.btn-signup {
+  background: green;
+  border: 2px solid green;
+  color: white;
+}
+
+.btn-signup:hover {
+  background: #244021;
+  border-color: #244021;
+}
+
+/* About Heading */
+.about-heading {
+  text-align: center;
+  padding: 60px 20px;
+  background: #f5faf7;
+}
+.about-heading h1 {
+  font-size: 32px;
+  margin-bottom: 15px;
+  color: #1d4d2d;
+}
+.about-heading p {
+  font-size: 18px;
+  color: #555;
+}
+
+/* Story + Mission/Vision */
+.story-mission {
+  display: flex;
+  gap: 40px;
+  padding: 60px 80px;
+  align-items: flex-start;
+}
+.story {
+  flex: 2;
+}
+.story h2 {
+  margin-bottom: 20px;
+  color: #1d4d2d;
+}
+.mission-vision {
+  flex: 1;
+  background: #f0f8f4;
+  padding: 25px;
+  border-radius: 10px;
+}
+.mission-vision h3 {
+  color: #1d4d2d;
+  margin-top: 15px;
+  margin-bottom: 8px;
+}
+
+/* Values */
+.values {
+  text-align: center;
+  padding: 60px 40px;
+  background: #fff;
+}
+.values h2 {
+  margin-bottom: 15px;
+  color: #1d4d2d;
+}
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 25px;
+  margin-top: 30px;
+}
+.value-card {
+  background: #f9fdfb;
+  border: 1px solid #e5eee9;
+  padding: 25px;
+  border-radius: 12px;
+  text-align: center;
+  transition: 0.3s;
+}
+.value-card i {
+  font-size: 40px;
+  color: #1d4d2d;
+  margin-bottom: 15px;
+}
+.value-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Footer */
+footer { background: green; color: white; padding: 30px 20px; }
+.footer-container {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;
+}
+.footer-section h3, .footer-section h4 { margin-bottom: 10px; }
+.footer-section ul { list-style: none; }
+.footer-section ul li { margin-bottom: 8px; }
+.footer-section ul li a { color: white; text-decoration: none; }
+
+.social { margin-top: 20px; text-align: center; }
+.social a { color: white; font-size: 18px; margin: 0 10px; text-decoration: none; }
+
+.whatsapp { margin: 15px 0; text-align: center; }
+.whatsapp a {
+  background: #25D366; color: white;
+  padding: 10px 20px; border-radius: 5px;
+  font-weight: bold; text-decoration: none;
+}
+
+.footer-bottom { text-align: center; margin-top: 20px; border-top: 1px solid white; padding-top: 10px; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  header nav ul { flex-direction: column; text-align: center; }
+  header nav ul li { margin: 10px 0; }
+  .slide img { height: 250px; }
+}
+
+@media (max-width: 480px) {
+  header { flex-direction: column; }
+  header .logo img { height: 30px; }
+  .slide img { height: 200px; }
+  .banner-buttons .btn { padding: 8px 15px; font-size: 14px; }
+}
+
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">
+    <img src="logo.jpg" alt="Logo">
+    <span>Erumunai Organic Farm Foods</span>
+  </div>
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="shop.html">Shop</a></li>
+      <li><a href="about.html" class="active">About Us</a></li>
+      <li><a href="contact.html" >Contact</a></li>
+    </ul>
+  </nav>
+  <div class="header-right">
+    <div class="cart"><i class="fa-solid fa-cart-shopping"></i></div>
+    <a href="login.html" class="btn-login">Login</a>
+    <a href="signup.html" class="btn-signup">Sign Up</a>
+  </div>
+</header>
+   <!-- About Heading -->
+  <section class="about-heading">
+    <h1>About Ermunai Organic Farm Foods</h1>
+    <p>We are passionate about bringing you the finest organic farm products,<br>
+      combining traditional Tamil recipes with modern quality standards for a healthier lifestyle.</p>
+  </section>
+
+  <!-- Our Story + Mission/Vision -->
+  <section class="story-mission">
+    <div class="story">
+      <h2>Our Story</h2>
+      <p>Founded with a vision to revive the authentic flavors of Tamil Nadu, Ermunai Organic Farm Foods began as a small family initiative to preserve traditional recipes and promote organic farming practices.</p>
+      <p>Our journey started in the fertile lands of Tamil Nadu, where we partnered with local farmers to grow the finest organic ingredients. From millets and herbs to spices and vegetables, every ingredient is carefully selected and processed to maintain its natural goodness.</p>
+      <p>Today, we take pride in offering a wide range of ready-to-cook and ready-to-eat products that bring the taste of home-cooked meals to your table, no matter where you are.</p>
+    </div>
+
+    <div class="mission-vision">
+      <h3>Our Mission</h3>
+      <p>To make healthy, organic, and traditional South Indian food accessible to everyone while supporting sustainable farming practices and local communities.</p>
+      <h3>Our Vision</h3>
+      <p>To become the leading brand for authentic organic South Indian food products, preserving culinary heritage while promoting wellness and sustainability.</p>
+    </div>
+  </section>
+
+  <!-- Our Values -->
+  <section class="values">
+    <h2>Our Values</h2>
+    <p>These core values guide everything we do, from sourcing ingredients to delivering products.</p>
+    <div class="values-grid">
+      <div class="value-card">
+        <i class='bx bx-leaf'></i>
+        <h3>100% Organic</h3>
+        <p>All our products are certified organic, grown without harmful chemicals or pesticides.</p>
+      </div>
+      <div class="value-card">
+        <i class='bx bx-book'></i>
+        <h3>Traditional Recipes</h3>
+        <p>We preserve age-old recipes passed down through generations of Tamil Nadu families.</p>
+      </div>
+      <div class="value-card">
+        <i class='bx bx-group'></i>
+        <h3>Community First</h3>
+        <p>Supporting local farmers and communities while delivering healthy food to your table.</p>
+      </div>
+      <div class="value-card">
+        <i class='bx bx-check-shield'></i>
+        <h3>Quality Assured</h3>
+        <p>Every product undergoes rigorous quality checks to ensure the highest standards.</p>
+      </div>
+      <div class="value-card">
+        <i class='bx bx-leaf'></i>
+        <h3>Farm Fresh</h3>
+        <p>Directly sourced from our organic farms.</p>
+      </div>
+      <div class="value-card">
+        <i class='bx bx-time-five'></i>
+        <h3>Ready to Cook</h3>
+        <p>Convenient and quick preparation.</p>
+      </div>
+      <div class="value-card">
+        <i class='bx bx-plus-medical'></i>
+        <h3>Herbal & Natural</h3>
+        <p>Traditional ayurvedic formulations.</p>
+      </div>
+      <div class="value-card">
+        <i class='bx bx-smile'></i>
+        <h3>Customer Care</h3>
+        <p>Your satisfaction is our priority, with dedicated support always.</p>
+      </div>
+    </div>
+  </section>
+
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-section about">
+        <h3>Erumunai Organic Farm Foods</h3>
+        <p>Bringing you the finest organic farm products with traditional recipes and modern quality standards for healthy living.</p>
+        <p><i class="fa fa-map-marker-alt"></i> 123 Farm Road, Organic Valley, Tamil Nadu 600001</p>
+        <p><i class="fa fa-phone"></i> +91 98765 43210</p>
+        <p><i class="fa fa-envelope"></i> hello@ermunaiorganicfarms.com</p>
+      </div>
+
+      <div class="footer-section company">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Our Story</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Press</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section products">
+        <h4>Products</h4>
+        <ul>
+          <li><a href="#">Spice Powders</a></li>
+          <li><a href="#">Herbal Products</a></li>
+          <li><a href="#">Ready Mixes</a></li>
+          <li><a href="#">Pickles & Thokku</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section support">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Shipping Info</a></li>
+          <li><a href="#">Returns</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Social & WhatsApp -->
+    <div class="social">
+      <a href="#"><i class="fab fa-facebook-f"></i></a>
+      <a href="#"><i class="fab fa-instagram"></i></a>
+      <a href="#"><i class="fab fa-twitter"></i></a>
+      <a href="#"><i class="fab fa-youtube"></i></a>
+    </div>
+    <div class="whatsapp">
+      <a href="https://wa.me/919876543210" target="_blank">
+        <i class="fab fa-whatsapp"></i> Order on WhatsApp
+      </a>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2024 Ermunai Organic Farm Foods. All rights reserved.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

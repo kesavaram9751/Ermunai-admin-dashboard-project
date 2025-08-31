@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Erumunai Organic Farm Foods</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <!-- Font Awesome for icons -->
+<style>
+  /* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+}
+
+/* ✅ Header */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  padding: 15px 40px;
+  border-bottom: 2px solid #eee;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+header .logo {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  color: green;
+  font-size: 18px;
+}
+
+header .logo img {
+  height: 80px;
+  margin-right: 10px;
+}
+
+header nav ul {
+  display: flex;
+  list-style: none;
+}
+
+header nav ul li {
+  margin: 0 15px;
+}
+
+header nav ul li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+header nav ul li a:hover,
+header nav ul li a.active {
+  color: green;
+}
+
+header .cart {
+  font-size: 22px;
+  color: #333;
+  cursor: pointer;
+}
+/* Header Right Section */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* Cart */
+.cart {
+  font-size: 22px;
+  color: #333;
+  cursor: pointer;
+}
+
+/* Buttons */
+.btn-login, .btn-signup {
+  padding: 8px 16px;
+  font-size: 14px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.btn-login {
+  background: transparent;
+  border: 2px solid green;
+  color: green;
+}
+
+.btn-login:hover {
+  background: green;
+  color: white;
+}
+
+.btn-signup {
+  background: green;
+  border: 2px solid green;
+  color: white;
+}
+
+.btn-signup:hover {
+  background: #244021;
+  border-color: #244021;
+}
+
+
+/* ✅ Banner */
+.banner {
+  position: relative;
+  text-align: center;
+  overflow: hidden;
+}
+
+.slider {
+  position: relative;
+  width: 100%;
+  height: 450px;
+}
+
+.slide {
+  display: none;
+  width: 100%;
+  height: 100%;
+}
+
+.slide.active {
+  display: block;
+  animation: fade 1s;
+}
+
+.slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@keyframes fade {
+  from { opacity: 0.4; }
+  to { opacity: 1; }
+}
+
+/* Controls */
+.controls {
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  display: flex;
+  justify-content: space-between;
+  transform: translateY(-50%);
+  font-size: 40px;
+  color: white;
+  padding: 0 20px;
+  cursor: pointer;
+}
+
+/* Buttons */
+.banner-buttons {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.banner-buttons .btn {
+  padding: 12px 25px;
+  margin: 0 8px;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.banner-buttons .shop {
+  background: green;
+  color: white;
+}
+
+.banner-buttons .learn {
+  background: white;
+  color: green;
+  border: 2px solid green;
+}
+
+/* Shining hover effect */
+.banner-buttons .btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(120deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0.2) 100%);
+  transform: skewX(-25deg);
+}
+
+.banner-buttons .btn:hover::before {
+  animation: shine 0.8s forwards;
+}
+
+@keyframes shine {
+  0% { left: -75%; }
+  100% { left: 125%; }
+}
+/* Product Section */
+.product-section {
+  padding: 60px 20px;
+  background: #f8fbf7;
+  text-align: center;
+}
+
+.product-section .section-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2c3e2c;
+  margin-bottom: 10px;
+}
+
+.product-section .section-subtitle {
+  font-size: 1rem;
+  color: #555;
+  max-width: 700px;
+  margin: 0 auto 40px;
+}
+
+
+
+.product-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+}
+
+/* Image + Badge */
+.product-card .card-image {
+  position: relative;
+  height: 180px;
+  overflow: hidden;
+}
+
+.product-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.product-card:hover img {
+  transform: scale(1.05);
+}
+
+.badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: #27ae60;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+/* Card Content */
+.card-content {
+  padding: 15px;
+  text-align: left;
+}
+
+.card-content h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #2c3e2c;
+}
+
+.card-content p {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 12px;
+}
+
+.explore-link {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #27ae60;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.explore-link:hover {
+  color: #1d8348;
+}
+/* Grid Layout */
+.product-grid {
+  display: grid;
+  gap: 25px;
+  grid-template-columns: repeat(4, 1fr); /* Default for desktop/laptop: 4 columns */
+}
+
+/* Mobile (≤768px) → 2 columns */
+@media (max-width: 768px) {
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+/* Section */
+.fp {
+  padding: 60px 20px;
+  background: #fafcf9;
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+}
+
+.fp-t { font-size: 28px; font-weight: bold; color: #333; margin-bottom: 10px; }
+.fp-st { font-size: 15px; color: #666; margin-bottom: 35px; }
+
+/* Grid 1×4 */
+.fp-g { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+
+/* Product Card */
+.pc {
+  position: relative;
+  background: #fff;
+  border-radius: 10px;
+  padding: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  transition: 0.3s;
+}
+.pc:hover { transform: translateY(-5px); box-shadow: 0 6px 15px rgba(0,0,0,0.12); }
+
+.pc img { width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 8px; }
+.pc h3 { font-size: 16px; margin: 8px 0; color: #222; }
+
+/* Wishlist */
+.wl { position: absolute; top: 8px; right: 12px; font-size: 16px; color: #888; cursor: pointer; }
+.wl:hover { color: #e63946; }
+
+/* Badge */
+.bdg {
+  position: absolute; top: 8px; left: 12px;
+  background: #28a745; color: #fff; font-size: 11px; font-weight: 600;
+  padding: 4px 10px; border-radius: 20px; display: flex; align-items: center; gap: 5px;
+}
+
+/* Rating */
+.rt { font-size: 13px; color: #f39c12; margin-bottom: 5px; }
+.rt span { color: #666; font-size: 12px; }
+
+/* Price */
+.pr { margin-bottom: 10px; }
+.pr .c { font-size: 16px; font-weight: bold; color: #000; margin-right: 6px; }
+.pr .o { font-size: 13px; text-decoration: line-through; color: #999; margin-right: 5px; }
+.pr .of { font-size: 12px; color: #28a745; font-weight: bold; }
+
+/* Button */
+.btn {
+  background: #2d7a2f; color: #fff; border: none;
+  padding: 8px 12px; border-radius: 6px;
+  cursor: pointer; font-size: 13px; width: 100%;
+  position: relative; overflow: hidden; transition: 0.3s;
+}
+.btn:hover { background: #236323; }
+
+/* Shine Effect */
+.btn::after {
+  content: ""; position: absolute; top: 0; left: -60px;
+  width: 40px; height: 100%;
+  background: linear-gradient(120deg, rgba(255,255,255,0.6), rgba(255,255,255,0));
+  transform: skewX(-25deg);
+}
+.btn:hover::after { animation: shine .7s forwards; }
+
+@keyframes shine { 100% { left: 120%; } }
+
+/* View All */
+.va { margin-top: 25px; }
+.va-btn1 {
+  display: inline-block; background: #fff; border: 1px solid #ccc;
+  padding: 8px 15px; border-radius: 6px; text-decoration: none; color: #333;
+  transition: 0.3s;
+}
+.va-btn1:hover { background: #2d7a2f; color: #fff; border-color: #2d7a2f; }
+
+/* Responsive */
+@media (max-width:1024px) { .fp-g { grid-template-columns: repeat(2,1fr); } }
+@media (max-width:600px) { .fp-g { grid-template-columns: 1fr; } }
+
+
+/* Footer */
+footer { background: green; color: white; padding: 30px 20px; }
+.footer-container {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;
+}
+.footer-section h3, .footer-section h4 { margin-bottom: 10px; }
+.footer-section ul { list-style: none; }
+.footer-section ul li { margin-bottom: 8px; }
+.footer-section ul li a { color: white; text-decoration: none; }
+
+.social { margin-top: 20px; text-align: center; }
+.social a { color: white; font-size: 18px; margin: 0 10px; text-decoration: none; }
+
+.whatsapp { margin: 15px 0; text-align: center; }
+.whatsapp a {
+  background: #25D366; color: white;
+  padding: 10px 20px; border-radius: 5px;
+  font-weight: bold; text-decoration: none;
+}
+
+.footer-bottom { text-align: center; margin-top: 20px; border-top: 1px solid white; padding-top: 10px; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  header nav ul { flex-direction: column; text-align: center; }
+  header nav ul li { margin: 10px 0; }
+  .slide img { height: 250px; }
+}
+
+@media (max-width: 480px) {
+  header { flex-direction: column; }
+  header .logo img { height: 30px; }
+  .slide img { height: 200px; }
+  .banner-buttons .btn { padding: 8px 15px; font-size: 14px; }
+}
+
+
+</style>
+</head>
+<body>
+
+  <!-- ✅ Header -->
+<header>
+  <div class="logo">
+    <img src="logo.jpg" alt="Logo">
+    <span>Erumunai Organic Farm Foods</span>
+  </div>
+  <nav>
+    <ul>
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="shop.html">Shop</a></li>
+      <li><a href="about.html">About Us</a></li>
+      <li><a href="contact.html" >Contact</a></li>
+    </ul>
+  </nav>
+  <div class="header-right">
+    <div class="cart"><i class="fa-solid fa-cart-shopping"></i></div>
+    <a href="user-login.html" class="btn-login">Login</a>
+    <a href="user-create-acc.html" class="btn-signup">Sign Up</a>
+  </div>
+</header>
+
+  <!-- ✅ Banner Section -->
+  <section class="banner">
+    <div class="slider">
+      <div class="slide active">
+        <img src="banner1.jpg" alt="Banner 1">
+      </div>
+      <div class="slide">
+        <img src="banner2.jpg" alt="Banner 2">
+      </div>
+      <div class="slide">
+        <img src="banner3.jpg" alt="Banner 3">
+      </div>
+    </div>
+
+    <!-- Slider controls -->
+    <div class="controls">
+      <span class="prev">&#10094;</span>
+      <span class="next">&#10095;</span>
+    </div>
+
+    <!-- Buttons -->
+    <div class="banner-buttons">
+      <button class="btn shop">Shop Now</button>
+      <button class="btn learn">Learn More</button>
+    </div>
+  </section>
+<!-- Product Categories Section -->
+<section class="product-section">
+  <div class="container">
+    <h2 class="section-title">Our Product Categories</h2>
+    <p class="section-subtitle">
+      Explore our wide range of organic farm products, each crafted with traditional methods 
+      and modern quality standards to bring you the best of nature.
+    </p>
+
+    <div class="product-grid">
+      
+      <!-- Card 1 -->
+      <div class="product-card">
+        <div class="card-image">
+          <img src="images/idli-milagai.jpg" alt="Idli Milagai Podi Varieties">
+          <span class="badge">12+ varieties</span>
+        </div>
+        <div class="card-content">
+          <h3>Idli Milagai Podi Varieties</h3>
+          <p>Traditional South Indian spice powders made with authentic recipes.</p>
+          <a href="products/idli-milagai.html" class="explore-link">Explore Category →</a>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="product-card">
+        <div class="card-image">
+          <img src="images/instant-mix.jpg" alt="Instant Mix Soups">
+          <span class="badge">8+ flavors</span>
+        </div>
+        <div class="card-content">
+          <h3>Instant Mix Soups</h3>
+          <p>Healthy and nutritious soup mixes with organic vegetables.</p>
+          <a href="products/instant-mix.html" class="explore-link">Explore Category →</a>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="product-card">
+        <div class="card-image">
+          <img src="images/masala-milk.jpg" alt="Masala Milk Malt">
+          <span class="badge">5+ varieties</span>
+        </div>
+        <div class="card-content">
+          <h3>Masala Milk Malt</h3>
+          <p>Nutritious and delicious malt powder with traditional spices.</p>
+          <a href="products/masala-milk.html" class="explore-link">Explore Category →</a>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="product-card">
+        <div class="card-image">
+          <img src="images/organ-cleanser.jpg" alt="Organ Cleanser">
+          <span class="badge">10+ varieties</span>
+        </div>
+        <div class="card-content">
+          <h3>Organ Cleanser</h3>
+          <p>Natural cleansing powders and mixes for a healthy body.</p>
+          <a href="products/organ-cleanser.html" class="explore-link">Explore Category →</a>
+        </div>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="product-card">
+        <div class="card-image">
+          <img src="images/amla-squash.jpg" alt="Amla Ginger Squash">
+          <span class="badge">6+ varieties</span>
+        </div>
+        <div class="card-content">
+          <h3>Amla Ginger Squash</h3>
+          <p>Refreshing and immunity-boosting drinks made from farm-fresh fruits.</p>
+          <a href="products/amla-squash.html" class="explore-link">Explore Category →</a>
+        </div>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="product-card">
+        <div class="card-image">
+          <img src="images/herbal.jpg" alt="Herbal Products">
+          <span class="badge">15+ products</span>
+        </div>
+        <div class="card-content">
+          <h3>Herbal Products</h3>
+          <p>Natural ayurvedic herbs and wellness products.</p>
+          <a href="products/herbal.html" class="explore-link">Explore Category →</a>
+        </div>
+      </div>
+
+      <!-- Card 7 -->
+      <div class="product-card">
+        <div class="card-image">
+          <img src="images/thokku.jpg" alt="Thokku Collection">
+          <span class="badge">10+ varieties</span>
+        </div>
+        <div class="card-content">
+          <h3>Thokku Collection</h3>
+          <p>Traditional South Indian pickles and chutneys.</p>
+          <a href="products/thokku.html" class="explore-link">Explore Category →</a>
+        </div>
+      </div>
+
+      <!-- Card 8 -->
+      <div class="product-card">
+        <div class="card-image">
+          <img src="images/ready-mix.jpg" alt="Ready-to-Cook Varieties">
+          <span class="badge">20+ mixes</span>
+        </div>
+        <div class="card-content">
+          <h3>Ready-to-Cook Varieties</h3>
+          <p>Convenient and healthy cooking mixes for busy lifestyles.</p>
+          <a href="products/ready-mix.html" class="explore-link">Explore Category →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+<section class="fp">
+  <div class="container">
+    <h2 class="fp-t">Featured Products</h2>
+    <p class="fp-st">Handpicked favorites from our organic collection.</p>
+
+    <div class="fp-g">
+      <!-- Product 1 -->
+      <div class="pc">
+        <div class="bdg"><i class="fas fa-star"></i> Best Seller</div>
+        <div class="wl"><i class="far fa-heart"></i></div>
+        <img src="images/product1.jpg" alt="Traditional Milagai Podi">
+        <h3>Traditional Milagai Podi</h3>
+        <div class="rt"><i class="fas fa-star"></i> 4.8 <span>(124)</span></div>
+        <div class="pr">
+          <span class="c">₹299</span>
+          <span class="o">₹349</span>
+          <span class="of">-15%</span>
+        </div>
+        <button class="btn"><i class="fas fa-cart-plus"></i> Add</button>
+      </div>
+
+      <!-- Product 2 -->
+      <div class="pc">
+        <div class="bdg" style="background:#ff5733;"><i class="fas fa-fire"></i> Hot</div>
+        <div class="wl"><i class="far fa-heart"></i></div>
+        <img src="images/product2.jpg" alt="Cold-Pressed Gingelly Oil">
+        <h3>Cold-Pressed Gingelly Oil</h3>
+        <div class="rt"><i class="fas fa-star"></i> 4.6 <span>(98)</span></div>
+        <div class="pr">
+          <span class="c">₹450</span>
+          <span class="o">₹520</span>
+          <span class="of">-12%</span>
+        </div>
+        <button class="btn"><i class="fas fa-cart-plus"></i> Add</button>
+      </div>
+
+      <!-- Product 3 -->
+      <div class="pc">
+        <div class="bdg" style="background:#007bff;"><i class="fas fa-leaf"></i> Organic</div>
+        <div class="wl"><i class="far fa-heart"></i></div>
+        <img src="images/product3.jpg" alt="Idli Podi">
+        <h3>Idli Podi</h3>
+        <div class="rt"><i class="fas fa-star"></i> 4.7 <span>(112)</span></div>
+        <div class="pr">
+          <span class="c">₹199</span>
+          <span class="o">₹250</span>
+          <span class="of">-20%</span>
+        </div>
+        <button class="btn"><i class="fas fa-cart-plus"></i> Add</button>
+      </div>
+
+      <!-- Product 4 -->
+      <div class="pc">
+        <div class="bdg" style="background:#6f42c1;"><i class="fas fa-gift"></i> New</div>
+        <div class="wl"><i class="far fa-heart"></i></div>
+        <img src="images/product4.jpg" alt="Organic Groundnut Oil">
+        <h3>Organic Groundnut Oil</h3>
+        <div class="rt"><i class="fas fa-star"></i> 4.9 <span>(85)</span></div>
+        <div class="pr">
+          <span class="c">₹550</span>
+          <span class="o">₹610</span>
+          <span class="of">-10%</span>
+        </div>
+        <button class="btn"><i class="fas fa-cart-plus"></i> Add</button>
+      </div>
+    </div>
+
+    <div class="va">
+      <a href="products.html" class="va-btn"><i class="fas fa-box"></i> View All</a>
+    </div>
+  </div>
+</section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-section about">
+        <h3>Erumunai Organic Farm Foods</h3>
+        <p>Bringing you the finest organic farm products with traditional recipes and modern quality standards for healthy living.</p>
+        <p><i class="fa fa-map-marker-alt"></i> 123 Farm Road, Organic Valley, Tamil Nadu 600001</p>
+        <p><i class="fa fa-phone"></i> +91 98765 43210</p>
+        <p><i class="fa fa-envelope"></i> hello@ermunaiorganicfarms.com</p>
+      </div>
+
+      <div class="footer-section company">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Our Story</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Press</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section products">
+        <h4>Products</h4>
+        <ul>
+          <li><a href="#">Spice Powders</a></li>
+          <li><a href="#">Herbal Products</a></li>
+          <li><a href="#">Ready Mixes</a></li>
+          <li><a href="#">Pickles & Thokku</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section support">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Shipping Info</a></li>
+          <li><a href="#">Returns</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Social & WhatsApp -->
+    <div class="social">
+      <a href="#"><i class="fab fa-facebook-f"></i></a>
+      <a href="#"><i class="fab fa-instagram"></i></a>
+      <a href="#"><i class="fab fa-twitter"></i></a>
+      <a href="#"><i class="fab fa-youtube"></i></a>
+    </div>
+    <div class="whatsapp">
+      <a href="https://wa.me/919876543210" target="_blank">
+        <i class="fab fa-whatsapp"></i> Order on WhatsApp
+      </a>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2024 Ermunai Organic Farm Foods. All rights reserved.</p>
+    </div>
+  </footer>
+
+
+  <!-- ✅ Script for Auto + Manual Slider -->
+  <script>
+    let index = 0;
+    const slides = document.querySelectorAll(".slide");
+    const prev = document.querySelector(".prev");
+    const next = document.querySelector(".next");
+
+    function showSlide(i) {
+      slides.forEach((slide, idx) => {
+        slide.classList.remove("active");
+        if (idx === i) slide.classList.add("active");
+      });
+    }
+
+    function autoSlide() {
+      index = (index + 1) % slides.length;
+      showSlide(index);
+    }
+
+    let slideInterval = setInterval(autoSlide, 3000);
+
+    prev.addEventListener("click", () => {
+      index = (index - 1 + slides.length) % slides.length;
+      showSlide(index);
+      resetInterval();
+    });
+
+    next.addEventListener("click", () => {
+      index = (index + 1) % slides.length;
+      showSlide(index);
+      resetInterval();
+    });
+
+    function resetInterval() {
+      clearInterval(slideInterval);
+      slideInterval = setInterval(autoSlide, 3000);
+    }
+  </script>
+</body>
+</html>
