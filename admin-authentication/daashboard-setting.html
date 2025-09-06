@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Erumunai Organic Farm — Settings</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Font Awesome -->
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --primary: #4a7c59;
+      --accent: #f0ad4e;
+      --text: #333;
+      --bg: #f7f7f7;
+      --white: #fff;
+      --radius: 8px;
+      --transition: 0.3s ease;
+      --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 250px;
+      background: var(--primary);
+      color: var(--white);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+    }
+
+    .sidebar h2 {
+      margin-bottom: 2rem;
+      font-size: 1.25rem;
+    }
+
+    .nav {
+      list-style: none;
+      width: 100%;
+    }
+
+    .nav li+li {
+      margin-top: 1rem;
+    }
+
+    .nav a {
+      display: block;
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius);
+      transition: background var(--transition);
+    }
+
+    .nav a:hover,
+    .nav a.active {
+      background: var(--accent);
+      color: var(--text);
+    }
+
+    /* Main */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: var(--white);
+      padding: 1rem 2rem;
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    header .logo {
+      height: 60px;
+      width: auto;
+    }
+
+    header h1 {
+      flex-grow: 1;
+      color: var(--primary);
+      font-size: 1.5rem;
+    }
+
+    .logout-btn {
+      background: #ff5f5f;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: var(--radius);
+      cursor: pointer;
+    }
+
+    .logout-btn:hover {
+      background: #e65050;
+    }
+
+    .content {
+      padding: 2rem;
+      overflow-y: auto;
+      flex-grow: 1;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: var(--primary);
+    }
+
+    form {
+      background: var(--white);
+      padding: 1rem;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 2rem;
+    }
+
+    label {
+      display: block;
+      margin: 0.5rem 0 0.25rem;
+      font-weight: 500;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: var(--radius);
+      margin-bottom: 0.75rem;
+    }
+
+    .save-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: var(--radius);
+      cursor: pointer;
+    }
+
+    .save-btn:hover {
+      background: var(--accent);
+      color: var(--text);
+    }
+
+    .banner-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .banner-item {
+      background: var(--white);
+      padding: 0.5rem;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      text-align: center;
+      width: 200px;
+    }
+
+    .banner-item img {
+      width: 100%;
+      height: 100px;
+      object-fit: cover;
+      border-radius: var(--radius);
+      margin-bottom: 0.5rem;
+    }
+
+    .delete-btn {
+      background: #e74c3c;
+      color: white;
+      border: none;
+      padding: 0.4rem 0.8rem;
+      border-radius: var(--radius);
+      cursor: pointer;
+    }
+
+    .delete-btn:hover {
+      background: #c0392b;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--primary);
+      color: var(--white);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    footer i {
+      font-size: 1.2rem;
+      transition: transform var(--transition);
+    }
+
+    footer i:hover {
+      transform: scale(1.2);
+      color: var(--accent);
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <h2>Erumunai Admin</h2>
+    <ul class="nav">
+      <li><a href="admin-dashboard.html">Dashboard</a></li>
+      <li><a href="dashboard-product-page.html">Product Details</a></li>
+      <li><a href="dashboard-order-page.html">Order Details</a></li>
+      <li><a href="dashboard-setting.html" class="active">Settings</a></li>
+    </ul>
+  </aside>
+
+  <!-- Main -->
+  <div class="main">
+    <header>
+      <img src="logo.jpg" alt="Erumunai Logo" class="logo" />
+      <h1>Settings</h1>
+      <button class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </header>
+
+    <div class="content">
+      <!-- Banner Management -->
+      <div class="section-title">Homepage Banners</div>
+      <form id="bannerForm">
+        <label>Number of Banners</label>
+        <input type="number" id="bannerCount" min="1" max="10" />
+
+        <label>Upload Banner Image</label>
+        <input type="file" id="bannerImageFile" accept="image/*" />
+
+        <button type="submit" class="save-btn">Add / Update Banner</button>
+      </form>
+
+      <div class="banner-list" id="bannerList"></div>
+
+      <!-- Notifications -->
+      <div class="section-title">Order Notifications</div>
+      <form id="notificationForm">
+        <label>Admin Email</label>
+        <input type="email" id="adminEmail" placeholder="admin@example.com" required />
+
+        <label>WhatsApp Number</label>
+        <input type="text" id="adminWhatsapp" placeholder="+91XXXXXXXXXX" />
+
+        <button type="submit" class="save-btn">Save Notification Settings</button>
+      </form>
+    </div>
+
+    <footer>
+      <a href="https://wa.me/919840752833" target="_blank"><i class="fab fa-whatsapp"></i></a>
+      <a href="https://instagram.com/ermunaifarm" target="_blank"><i class="fab fa-instagram"></i></a>
+      <span><i class="fas fa-envelope"></i> info@ermunai.com</span>
+      <span><i class="fas fa-phone"></i> +91 98407 52833</span>
+    </footer>
+  </div>
+
+  <!-- Firebase + Logic -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+
+    // Firebase Config
+    const firebaseConfig = {
+      apiKey: "YOUR_KEY",
+      authDomain: "YOUR_DOMAIN",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_BUCKET",
+      messagingSenderId: "YOUR_MSG_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const storage = getStorage(app);
+
+    const bannerRef = collection(db, "banners");
+
+    // Add Banner
+    document.getElementById("bannerForm").onsubmit = async (e) => {
+      e.preventDefault();
+      const file = document.getElementById("bannerImageFile").files[0];
+      const count = parseInt(document.getElementById("bannerCount").value);
+      let imageUrl = "";
+
+      if (file) {
+        const storageRef = ref(storage, "banners/" + Date.now() + "-" + file.name);
+        await uploadBytes(storageRef, file);
+        imageUrl = await getDownloadURL(storageRef);
+        await addDoc(bannerRef, { image: imageUrl, createdAt: Date.now() });
+      }
+
+      localStorage.setItem("bannerCount", count);
+      loadBanners();
+    };
+
+    // Load Banners
+    async function loadBanners() {
+      const list = document.getElementById("bannerList");
+      list.innerHTML = "";
+      const snapshot = await getDocs(bannerRef);
+      snapshot.forEach(docSnap => {
+        const b = docSnap.data();
+        const div = document.createElement("div");
+        div.className = "banner-item";
+        div.innerHTML = `
+          <img src="${b.image}" alt="banner" />
+          <button class="delete-btn" onclick="deleteBanner('${docSnap.id}')">Delete</button>
+        `;
+        list.appendChild(div);
+      });
+    }
+    window.deleteBanner = async (id) => {
+      await deleteDoc(doc(db, "banners", id));
+      loadBanners();
+    };
+
+    loadBanners();
+
+    // Save Notification Settings
+    document.getElementById("notificationForm").onsubmit = async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("adminEmail").value;
+      const whatsapp = document.getElementById("adminWhatsapp").value;
+
+      await setDoc(doc(db, "settings", "notifications"), { email, whatsapp });
+      alert("Notification settings saved!");
+    };
+  </script>
+</body>
+
+</html>

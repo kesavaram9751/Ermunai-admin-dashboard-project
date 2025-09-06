@@ -57,6 +57,7 @@
 
         .nav {
             list-style: none;
+            width: 100%;
         }
 
         .nav li+li {
@@ -269,8 +270,7 @@
             <li><a href="admin-dashboard.html" data-page="dashboard">Dashboard</a></li>
             <li><a href="dashboard-product-page.html" data-page="products" class="active">Product Details</a></li>
             <li><a href="dashboard-order-page.html" data-page="orders">Order Details</a></li>
-            <li><a href="#" data-page="payments">Payment Details</a></li>
-            <li><a href="#" data-page="settings">Settings</a></li>
+            <li><a href="daashboard-setting.html" data-page="settings">Settings</a></li>
         </ul>
     </aside>
 
@@ -289,10 +289,13 @@
                 <!-- Filters -->
                 <div class="filters">
                     <button class="filter-btn active" data-category="all">All</button>
-                    <button class="filter-btn" data-category="readyToCook">Ready to Cook</button>
-                    <button class="filter-btn" data-category="readyToEat">Ready to Eat</button>
-                    <button class="filter-btn" data-category="instantMixes">Instant Mixes</button>
+                    <button class="filter-btn" data-category="readyToCookMixes">Ready-to-Cook Instant Mixes</button>
+                    <button class="filter-btn" data-category="instantSoup">Instant Soup Mix</button>
+                    <button class="filter-btn" data-category="idliPodi">Idli Podi's</button>
+                    <button class="filter-btn" data-category="instant">Instant Products</button>
+                    <button class="filter-btn" data-category="herbal">Herbal Products</button>
                 </div>
+
 
                 <!-- Add Product -->
                 <button id="addProductBtn" class="add-btn"><i class="fas fa-plus"></i> Add Product</button>
@@ -310,7 +313,7 @@
             <form id="productForm">
                 <input type="hidden" id="productId" />
                 <label>Upload Product Image</label>
-                <input type="file" id="productImageFile" accept="image/*"  />
+                <input type="file" id="productImageFile" accept="image/*" />
                 <label>Name</label>
                 <input type="text" id="productName" required />
                 <label>Price (₹)</label>
@@ -325,10 +328,13 @@
                 <input type="number" id="productShipping" />
                 <label>Category</label>
                 <select id="productCategory" required>
-                    <option value="readyToCook">Ready to Cook</option>
-                    <option value="readyToEat">Ready to Eat</option>
-                    <option value="instantMixes">Instant Mixes</option>
+                    <option value="readyToCookMixes">Ready-to-Cook Instant Mixes</option>
+                    <option value="instantSoup">Instant Soup Mix</option>
+                    <option value="idliPodi">Idli Podi's</option>
+                    <option value="instant">Instant Products</option>
+                    <option value="herbal">Herbal Products</option>
                 </select>
+
                 <div class="modal-actions">
                     <button type="submit" class="save-btn">Save</button>
                     <button type="button" id="closeModal" class="cancel-btn">Cancel</button>
