@@ -173,7 +173,7 @@ header .cart {
 }
 .values-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  grid-template-columns: repeat(4, 1fr); /* ✅ 4 columns by default (desktop/laptop) */
   gap: 25px;
   margin-top: 30px;
 }
@@ -221,16 +221,18 @@ footer { background: green; color: white; padding: 30px 20px; }
 @media (max-width: 768px) {
   header nav ul { flex-direction: column; text-align: center; }
   header nav ul li { margin: 10px 0; }
-  .slide img { height: 250px; }
+
+  /* ✅ Values grid for mobile: 2 columns (so 4 rows for 8 cards) */
+  .values-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 480px) {
   header { flex-direction: column; }
   header .logo img { height: 30px; }
-  .slide img { height: 200px; }
   .banner-buttons .btn { padding: 8px 15px; font-size: 14px; }
 }
-
 </style>
 </head>
 <body>
