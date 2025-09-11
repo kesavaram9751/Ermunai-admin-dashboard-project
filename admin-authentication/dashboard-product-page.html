@@ -151,11 +151,15 @@
 
         .product-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(220px, max-content));
             gap: 1rem;
+            justify-content: center;
         }
 
         .product-card {
+            width: 220px;
+            /* ✅ fixed width per card */
+            max-width: 100%;
             background: var(--white);
             padding: 1rem;
             border-radius: var(--radius);
@@ -296,7 +300,6 @@
                     <button class="filter-btn" data-category="herbal">Herbal Products</button>
                 </div>
 
-
                 <!-- Add Product -->
                 <button id="addProductBtn" class="add-btn"><i class="fas fa-plus"></i> Add Product</button>
 
@@ -343,52 +346,108 @@
         </div>
     </div>
 
-    <!-- Firebase + Product Logic -->
+    <!-- Firebase + Supabase -->
+
     <script type="module">
-        // import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        // import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-        // import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
-        // import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
-
-
-        // ==== Firebase Config (replace with your values) ====
-        // TODO: Add SDKs for Firebase products that you want to use
-        // https://firebase.google.com/docs/web/setup#available-libraries
-
-        // Your web app's Firebase configuration
-        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        // Firebase
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+        import {
+            getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc
+        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import {
+            getAuth,
+            signInWithEmailAndPassword,
+            signOut,
+            onAuthStateChanged,
+            setPersistence,
+            browserLocalPersistence
+        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-        // ✅ Firebase Config
+        // Supabase
+        import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+        // ---------- CONFIG ----------
+        const ADMIN_EMAIL = "ermunai.12543@gmail.com";
+        const ADMIN_PASSWORD = "admin.12543"; // ← replace for testing (or leave and use login form)
+        // Firebase config (keep your current values)
         const firebaseConfig = {
             apiKey: "AIzaSyCbfdG2XU302FuZx0MapVTRmb3Qtaa-hA8",
             authDomain: "ermunai-e-commerce-project.firebaseapp.com",
             projectId: "ermunai-e-commerce-project",
-            storageBucket: "ermunai-e-commerce-project.appspot.com",   // ✅ FIXED
+            storageBucket: "ermunai-e-commerce-project.appspot.com",
             messagingSenderId: "365240050790",
             appId: "1:365240050790:web:2d4867d6ab4f93a661f9a7"
         };
 
-        // ✅ Initialize App FIRST
+        // Supabase config (your values)
+        const SUPABASE_URL = "https://svbsrgxqgzuibrrsywix.supabase.co";
+        const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN2YnNyZ3hxZ3p1aWJycnN5d2l4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcxNjYwODIsImV4cCI6MjA3Mjc0MjA4Mn0.hlwbWVsEn7hNCuEn-u7pQL9B3d5IbfiMSSvbVAX2bx0"; // your anon key
+
+        // ---------- INIT ----------
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-        const storage = getStorage(app);
-
         const productRef = collection(db, "products");
 
+        const auth = getAuth(app);
+        const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-
-        // ==== Elements ====
+        // UI elements
         const productList = document.getElementById("productList");
         const productModal = document.getElementById("productModal");
         const closeModalBtn = document.getElementById("closeModal");
         const addProductBtn = document.getElementById("addProductBtn");
         const productForm = document.getElementById("productForm");
-        let currentProductId = null;
+        const logoutBtn = document.querySelector(".logout-btn");
 
-        // ==== Show Modal ====
+        let currentProductId = null;
+        let isAdmin = false;
+
+        // ---------- AUTH HELPERS ----------
+        async function loginAdminIfPasswordProvided() {
+            if (!ADMIN_PASSWORD || ADMIN_PASSWORD === "REPLACE_WITH_ADMIN_PASSWORD") {
+                console.warn("ADMIN_PASSWORD not set. Skipping auto-login. Use login form or set ADMIN_PASSWORD for testing.");
+                return;
+            }
+            try {
+                await setPersistence(auth, browserLocalPersistence);
+                const cred = await signInWithEmailAndPassword(auth, ADMIN_EMAIL, ADMIN_PASSWORD);
+                console.log("Auto-login success:", cred.user.email, "uid:", cred.user.uid);
+            } catch (err) {
+                console.error("Auto-login failed:", err);
+                alert("Auto login failed: " + err.message);
+            }
+        }
+
+        onAuthStateChanged(auth, (user) => {
+            console.log("Auth state changed:", user);
+            if (user && user.email === ADMIN_EMAIL) {
+                isAdmin = true;
+                console.log("✅ Signed in as admin:", user.email, "uid:", user.uid);
+            } else {
+                isAdmin = false;
+                if (user) {
+                    console.log("Signed in but not admin:", user.email, "uid:", user.uid);
+                } else {
+                    console.log("No user signed in.");
+                }
+            }
+        });
+
+        // Logout button
+        logoutBtn.addEventListener("click", async () => {
+            try {
+                await signOut(auth);
+                alert("Logged out");
+                console.log("Signed out");
+            } catch (e) {
+                console.error("Sign out error:", e);
+            }
+        });
+
+        // Run auto-login (only if ADMIN_PASSWORD replaced)
+        loginAdminIfPasswordProvided();
+
+        // ---------- UI behavior ----------
         addProductBtn.onclick = () => {
             currentProductId = null;
             productForm.reset();
@@ -397,18 +456,45 @@
         };
         closeModalBtn.onclick = () => productModal.style.display = "none";
 
-        // ==== Save Product ====
+        // ---------- Save Product (with auth checks + error messages) ----------
         productForm.onsubmit = async (e) => {
             e.preventDefault();
-            const file = document.getElementById("productImageFile").files[0];
-            let imageUrl = "";
 
-            if (file) {
-                const storageRef = ref(storage, "products/" + Date.now() + "-" + file.name);
-                await uploadBytes(storageRef, file);
-                imageUrl = await getDownloadURL(storageRef);
+            // 1) Ensure current user is admin BEFORE trying to upload or write
+            const user = auth.currentUser;
+            if (!user) {
+                alert("⚠️ Please login as admin to add products.");
+                // Optionally attempt auto-login again:
+                // await loginAdminIfPasswordProvided();
+                return;
+            }
+            if (user.email !== ADMIN_EMAIL) {
+                alert("⚠️ You are logged in, but not as the admin account. Please login as: " + ADMIN_EMAIL);
+                return;
             }
 
+            // 2) Upload image (Supabase)
+            const file = document.getElementById("productImageFile").files[0];
+            let imageUrl = "";
+            if (file) {
+                try {
+                    const fileName = `products/${Date.now()}-${file.name}`;
+                    const { data, error } = await supabase.storage.from("ermunai-product-images").upload(fileName, file);
+                    if (error) {
+                        console.error("Supabase upload error:", error);
+                        alert("Upload failed: " + error.message);
+                        return;
+                    }
+                    const { data: publicUrl } = supabase.storage.from("ermunai-product-images").getPublicUrl(fileName);
+                    imageUrl = publicUrl.publicUrl;
+                } catch (err) {
+                    console.error("Upload exception:", err);
+                    alert("Upload failed: " + err.message);
+                    return;
+                }
+            }
+
+            // 3) Prepare product data and write to Firestore
             const productData = {
                 image: imageUrl,
                 name: document.getElementById("productName").value,
@@ -417,30 +503,40 @@
                 stock: parseInt(document.getElementById("productStock").value),
                 description: document.getElementById("productDescription").value,
                 shipping: parseFloat(document.getElementById("productShipping").value) || 0,
-                category: document.getElementById("productCategory").value
+                category: document.getElementById("productCategory").value,
+                createdBy: user.uid, // helpful metadata to debug rules
+                createdAt: new Date().toISOString()
             };
 
-            if (currentProductId) {
-                const productDoc = doc(db, "products", currentProductId);
-                await updateDoc(productDoc, productData);
-            } else {
-                await addDoc(productRef, productData);
+            try {
+                if (currentProductId) {
+                    const productDoc = doc(db, "products", currentProductId);
+                    await updateDoc(productDoc, productData);
+                } else {
+                    await addDoc(productRef, productData);
+                }
+                productModal.style.display = "none";
+                loadProducts();
+            } catch (err) {
+                console.error("Firestore write failed:", err);
+                alert("Firestore write failed: " + err.message + "\nSigned-in user: " + (user.email || user.uid));
+                // If permission denied, you'll get a clear error message here:
+                // - Check your Firestore rules
+                // - Consider using UID check rather than email check (see notes below)
             }
-
-            productModal.style.display = "none";
-            loadProducts();
         };
 
-        // ==== Load Products ====
+        // ---------- Load products ----------
         async function loadProducts(category = "all") {
             productList.innerHTML = "";
-            const snapshot = await getDocs(productRef);
-            snapshot.forEach(docSnap => {
-                const p = docSnap.data();
-                if (category === "all" || p.category === category) {
-                    const card = document.createElement("div");
-                    card.className = "product-card";
-                    card.innerHTML = `
+            try {
+                const snapshot = await getDocs(productRef);
+                snapshot.forEach(docSnap => {
+                    const p = docSnap.data();
+                    if (category === "all" || p.category === category) {
+                        const card = document.createElement("div");
+                        card.className = "product-card";
+                        card.innerHTML = `
             <img src="${p.image}" alt="${p.name}" />
             <h3>${p.name}</h3>
             <p>₹${p.price} (${p.discount}% off)</p>
@@ -450,32 +546,36 @@
               <button class="delete-btn"><i class="fas fa-trash"></i></button>
             </div>
           `;
-                    // Edit
-                    card.querySelector(".edit-btn").onclick = () => {
-                        currentProductId = docSnap.id;
-                        document.getElementById("modalTitle").textContent = "Edit Product";
-                        document.getElementById("productName").value = p.name;
-                        document.getElementById("productPrice").value = p.price;
-                        document.getElementById("productDiscount").value = p.discount;
-                        document.getElementById("productStock").value = p.stock;
-                        document.getElementById("productDescription").value = p.description;
-                        document.getElementById("productShipping").value = p.shipping;
-                        document.getElementById("productCategory").value = p.category;
-                        productModal.style.display = "flex";
-                    };
-                    // Delete
-                    card.querySelector(".delete-btn").onclick = async () => {
-                        if (confirm(`Delete product "${p.name}"?`)) {
-                            await deleteDoc(doc(db, "products", docSnap.id));
-                            loadProducts(category);
-                        }
-                    };
-                    productList.appendChild(card);
-                }
-            });
+                        // Edit
+                        card.querySelector(".edit-btn").onclick = () => {
+                            currentProductId = docSnap.id;
+                            document.getElementById("modalTitle").textContent = "Edit Product";
+                            document.getElementById("productName").value = p.name;
+                            document.getElementById("productPrice").value = p.price;
+                            document.getElementById("productDiscount").value = p.discount;
+                            document.getElementById("productStock").value = p.stock;
+                            document.getElementById("productDescription").value = p.description;
+                            document.getElementById("productShipping").value = p.shipping;
+                            document.getElementById("productCategory").value = p.category;
+                            productModal.style.display = "flex";
+                        };
+                        // Delete
+                        card.querySelector(".delete-btn").onclick = async () => {
+                            if (confirm(`Delete product "${p.name}"?`)) {
+                                await deleteDoc(doc(db, "products", docSnap.id));
+                                loadProducts(category);
+                            }
+                        };
+                        productList.appendChild(card);
+                    }
+                });
+            } catch (err) {
+                console.error("Failed to load products:", err);
+                alert("Failed to load products: " + err.message);
+            }
         }
 
-        // ==== Filters ====
+        // filters
         document.querySelectorAll(".filter-btn").forEach(btn => {
             btn.onclick = () => {
                 document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
@@ -484,9 +584,11 @@
             };
         });
 
-        // ==== Initial Load ====
+        // initial
         loadProducts();
     </script>
+
+
 </body>
 
 </html>
