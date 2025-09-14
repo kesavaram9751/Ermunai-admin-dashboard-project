@@ -1,398 +1,489 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contact Us - Ermumai Organic Farm Foods</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<style>
-  /* Reset + Base */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
-}
-body {
-  background: #fafafa;
-  color: #333;
-  line-height: 1.6;
-}
+  <style>
+    /* Reset + Base */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
 
-/* ---------- Header ---------- */
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: white;
-  padding: 15px 40px;
-  border-bottom: 2px solid #eee;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
+    body {
+      background: #fafafa;
+      color: #333;
+      line-height: 1.6;
+    }
 
-header .logo {
-  display: flex;
-  align-items: center;
-  font-weight: bold;
-  color: green;
-  font-size: 18px;
-}
+    /* ---------- Header ---------- */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: white;
+      padding: 15px 40px;
+      border-bottom: 2px solid #eee;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
 
-header .logo img {
-  height: 60px;
-  margin-right: 10px;
-}
+    header .logo {
+      display: flex;
+      align-items: center;
+      font-weight: bold;
+      color: green;
+      font-size: 18px;
+    }
 
-header nav ul {
-  display: flex;
-  list-style: none;
-}
+    header .logo img {
+      height: 60px;
+      margin-right: 10px;
+    }
 
-header nav ul li {
-  margin: 0 15px;
-}
+    header nav ul {
+      display: flex;
+      list-style: none;
+    }
 
-header nav ul li a {
-  text-decoration: none;
-  color: #333;
-  font-weight: bold;
-}
+    header nav ul li {
+      margin: 0 15px;
+    }
 
-header nav ul li a.active,
-header nav ul li a:hover {
-  color: green;
-}
+    header nav ul li a {
+      text-decoration: none;
+      color: #333;
+      font-weight: bold;
+    }
 
-.header-right {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
+    header nav ul li a.active,
+    header nav ul li a:hover {
+      color: green;
+    }
 
-/* Buttons */
-.btn-login,
-.btn-signup {
-  padding: 8px 16px;
-  font-size: 14px;
-  border-radius: 6px;
-  text-decoration: none;
-  font-weight: 600;
-  transition: 0.3s;
-}
-.btn-login {
-  background: transparent;
-  border: 2px solid green;
-  color: green;
-}
-.btn-login:hover {
-  background: green;
-  color: white;
-}
-.btn-signup {
-  background: green;
-  border: 2px solid green;
-  color: white;
-}
-.btn-signup:hover {
-  background: #244021;
-  border-color: #244021;
-}
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
 
-/* Hamburger (hidden by default) */
-.hamburger {
-  display: none;
-  font-size: 24px;
-  cursor: pointer;
-  color: green;
-}
+    /* Buttons */
+    .btn-login,
+    .btn-signup {
+      padding: 8px 16px;
+      font-size: 14px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: 0.3s;
+    }
 
-/* ---------- Mobile Styles ---------- */
-@media (max-width: 900px) {
-  header {
-    padding: 15px 20px;
-  }
+    .btn-login {
+      background: transparent;
+      border: 2px solid green;
+      color: green;
+    }
 
-  /* Hide normal menu */
-  header nav {
-    position: fixed;
-    top: 0;
-    right: -250px;
-    width: 250px;
-    height: 100%;
-    background: white;
-    border-left: 2px solid #eee;
-    box-shadow: -2px 0 6px rgba(0,0,0,0.1);
-    transition: right 0.3s ease;
-    padding-top: 80px;
-    z-index: 1200;
-  }
+    .btn-login:hover {
+      background: green;
+      color: white;
+    }
 
-  header nav ul {
-    flex-direction: column;
-    align-items: start;
-    padding-left: 30px;
-  }
+    .btn-signup {
+      background: green;
+      border: 2px solid green;
+      color: white;
+    }
 
-  header nav ul li {
-    margin: 15px 0;
-  }
+    .btn-signup:hover {
+      background: #244021;
+      border-color: #244021;
+    }
 
-  .header-right {
-    gap: 10px;
-  }
+    /* Hamburger (hidden by default) */
+    .hamburger {
+      display: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: green;
+    }
 
-  .hamburger {
-    display: block;
-  }
+    /* ---------- Mobile Styles ---------- */
+    @media (max-width: 900px) {
+      header {
+        padding: 15px 20px;
+      }
 
-  /* Show menu when active */
-  header nav.active {
-    right: 0;
-  }
-}
+      /* Hide normal menu */
+      header nav {
+        position: fixed;
+        top: 0;
+        right: -250px;
+        width: 250px;
+        height: 100%;
+        background: white;
+        border-left: 2px solid #eee;
+        box-shadow: -2px 0 6px rgba(0, 0, 0, 0.1);
+        transition: right 0.3s ease;
+        padding-top: 80px;
+        z-index: 1200;
+      }
 
+      header nav ul {
+        flex-direction: column;
+        align-items: start;
+        padding-left: 30px;
+      }
 
-/* Cart */
-.cart {
-  font-size: 22px;
-  color: #333;
-  cursor: pointer;
-}
-.cart i{
-  color: green;
-}
+      header nav ul li {
+        margin: 15px 0;
+      }
 
-/* Buttons */
-.btn-login, .btn-signup {
-  padding: 8px 16px;
-  font-size: 14px;
-  border-radius: 6px;
-  text-decoration: none;
-  font-weight: 600;
-  transition: 0.3s;
-}
+      .header-right {
+        gap: 10px;
+      }
 
-.btn-login {
-  background: transparent;
-  border: 2px solid green;
-  color: green;
-}
+      .hamburger {
+        display: block;
+      }
 
-.btn-login:hover {
-  background: green;
-  color: white;
-}
-
-.btn-signup {
-  background: green;
-  border: 2px solid green;
-  color: white;
-}
-
-.btn-signup:hover {
-  background: #244021;
-  border-color: #244021;
-}
+      /* Show menu when active */
+      header nav.active {
+        right: 0;
+      }
+    }
 
 
-/* Hero */
-.hero {
-  text-align: center;
-  padding: 60px 20px 40px;
-  background: #f2f8f2;
-}
-.hero h1 {
-  font-size: 36px;
-  color: #2d4c2a;
-  margin-bottom: 10px;
-}
-.hero p {
-  color: #555;
-}
+    /* Cart */
+    .cart {
+      font-size: 22px;
+      color: #333;
+      cursor: pointer;
+    }
 
-/* Contact Section */
-.contact-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 40px;
-  max-width: 1200px;
-  margin: 50px auto;
-  padding: 0 30px;
-}
-.contact-card {
-  display: flex;
-  gap: 15px;
-  margin-bottom: 20px;
-  background: #fff;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-}
-.contact-card .icon {
-  font-size: 28px;
-}
-.whatsapp-box {
-  margin-top: 20px;
-  padding: 15px;
-  background: #e6f9ee;
-  border-left: 4px solid #25d366;
-  border-radius: 10px;
-}
-.whatsapp-btn {
-  display: inline-block;
-  margin-top: 10px;
-  padding: 10px 15px;
-  background: #25d366;
-  color: #fff;
-  border-radius: 5px;
-  text-decoration: none;
-  font-weight: 600;
-}
-.whatsapp-btn:hover {
-  background: #1da851;
-}
+    .cart i {
+      color: green;
+    }
 
-/* Form */
-.contact-form h2 {
-  margin-bottom: 20px;
-  color: #2d4c2a;
-}
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-.form-row {
-  display: flex;
-  gap: 15px;
-}
-.form-group {
-  flex: 1;
-}
-input, textarea {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  font-size: 14px;
-}
-textarea {
-  height: 120px;
-}
-.send-btn {
-  padding: 12px;
-  background: #2d4c2a;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: 0.3s;
-}
-.send-btn:hover {
-  background: #244021;
-}
-.note {
-  font-size: 13px;
-  margin-top: 10px;
-  color: #777;
-}
+    /* Buttons */
+    .btn-login,
+    .btn-signup {
+      padding: 8px 16px;
+      font-size: 14px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: 0.3s;
+    }
 
-/* Find Us */
-.find-us {
-  text-align: center;
-  padding: 60px 20px;
-  background: #fff;
-}
-.find-us h2 {
-  color: #2d4c2a;
-  margin-bottom: 10px;
-}
-.location-box {
-  margin-top: 20px;
-  padding: 20px;
-  border: 1px solid #eee;
-  border-radius: 10px;
-  background: #f9f9f9;
-}
-.map-note {
-  font-size: 13px;
-  color: #777;
-}
+    .btn-login {
+      background: transparent;
+      border: 2px solid green;
+      color: green;
+    }
 
-/* Footer */
-footer { background: green; color: white; padding: 30px 20px; }
-.footer-container {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;
-}
-.footer-section h3, .footer-section h4 { margin-bottom: 10px; }
-.footer-section ul { list-style: none; }
-.footer-section ul li { margin-bottom: 8px; }
-.footer-section ul li a { color: white; text-decoration: none; }
+    .btn-login:hover {
+      background: green;
+      color: white;
+    }
 
-.social { margin-top: 20px; text-align: center; }
-.social a { color: white; font-size: 18px; margin: 0 10px; text-decoration: none; }
+    .btn-signup {
+      background: green;
+      border: 2px solid green;
+      color: white;
+    }
 
-.whatsapp { margin: 15px 0; text-align: center; }
-.whatsapp a {
-  background: #25D366; color: white;
-  padding: 10px 20px; border-radius: 5px;
-  font-weight: bold; text-decoration: none;
-}
+    .btn-signup:hover {
+      background: #244021;
+      border-color: #244021;
+    }
 
-.footer-bottom { text-align: center; margin-top: 20px; border-top: 1px solid white; padding-top: 10px; }
 
-/* Responsive */
-@media (max-width: 768px) {
-  header nav ul { flex-direction: column; text-align: center; }
-  header nav ul li { margin: 10px 0; }
-  .slide img { height: 250px; }
-}
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 60px 20px 40px;
+      background: #f2f8f2;
+    }
 
-@media (max-width: 480px) {
-  header { flex-direction: column; }
-  header .logo img { height: 30px; }
-  .slide img { height: 200px; }
-  .banner-buttons .btn { padding: 8px 15px; font-size: 14px; }
-}
+    .hero h1 {
+      font-size: 36px;
+      color: #2d4c2a;
+      margin-bottom: 10px;
+    }
 
-</style>
+    .hero p {
+      color: #555;
+    }
+
+    /* Contact Section */
+    .contact-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      max-width: 1200px;
+      margin: 50px auto;
+      padding: 0 30px;
+    }
+
+    .contact-card {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+      background: #fff;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .contact-card .icon {
+      font-size: 28px;
+    }
+
+    .whatsapp-box {
+      margin-top: 20px;
+      padding: 15px;
+      background: #e6f9ee;
+      border-left: 4px solid #25d366;
+      border-radius: 10px;
+    }
+
+    .whatsapp-btn {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 15px;
+      background: #25d366;
+      color: #fff;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .whatsapp-btn:hover {
+      background: #1da851;
+    }
+
+    /* Form */
+    .contact-form h2 {
+      margin-bottom: 20px;
+      color: #2d4c2a;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 15px;
+    }
+
+    .form-group {
+      flex: 1;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    textarea {
+      height: 120px;
+    }
+
+    .send-btn {
+      padding: 12px;
+      background: #2d4c2a;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    .send-btn:hover {
+      background: #244021;
+    }
+
+    .note {
+      font-size: 13px;
+      margin-top: 10px;
+      color: #777;
+    }
+
+    /* Find Us */
+    .find-us {
+      text-align: center;
+      padding: 60px 20px;
+      background: #fff;
+    }
+
+    .find-us h2 {
+      color: #2d4c2a;
+      margin-bottom: 10px;
+    }
+
+    .location-box {
+      margin-top: 20px;
+      padding: 20px;
+      border: 1px solid #eee;
+      border-radius: 10px;
+      background: #f9f9f9;
+    }
+
+    .map-note {
+      font-size: 13px;
+      color: #777;
+    }
+
+    /* Footer */
+    footer {
+      background: green;
+      color: white;
+      padding: 30px 20px;
+    }
+
+    .footer-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+
+    .footer-section h3,
+    .footer-section h4 {
+      margin-bottom: 10px;
+    }
+
+    .footer-section ul {
+      list-style: none;
+    }
+
+    .footer-section ul li {
+      margin-bottom: 8px;
+    }
+
+    .footer-section ul li a {
+      color: white;
+      text-decoration: none;
+    }
+
+    .social {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .social a {
+      color: white;
+      font-size: 18px;
+      margin: 0 10px;
+      text-decoration: none;
+    }
+
+    .whatsapp {
+      margin: 15px 0;
+      text-align: center;
+    }
+
+    .whatsapp a {
+      background: #25D366;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      margin-top: 20px;
+      border-top: 1px solid white;
+      padding-top: 10px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      header nav ul {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      header nav ul li {
+        margin: 10px 0;
+      }
+
+      .slide img {
+        height: 250px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header {
+        flex-direction: column;
+      }
+
+      header .logo img {
+        height: 30px;
+      }
+
+      .slide img {
+        height: 200px;
+      }
+
+      .banner-buttons .btn {
+        padding: 8px 15px;
+        font-size: 14px;
+      }
+    }
+  </style>
 </head>
+
 <body>
   <!-- Header -->
-<header>
-  <div class="logo">
-    <img src="logo.jpg" alt="Logo">
-    <span>Erumunai Organic Farm Foods</span>
-  </div>
+  <header>
+    <div class="logo">
+      <img src="logo.jpg" alt="Logo">
+      <span>Erumunai Organic Farm Foods</span>
+    </div>
 
-  <!-- Navigation -->
-  <nav>
-    <ul>
-      <li><a href="index.html">Home</a></li>
-      <li><a href="shop.html" class="active">Shop</a></li>
-      <li><a href="purchases.html">Purchases</a></li> <!-- ✅ New Item -->
-      <li><a href="about.html">About Us</a></li>
-      <li><a href="contact.html">Contact</a></li>
-    </ul>
-  </nav>
+    <!-- Navigation -->
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="shop.html" class="active">Shop</a></li>
+        <li><a href="purchases.html">Purchases</a></li> <!-- ✅ New Item -->
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
 
-  <!-- Right side -->
-  <div class="header-right">
-    <div class="cart"><a href="cart.html"><i class="fa-solid fa-cart-shopping"></i></a></div>
-    <a href="login.html" class="btn-login">Login</a>
-    <a href="signup.html" class="btn-signup">Sign Up</a>
-    <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
-  </div>
-</header>
+    <!-- Right side -->
+    <div class="header-right">
+      <div class="cart"><a href="cart.html"><i class="fa-solid fa-cart-shopping"></i></a></div>
+      <a href="login.html" class="btn-login">Login</a>
+      <a href="signup.html" class="btn-signup">Sign Up</a>
+      <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
+    </div>
+  </header>
 
   <!-- Hero -->
   <section class="hero">
     <h1>Contact Us</h1>
-    <p>We’d love to hear from you! Get in touch with us for orders, inquiries, or to learn more about our organic products.</p>
+    <p>We’d love to hear from you! Get in touch with us for orders, inquiries, or to learn more about our organic
+      products.</p>
   </section>
 
   <!-- Contact Section -->
@@ -403,28 +494,23 @@ footer { background: green; color: white; padding: 30px 20px; }
         <div class="icon">📍</div>
         <div>
           <h3>Visit Us</h3>
-          <p>123 Farm Road<br>Organic Valley<br>Tamil Nadu 600001</p>
+          <p>M/s. Ermunai Organic Farm Foods,<br>Plot No. 8, Ramalingam St.,BFI,<br>Muraliram Srinivas Flats,<br>
+            Ullagaram,<br>Chennai - 600 091</p>
         </div>
       </div>
       <div class="contact-card">
         <div class="icon">📞</div>
         <div>
           <h3>Call Us</h3>
-          <p>+91 98765 43210<br>+91 87654 32109</p>
+          <p>Customer care +91 9841231996<br>What's app business +91 9840752833</p>
+
         </div>
       </div>
       <div class="contact-card">
         <div class="icon">✉️</div>
         <div>
           <h3>Email Us</h3>
-          <p>hello@ermunaiorganicfarms.com<br>orders@ermunaiorganicfarms.com</p>
-        </div>
-      </div>
-      <div class="contact-card">
-        <div class="icon">⏰</div>
-        <div>
-          <h3>Business Hours</h3>
-          <p>Mon – Sat: 9:00 AM – 7:00 PM<br>Sunday: 10:00 AM – 5:00 PM</p>
+          <p>ermunaiorganicfarm@gmail.com<br></p>
         </div>
       </div>
       <div class="whatsapp-box">
@@ -452,24 +538,13 @@ footer { background: green; color: white; padding: 30px 20px; }
       <p class="note">We’ll get back to you within 24 hours!</p>
     </div>
   </section>
-
-  <!-- Find Us -->
-  <section class="find-us">
-    <h2>Find Us</h2>
-    <p>Visit our farm and processing facility</p>
-    <div class="location-box">
-      <h3>📍 Farm Location</h3>
-      <p>123 Farm Road, Organic Valley, Tamil Nadu 600001</p>
-      <p class="map-note">Interactive map integration coming soon! For now, use the address above in your preferred maps application.</p>
-    </div>
-  </section>
-
   <!-- Footer -->
   <footer>
     <div class="footer-container">
       <div class="footer-section about">
         <h3>Erumunai Organic Farm Foods</h3>
-        <p>Bringing you the finest organic farm products with traditional recipes and modern quality standards for healthy living.</p>
+        <p>Bringing you the finest organic farm products with traditional recipes and modern quality standards for
+          healthy living.</p>
         <p><i class="fa fa-map-marker-alt"></i> 123 Farm Road, Organic Valley, Tamil Nadu 600001</p>
         <p><i class="fa fa-phone"></i> +91 98765 43210</p>
         <p><i class="fa fa-envelope"></i> hello@ermunaiorganicfarms.com</p>
@@ -525,11 +600,12 @@ footer { background: green; color: white; padding: 30px 20px; }
   </footer>
   <script>
     const hamburger = document.querySelector(".hamburger");
-  const nav = document.querySelector("header nav");
+    const nav = document.querySelector("header nav");
 
-  hamburger.addEventListener("click", () => {
-    nav.classList.toggle("active");
-  });
+    hamburger.addEventListener("click", () => {
+      nav.classList.toggle("active");
+    });
   </script>
 </body>
+
 </html>
