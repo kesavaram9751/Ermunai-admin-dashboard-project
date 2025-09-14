@@ -1,27 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shop - Ermunai Organic Farm Foods</title>
+  <title>Shop – Ermunai Organic Farm Foods</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<style>
-  /* Reset */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+  <style>
+    /* ---------- Reset ---------- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", sans-serif;
+    }
 
-body {
-  font-family: "Segoe UI", sans-serif;
-  line-height: 1.6;
-  background: #fff;
-  color: #333;
-}
+    body {
+      background: #f9faf6;
+      color: #333;
+    }
 
-/* ✅ Header */
+    /* ---------- Header ---------- */
 header {
   display: flex;
   justify-content: space-between;
@@ -43,7 +42,7 @@ header .logo {
 }
 
 header .logo img {
-  height: 80px;
+  height: 60px;
   margin-right: 10px;
 }
 
@@ -60,32 +59,110 @@ header nav ul li a {
   text-decoration: none;
   color: #333;
   font-weight: bold;
-  transition: 0.3s;
 }
 
-header nav ul li a:hover,
-header nav ul li a.active {
+header nav ul li a.active,
+header nav ul li a:hover {
   color: green;
 }
 
-header .cart {
-  font-size: 22px;
-  color: #333;
-  cursor: pointer;
-}
-
-/* Header Right Section */
 .header-right {
   display: flex;
   align-items: center;
   gap: 15px;
 }
 
+/* Buttons */
+.btn-login,
+.btn-signup {
+  padding: 8px 16px;
+  font-size: 14px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.3s;
+}
+.btn-login {
+  background: transparent;
+  border: 2px solid green;
+  color: green;
+}
+.btn-login:hover {
+  background: green;
+  color: white;
+}
+.btn-signup {
+  background: green;
+  border: 2px solid green;
+  color: white;
+}
+.btn-signup:hover {
+  background: #244021;
+  border-color: #244021;
+}
+
+/* Hamburger (hidden by default) */
+.hamburger {
+  display: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: green;
+}
+
+/* ---------- Mobile Styles ---------- */
+@media (max-width: 900px) {
+  header {
+    padding: 15px 20px;
+  }
+
+  /* Hide normal menu */
+  header nav {
+    position: fixed;
+    top: 0;
+    right: -250px;
+    width: 250px;
+    height: 100%;
+    background: white;
+    border-left: 2px solid #eee;
+    box-shadow: -2px 0 6px rgba(0,0,0,0.1);
+    transition: right 0.3s ease;
+    padding-top: 80px;
+    z-index: 1200;
+  }
+
+  header nav ul {
+    flex-direction: column;
+    align-items: start;
+    padding-left: 30px;
+  }
+
+  header nav ul li {
+    margin: 15px 0;
+  }
+
+  .header-right {
+    gap: 10px;
+  }
+
+  .hamburger {
+    display: block;
+  }
+
+  /* Show menu when active */
+  header nav.active {
+    right: 0;
+  }
+}
+
+
 /* Cart */
 .cart {
   font-size: 22px;
   color: #333;
   cursor: pointer;
+}
+.cart i{
+  color: green;
 }
 
 /* Buttons */
@@ -120,422 +197,316 @@ header .cart {
   border-color: #244021;
 }
 
+    /* ---------- Filter Bar ---------- */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin: 30px auto;
+    }
 
-/* ===== Hero Section ===== */
-.hero {
-  text-align: center;
-  padding: 60px 20px;
-  background: #f9faf6;
-}
+    .filter-btn {
+      padding: 10px 20px;
+      border-radius: 20px;
+      border: none;
+      cursor: pointer;
+      background: #2f6f31;
+      color: white;
+      font-weight: 600;
+      transition: 0.3s;
+    }
 
-.hero h1 {
-  font-size: 32px;
-  color: #2f6f31;
-  margin-bottom: 10px;
-}
+    .filter-btn.active {
+      background: #ffb400;
+      color: black;
+    }
 
-.hero p {
-  color: #555;
-}
+    .filter-btn:hover {
+      opacity: 0.9;
+    }
 
-/* ===== Categories ===== */
-.categories {
-  padding: 60px 80px;
-  text-align: center;
-}
+    /* ---------- Product Grid ---------- */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      /* ✅ fixed 4 columns on large screen */
+      gap: 25px;
+      padding: 0 40px 60px;
+    }
 
-.categories h2 {
-  font-size: 28px;
-  margin-bottom: 10px;
-  color: #2f2f2f;
-}
+    @media(max-width:1200px) {
+      .product-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
 
-.categories p {
-  margin-bottom: 30px;
-  color: #666;
-}
+    @media(max-width:900px) {
+      .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
 
-.category-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 25px;
-}
+    @media(max-width:600px) {
+      .product-grid {
+        grid-template-columns: 1fr;
+      }
+    }
 
-.category-card {
-  background: #fff;
-  border: 1px solid #eee;
-  border-radius: 10px;
-  padding: 15px;
-  text-align: left;
-  position: relative;
-  transition: 0.3s ease;
-}
+    /* ---------- Product Card ---------- */
+    .product-card {
+      background: white;
+      border: 1px solid #eee;
+      border-radius: 16px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: 0.3s;
+    }
 
-.category-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
+    .product-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
 
-.category-card img {
-  width: 100%;
-  border-radius: 10px;
-  margin-bottom: 15px;
-}
+    .product-card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+    }
 
-.category-card .badge {
-  position: absolute;
-  top: 15px;
-  left: 15px;
-  background: #2f6f31;
-  color: #fff;
-  font-size: 12px;
-  padding: 4px 8px;
-  border-radius: 20px;
-}
+    .card-body {
+      padding: 16px;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
 
-.category-card h3 {
-  margin-bottom: 8px;
-  color: #222;
-}
+    .badge {
+      display: inline-block;
+      background: #f0f4f0;
+      color: #2f6f31;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
 
-.category-card p {
-  font-size: 14px;
-  color: #555;
-  margin-bottom: 10px;
-}
+    .product-card h3 {
+      font-size: 18px;
+      margin-bottom: 6px;
+      color: #222;
+    }
 
-.category-card a {
-  font-weight: bold;
-  font-size: 14px;
-  color: #2f6f31;
-  text-decoration: none;
-}
+    .product-card .description {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 10px;
+    }
 
-/* ===== Featured Products ===== */
-.featured {
-  padding: 60px 80px;
-  text-align: center;
-  background: #fafafa;
-}
+    .price {
+      font-size: 18px;
+      font-weight: bold;
+      color: #2f6f31;
+      margin-bottom: 12px;
+    }
 
-.featured h2 {
-  font-size: 28px;
-  margin-bottom: 10px;
-}
+    /* Quantity box */
+    .qty-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
 
-.featured p {
-  color: #666;
-  margin-bottom: 30px;
-}
+    .qty-box button {
+      width: 30px;
+      height: 30px;
+      border: 1px solid #ccc;
+      background: #f7f7f7;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
 
-.product-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 25px;
-}
+    /* Action buttons */
+    .btn-group {
+      display: flex;
+      gap: 12px;
+    }
 
-.product-card {
-  background: #fff;
-  border: 1px solid #eee;
-  border-radius: 10px;
-  padding: 15px;
-  text-align: center;
-  position: relative;
-  transition: 0.3s ease;
-}
+    .btn-group button {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+    }
 
-.product-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
+    .wishlist {
+      background: white;
+      border: 2px solid #2f6f31;
+      color: #2f6f31;
+    }
 
-.product-card img {
-  width: 100%;
-  border-radius: 10px;
-  margin-bottom: 10px;
-}
+    .wishlist:hover {
+      background: #e8f5e8;
+    }
 
-.product-card .tag {
-  position: absolute;
-  top: 15px;
-  left: 15px;
-  background: #ff6f3c;
-  color: #fff;
-  font-size: 12px;
-  padding: 3px 8px;
-  border-radius: 15px;
-}
+    .buy {
+      background: #2f6f31;
+      color: white;
+    }
 
-.product-card h3 {
-  margin-bottom: 6px;
-  font-size: 16px;
-  color: #222;
-}
-
-.product-card .rating {
-  font-size: 14px;
-  margin-bottom: 5px;
-  color: #444;
-}
-
-.product-card .price {
-  font-size: 16px;
-  color: #2f6f31;
-  margin-bottom: 10px;
-}
-
-.product-card .price span {
-  text-decoration: line-through;
-  color: #999;
-  margin-left: 5px;
-}
-
-.product-card button {
-  background: #2f6f31;
-  color: #fff;
-  border: none;
-  padding: 8px 15px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.product-card button:hover {
-  background: #245824;
-}
-
-.view-all {
-  margin-top: 30px;
-}
-
-.view-all a {
-  text-decoration: none;
-  font-weight: bold;
-  background: #2f6f31;
-  color: #fff;
-  padding: 10px 20px;
-  border-radius: 6px;
-}
-
-/* Footer */
-footer { background: green; color: white; padding: 30px 20px; }
-.footer-container {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;
-}
-.footer-section h3, .footer-section h4 { margin-bottom: 10px; }
-.footer-section ul { list-style: none; }
-.footer-section ul li { margin-bottom: 8px; }
-.footer-section ul li a { color: white; text-decoration: none; }
-
-.social { margin-top: 20px; text-align: center; }
-.social a { color: white; font-size: 18px; margin: 0 10px; text-decoration: none; }
-
-.whatsapp { margin: 15px 0; text-align: center; }
-.whatsapp a {
-  background: #25D366; color: white;
-  padding: 10px 20px; border-radius: 5px;
-  font-weight: bold; text-decoration: none;
-}
-
-.footer-bottom { text-align: center; margin-top: 20px; border-top: 1px solid white; padding-top: 10px; }
-
-/* Responsive */
-@media (max-width: 768px) {
-  header nav ul { flex-direction: column; text-align: center; }
-  header nav ul li { margin: 10px 0; }
-  .slide img { height: 250px; }
-}
-
-@media (max-width: 480px) {
-  header { flex-direction: column; }
-  header .logo img { height: 30px; }
-  .slide img { height: 200px; }
-  .banner-buttons .btn { padding: 8px 15px; font-size: 14px; }
-}
-
-</style>
+    .buy:hover {
+      background: #244021;
+    }
+  </style>
 </head>
+
 <body>
 
-  <!-- ===== Header ===== -->
 <header>
   <div class="logo">
     <img src="logo.jpg" alt="Logo">
     <span>Erumunai Organic Farm Foods</span>
   </div>
+
+  <!-- Navigation -->
   <nav>
     <ul>
       <li><a href="index.html">Home</a></li>
       <li><a href="shop.html" class="active">Shop</a></li>
+      <li><a href="purchases.html">Purchases</a></li> <!-- ✅ New Item -->
       <li><a href="about.html">About Us</a></li>
-      <li><a href="contact.html" >Contact</a></li>
+      <li><a href="contact.html">Contact</a></li>
     </ul>
   </nav>
+
+  <!-- Right side -->
   <div class="header-right">
-    <div class="cart"><i class="fa-solid fa-cart-shopping"></i></div>
+    <div class="cart"><a href="cart.html"><i class="fa-solid fa-cart-shopping"></i></a></div>
     <a href="login.html" class="btn-login">Login</a>
     <a href="signup.html" class="btn-signup">Sign Up</a>
+    <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
   </div>
 </header>
 
-  <!-- ===== Hero Section ===== -->
-  <section class="hero">
+  <section class="hero" style="text-align:center;padding:40px 20px;">
     <h1>Shop Our Products</h1>
-    <p>Discover our range of authentic organic products, from traditional spice powders to modern ready-to-cook mixes.</p>
+    <p>Discover our range of authentic organic products.</p>
   </section>
 
-  <!-- ===== Product Categories ===== -->
-  <section class="categories">
-    <h2>Our Product Categories</h2>
-    <p>Explore our wide range of organic farm products, each crafted with traditional methods and modern quality standards to bring you the best of nature.</p>
-    <div class="category-grid">
-      <div class="category-card">
-        <img src="images/cat1.jpg" alt="Idli Podi">
-        <div class="badge">12+ varieties</div>
-        <h3>Idli Milagai Podi Varieties</h3>
-        <p>Traditional South Indian spice powders made with authentic recipes</p>
-        <a href="#">Explore Category →</a>
-      </div>
-      <div class="category-card">
-        <img src="images/cat2.jpg" alt="Instant Mix Soups">
-        <div class="badge">8+ flavors</div>
-        <h3>Instant Mix Soups</h3>
-        <p>Healthy and nutritious soup mixes with organic vegetables</p>
-        <a href="#">Explore Category →</a>
-      </div>
-      <div class="category-card">
-        <img src="images/cat3.jpg" alt="Masala Milk">
-        <div class="badge">5+ varieties</div>
-        <h3>Masala Milk Malt</h3>
-        <p>Nutritious and delicious malt powder with traditional spices</p>
-        <a href="#">Explore Category →</a>
-      </div>
-      <div class="category-card">
-        <img src="images/cat4.jpg" alt="Herbal Products">
-        <div class="badge">15+ products</div>
-        <h3>Herbal Products</h3>
-        <p>Natural ayurvedic herbs and wellness products</p>
-        <a href="#">Explore Category →</a>
-      </div>
-      <div class="category-card">
-        <img src="images/cat5.jpg" alt="Thokku">
-        <div class="badge">10+ varieties</div>
-        <h3>Thokku Collection</h3>
-        <p>Traditional South Indian pickles and chutneys</p>
-        <a href="#">Explore Category →</a>
-      </div>
-      <div class="category-card">
-        <img src="images/cat6.jpg" alt="Ready Mix">
-        <div class="badge">20+ mixes</div>
-        <h3>Ready-to-Cook Varieties</h3>
-        <p>Convenient and healthy cooking mixes for busy lifestyles</p>
-        <a href="#">Explore Category →</a>
-      </div>
-    </div>
-  </section>
+  <!-- Filter Buttons -->
+  <div class="filter-bar" id="filterBar">
+    <button class="filter-btn active" data-category="all">All</button>
+    <button class="filter-btn" data-category="readyToCookMixes">Ready-to-Cook Instant Mixes</button>
+    <button class="filter-btn" data-category="instantSoup">Instant Soup Mix</button>
+    <button class="filter-btn" data-category="idliPodi">Idli Podi's</button>
+    <button class="filter-btn" data-category="instant">Instant Products</button>
+    <button class="filter-btn" data-category="herbal">Herbal Products</button>
+  </div>
 
-  <!-- ===== Featured Products ===== -->
-  <section class="featured">
-    <h2>Featured Products</h2>
-    <p>Handpicked favorites from our organic collection, loved by thousands of customers for their authentic taste and superior quality.</p>
-    <div class="product-grid">
-      <div class="product-card">
-        <div class="tag">Best Seller</div>
-        <img src="images/f1.jpg" alt="Idli Podi">
-        <h3>Traditional Milagai Podi</h3>
-        <p class="rating">⭐ 4.8 (124)</p>
-        <p class="price">₹299 <span>₹349</span></p>
-        <button>Add to Cart</button>
-      </div>
-      <div class="product-card">
-        <div class="tag">Organic</div>
-        <img src="images/f2.jpg" alt="Ashwagandha">
-        <h3>Ashwagandha Powder</h3>
-        <p class="rating">⭐ 4.9 (89)</p>
-        <p class="price">₹499 <span>₹599</span></p>
-        <button>Add to Cart</button>
-      </div>
-      <div class="product-card">
-        <div class="tag">Traditional</div>
-        <img src="images/f3.jpg" alt="Mango Thokku">
-        <h3>Mango Thokku</h3>
-        <p class="rating">⭐ 4.7 (156)</p>
-        <p class="price">₹179 <span>₹199</span></p>
-        <button>Add to Cart</button>
-      </div>
-      <div class="product-card">
-        <div class="tag">Popular</div>
-        <img src="images/f4.jpg" alt="Dosa Mix">
-        <h3>Dosa Mix Combo</h3>
-        <p class="rating">⭐ 4.6 (203)</p>
-        <p class="price">₹249 <span>₹299</span></p>
-        <button>Add to Cart</button>
-      </div>
-    </div>
-    <div class="view-all">
-      <a href="#">View All Products</a>
-    </div>
-  </section>
+  <!-- Product Grid -->
+  <div class="product-grid" id="productGrid"></div>
 
-  <!-- ===== Footer ===== -->
-  <footer>
-    <div class="footer-container">
-      <div class="footer-section about">
-        <h3>Erumunai Organic Farm Foods</h3>
-        <p>Bringing you the finest organic farm products with traditional recipes and modern quality standards for healthy living.</p>
-        <p><i class="fa fa-map-marker-alt"></i> 123 Farm Road, Organic Valley, Tamil Nadu 600001</p>
-        <p><i class="fa fa-phone"></i> +91 98765 43210</p>
-        <p><i class="fa fa-envelope"></i> hello@ermunaiorganicfarms.com</p>
+  <script type="module">
+
+    const hamburger = document.querySelector(".hamburger");
+  const nav = document.querySelector("header nav");
+
+  hamburger.addEventListener("click", () => {
+    nav.classList.toggle("active");
+  });
+
+  
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCbfdG2XU302FuZx0MapVTRmb3Qtaa-hA8",
+      authDomain: "ermunai-e-commerce-project.firebaseapp.com",
+      projectId: "ermunai-e-commerce-project",
+      storageBucket: "ermunai-e-commerce-project.appspot.com",
+      messagingSenderId: "365240050790",
+      appId: "1:365240050790:web:2d4867d6ab4f93a661f9a7"
+    };
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const productGrid = document.getElementById("productGrid");
+    const filterBar = document.getElementById("filterBar");
+    let products = [];
+
+    async function loadProducts() {
+      const snap = await getDocs(collection(db, "products"));
+      products = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      render(products);
+    }
+
+    function render(list) {
+      productGrid.innerHTML = "";
+      list.forEach(p => {
+        productGrid.innerHTML += `
+    <div class="product-card" data-category="${p.category}">
+      <img src="${p.image}" alt="${p.name}">
+      <div class="card-body">
+        <span class="badge">${p.badge || p.category || ""}</span>
+        <h3>${p.name}</h3>
+        <p class="description">${p.description || ""}</p>
+        <div class="price">₹${p.price}</div>
+        <div class="qty-box">
+          <button onclick="decQty('${p.id}')">−</button>
+          <span id="qty-${p.id}">1</span>
+          <button onclick="incQty('${p.id}')">+</button>
+        </div>
+        <div class="btn-group">
+          <button class="wishlist" onclick="addToCart('${p.id}')">Add to Cart</button>
+          <button class="buy" onclick="buyNow('${p.id}')">Buy Now</button>
+        </div>
       </div>
+    </div>`;
+      });
+    }
 
-      <div class="footer-section company">
-        <h4>Company</h4>
-        <ul>
-          <li><a href="#">About Us</a></li>
-          <li><a href="#">Our Story</a></li>
-          <li><a href="#">Careers</a></li>
-          <li><a href="#">Press</a></li>
-        </ul>
-      </div>
+    filterBar.addEventListener("click", e => {
+      if (!e.target.classList.contains("filter-btn")) return;
+      document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+      e.target.classList.add("active");
+      const cat = e.target.dataset.category;
+      if (cat === "all") render(products);
+      else render(products.filter(p => (p.category || "").toLowerCase() === cat.toLowerCase()));
+    });
 
-      <div class="footer-section products">
-        <h4>Products</h4>
-        <ul>
-          <li><a href="#">Spice Powders</a></li>
-          <li><a href="#">Herbal Products</a></li>
-          <li><a href="#">Ready Mixes</a></li>
-          <li><a href="#">Pickles & Thokku</a></li>
-        </ul>
-      </div>
+    window.incQty = id => {
+      const el = document.getElementById(`qty-${id}`);
+      el.textContent = parseInt(el.textContent) + 1;
+    };
+    window.decQty = id => {
+      const el = document.getElementById(`qty-${id}`);
+      const v = parseInt(el.textContent);
+      if (v > 1) el.textContent = v - 1;
+    };
 
-      <div class="footer-section support">
-        <h4>Support</h4>
-        <ul>
-          <li><a href="#">Contact Us</a></li>
-          <li><a href="#">FAQ</a></li>
-          <li><a href="#">Shipping Info</a></li>
-          <li><a href="#">Returns</a></li>
-        </ul>
-      </div>
-    </div>
+    window.addToCart = id => {
+      const product = products.find(p => p.id === id);
+      let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+      cart.push(product);
+      localStorage.setItem("cart", JSON.stringify(cart));
+      alert(product.name + " added to cart");
+    };
+    window.buyNow = id => {
+      const product = products.find(p => p.id === id);
+      localStorage.setItem("checkout", JSON.stringify(product));
+      window.location.href = "payment.html";
+    };
 
-    <!-- Social & WhatsApp -->
-    <div class="social">
-      <a href="#"><i class="fab fa-facebook-f"></i></a>
-      <a href="#"><i class="fab fa-instagram"></i></a>
-      <a href="#"><i class="fab fa-twitter"></i></a>
-      <a href="#"><i class="fab fa-youtube"></i></a>
-    </div>
-    <div class="whatsapp">
-      <a href="https://wa.me/919876543210" target="_blank">
-        <i class="fab fa-whatsapp"></i> Order on WhatsApp
-      </a>
-    </div>
-
-    <div class="footer-bottom">
-      <p>© 2024 Ermunai Organic Farm Foods. All rights reserved.</p>
-    </div>
-  </footer>
-
+    loadProducts();
+  </script>
 </body>
+
 </html>

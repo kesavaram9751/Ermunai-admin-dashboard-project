@@ -19,7 +19,8 @@ body {
   line-height: 1.6;
 }
 
-/* ✅ Header */
+
+/* ---------- Header ---------- */
 header {
   display: flex;
   justify-content: space-between;
@@ -41,7 +42,7 @@ header .logo {
 }
 
 header .logo img {
-  height: 80px;
+  height: 60px;
   margin-right: 10px;
 }
 
@@ -58,31 +59,110 @@ header nav ul li a {
   text-decoration: none;
   color: #333;
   font-weight: bold;
-  transition: 0.3s;
 }
 
-header nav ul li a:hover,
-header nav ul li a.active {
+header nav ul li a.active,
+header nav ul li a:hover {
   color: green;
 }
 
-header .cart {
-  font-size: 22px;
-  color: #333;
-  cursor: pointer;
-}
-/* Header Right Section */
 .header-right {
   display: flex;
   align-items: center;
   gap: 15px;
 }
 
+/* Buttons */
+.btn-login,
+.btn-signup {
+  padding: 8px 16px;
+  font-size: 14px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.3s;
+}
+.btn-login {
+  background: transparent;
+  border: 2px solid green;
+  color: green;
+}
+.btn-login:hover {
+  background: green;
+  color: white;
+}
+.btn-signup {
+  background: green;
+  border: 2px solid green;
+  color: white;
+}
+.btn-signup:hover {
+  background: #244021;
+  border-color: #244021;
+}
+
+/* Hamburger (hidden by default) */
+.hamburger {
+  display: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: green;
+}
+
+/* ---------- Mobile Styles ---------- */
+@media (max-width: 900px) {
+  header {
+    padding: 15px 20px;
+  }
+
+  /* Hide normal menu */
+  header nav {
+    position: fixed;
+    top: 0;
+    right: -250px;
+    width: 250px;
+    height: 100%;
+    background: white;
+    border-left: 2px solid #eee;
+    box-shadow: -2px 0 6px rgba(0,0,0,0.1);
+    transition: right 0.3s ease;
+    padding-top: 80px;
+    z-index: 1200;
+  }
+
+  header nav ul {
+    flex-direction: column;
+    align-items: start;
+    padding-left: 30px;
+  }
+
+  header nav ul li {
+    margin: 15px 0;
+  }
+
+  .header-right {
+    gap: 10px;
+  }
+
+  .hamburger {
+    display: block;
+  }
+
+  /* Show menu when active */
+  header nav.active {
+    right: 0;
+  }
+}
+
+
 /* Cart */
 .cart {
   font-size: 22px;
   color: #333;
   cursor: pointer;
+}
+.cart i{
+  color: green;
 }
 
 /* Buttons */
@@ -457,20 +537,27 @@ footer { background: green; color: white; padding: 30px 20px; }
     <img src="logo.jpg" alt="Logo">
     <span>Erumunai Organic Farm Foods</span>
   </div>
+
+  <!-- Navigation -->
   <nav>
     <ul>
-      <li><a href="index.html" class="active">Home</a></li>
-      <li><a href="shop.html">Shop</a></li>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="shop.html" class="active">Shop</a></li>
+      <li><a href="purchases.html">Purchases</a></li> <!-- ✅ New Item -->
       <li><a href="about.html">About Us</a></li>
-      <li><a href="contact.html" >Contact</a></li>
+      <li><a href="contact.html">Contact</a></li>
     </ul>
   </nav>
+
+  <!-- Right side -->
   <div class="header-right">
-    <div class="cart"><i class="fa-solid fa-cart-shopping"></i></div>
-    <a href="user-login.html" class="btn-login">Login</a>
-    <a href="user-create-acc.html" class="btn-signup">Sign Up</a>
+    <div class="cart"><a href="cart.html"><i class="fa-solid fa-cart-shopping"></i></a></div>
+    <a href="login.html" class="btn-login">Login</a>
+    <a href="signup.html" class="btn-signup">Sign Up</a>
+    <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
   </div>
 </header>
+
 
   <!-- ✅ Banner Section -->
   <section class="banner">
@@ -752,6 +839,16 @@ footer { background: green; color: white; padding: 30px 20px; }
 
   <!-- ✅ Script for Auto + Manual Slider -->
   <script>
+
+    //responsive header
+  const hamburger = document.querySelector(".hamburger");
+  const nav = document.querySelector("header nav");
+
+  hamburger.addEventListener("click", () => {
+    nav.classList.toggle("active");
+  });
+
+  
     let index = 0;
     const slides = document.querySelectorAll(".slide");
     const prev = document.querySelector(".prev");
