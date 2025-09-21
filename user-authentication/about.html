@@ -19,10 +19,11 @@
       font-family: Arial, sans-serif;
       color: #333;
       line-height: 1.6;
-      background: #fff;
+      background: #fdf6ec;
+      /* Soft pastel background */
     }
 
-    /* ---------- Header ---------- */
+     /* ---------- Header ---------- */
     header {
       display: flex;
       justify-content: space-between;
@@ -209,18 +210,20 @@
     .about-heading {
       text-align: center;
       padding: 60px 20px;
-      background: #f5faf7;
+      background: #e8f9f1;
     }
 
     .about-heading h1 {
-      font-size: 32px;
+      font-size: 36px;
       margin-bottom: 15px;
       color: #1d4d2d;
+      font-weight: 800;
     }
 
     .about-heading p {
-      font-size: 18px;
-      color: #555;
+      font-size: 20px;
+      color: #333;
+      font-weight: 600;
     }
 
     /* Story + Mission/Vision */
@@ -229,15 +232,27 @@
       gap: 40px;
       padding: 60px 80px;
       align-items: flex-start;
+      flex-wrap: wrap;
+      background: #fffaf5;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
 
     .story {
       flex: 2;
+      min-width: 300px;
     }
 
     .story h2 {
       margin-bottom: 20px;
       color: #1d4d2d;
+      font-weight: 800;
+    }
+
+    .story p {
+      font-size: 16px;
+      font-weight: 600;
+      color: #444;
     }
 
     .mission-vision {
@@ -245,30 +260,44 @@
       background: #f0f8f4;
       padding: 25px;
       border-radius: 10px;
+      min-width: 280px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
 
     .mission-vision h3 {
       color: #1d4d2d;
       margin-top: 15px;
       margin-bottom: 8px;
+      font-weight: 800;
+    }
+
+    .mission-vision p {
+      font-size: 16px;
+      font-weight: 600;
     }
 
     /* Values */
     .values {
       text-align: center;
       padding: 60px 40px;
-      background: #fff;
+      background: #fdf6ec;
     }
 
     .values h2 {
       margin-bottom: 15px;
       color: #1d4d2d;
+      font-weight: 800;
+      font-size: 28px;
+    }
+
+    .values p {
+      color: #555;
+      font-weight: 600;
     }
 
     .values-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      /* ✅ 4 columns by default (desktop/laptop) */
       gap: 25px;
       margin-top: 30px;
     }
@@ -280,6 +309,7 @@
       border-radius: 12px;
       text-align: center;
       transition: 0.3s;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
     }
 
     .value-card i {
@@ -288,12 +318,64 @@
       margin-bottom: 15px;
     }
 
-    .value-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    .value-card h3 {
+      font-weight: 800;
     }
 
-    /* Footer */
+    .value-card p {
+      font-weight: 600;
+    }
+
+    .value-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Catalog Section */
+    .catalog {
+      text-align: center;
+      padding: 60px;
+      background: #e8f9f1;
+    }
+
+    .catalog h2 {
+      color: #1d4d2d;
+      font-weight: 800;
+      margin-bottom: 20px;
+    }
+
+    .catalog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 25px;
+      margin-top: 20px;
+    }
+
+    .catalog-item {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      text-align: center;
+    }
+
+    .catalog-item img {
+      width: 100%;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+
+    .catalog-item h3 {
+      font-weight: 800;
+      margin-bottom: 5px;
+    }
+
+    .catalog-item p {
+      font-weight: 600;
+      color: #555;
+    }
+
+    /* ✅ Footer */
     footer {
       background: green;
       color: white;
@@ -301,14 +383,17 @@
     }
 
     .footer-container {
+      max-width: 1400px;
+      margin: 0 auto;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
     }
 
     .footer-section h3,
     .footer-section h4 {
       margin-bottom: 10px;
+      font-weight: 800;
     }
 
     .footer-section ul {
@@ -322,18 +407,13 @@
     .footer-section ul li a {
       color: white;
       text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s ease, text-decoration 0.3s ease;
     }
 
-    .social {
-      margin-top: 20px;
-      text-align: center;
-    }
-
-    .social a {
-      color: white;
-      font-size: 18px;
-      margin: 0 10px;
-      text-decoration: none;
+    .footer-section ul li a:hover {
+      color: #ffd700;
+      text-decoration: underline;
     }
 
     .whatsapp {
@@ -357,20 +437,81 @@
       padding-top: 10px;
     }
 
-    /* Responsive */
-    @media (max-width: 768px) {
-      header nav ul {
+    /* ================= Mobile Responsive Design ================= */
+    @media(max-width: 768px) {
+
+      /* Header & Menu */
+      header {
+        flex-wrap: wrap;
+        padding: 15px 20px;
+      }
+
+      .menu-icon {
+        display: block;
+        font-size: 26px;
+        cursor: pointer;
+        color: #1d4d2d;
+      }
+
+      nav ul {
+        display: none;
         flex-direction: column;
+        position: absolute;
+        top: 70px;
+        right: 20px;
+        background: #e8f9f1;
+        width: 220px;
+        padding: 10px;
         text-align: center;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease-in-out;
       }
 
-      header nav ul li {
-        margin: 10px 0;
+      nav ul.show {
+        display: flex;
       }
 
-      /* ✅ Values grid for mobile: 2 columns (so 4 rows for 8 cards) */
+      nav ul li {
+        margin: 12px 0;
+      }
+
+      /* About Heading Reduce Padding */
+      .about-heading {
+        padding: 40px 15px;
+      }
+
+      .about-heading h1 {
+        font-size: 24px;
+      }
+
+      .about-heading p {
+        font-size: 16px;
+      }
+
+      /* Story + Mission/Vision stack vertically */
+      .story-mission {
+        flex-direction: column;
+        padding: 30px 20px;
+        gap: 20px;
+      }
+
+      .mission-vision {
+        padding: 20px;
+      }
+
+      /* Values grid → 2 columns on mobile */
       .values-grid {
         grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+      }
+    }
+
+    /* Very small screens */
+    @media(max-width: 480px) {
+      .values-grid {
+        grid-template-columns: 1fr;
+        /* single column on tiny phones */
       }
     }
 
@@ -380,12 +521,11 @@
       }
 
       header .logo img {
-        height: 30px;
+        height: 50px;
       }
 
-      .banner-buttons .btn {
-        padding: 8px 15px;
-        font-size: 14px;
+      .values-grid {
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -395,16 +535,16 @@
   <header>
     <div class="logo">
       <img src="logo.jpg" alt="Logo">
-      <span>Erumunai Organic Farm Foods</span>
+      <span>Ermunai Organic Farm Foods</span>
     </div>
 
     <!-- Navigation -->
     <nav>
       <ul>
         <li><a href="index.html">Home</a></li>
-        <li><a href="shop.html" class="active">Shop</a></li>
-        <li><a href="purchases.html">Purchases</a></li> <!-- ✅ New Item -->
-        <li><a href="about.html">About Us</a></li>
+        <li><a href="shop.html" >Shop</a></li>
+        <li><a href="purchase.html">Purchases</a></li> <!-- ✅ New Item -->
+        <li><a href="about.html" class="active">About Us</a></li>
         <li><a href="contact.html">Contact</a></li>
       </ul>
     </nav>
@@ -417,44 +557,36 @@
       <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
     </div>
   </header>
+
   <!-- About Heading -->
   <section class="about-heading">
-    <h1>About Ermunai Organic Farm Foods</h1>
-    <p>We are passionate about bringing you the finest organic farm products,<br>
-      combining traditional Tamil recipes with modern quality standards for a healthier lifestyle.</p>
+    <h1>Ermunai Organic Farm Foods</h1>
+    <p><em>“With every pack, we carry forward a promise: Healthy Mix, Native Taste.”</em></p>
   </section>
 
-  <!-- Our Story + Mission/Vision -->
+  <!-- Story + Mission/Vision -->
   <section class="story-mission">
     <div class="story">
       <h2>Our Story</h2>
-      <p>
-        At Ermunai Organic Farm Foods, our journey began with a passion for preserving the rich culinary heritage of
-        South India.
-        We focus on **Traditional Native Seeds**, millets, and age-old grains to create products that are both authentic
-        and convenient.
-        From **Ready-to-Cook and Ready-to-Eat meals** to **Millet-based Instant Premixes** for breakfast and dinner, our
-        offerings make it easy to enjoy wholesome, traditional meals in modern lifestyles.
-      </p>
-      <p>
-        Our aim is to provide food that nourishes not only the body but also the culture and traditions behind every
-        grain.
-        Every product reflects our commitment to taste, quality, and sustainability, allowing you to experience the
-        richness of heritage foods at your table.
-      </p>
+      <p>At Ermunai Organic Farm Foods, we believe food is more than just taste — it is tradition, health, and a way of
+        life. Inspired by the wisdom of our ancestors, we bring back the richness of native rice, millets, and herbs in
+        a convenient ready-to-cook form.</p><br>
+      <p>In today’s fast lifestyle, people often compromise health for convenience. Our mission is to change that — by
+        creating instant mixes that are not only easy to prepare but also carry the authentic flavors and nutrition of
+        traditional foods. Every product is made with care, using clean ingredients and eco-friendly packaging, so that
+        you and your family can enjoy natural wellness every day.</p>
     </div>
 
     <div class="mission-vision">
       <h3>Our Mission</h3>
-      <p>To provide authentic Traditional Native Seeds-based food products that are ready-to-cook, ready-to-eat, and
-        millet-based instant premixes for breakfast and dinner, while preserving culinary heritage and supporting
-        sustainable farming practices.</p>
+      <p>We craft ready-to-cook traditional rice, millet, and herbal mixes using authentic native ingredients, ensuring
+        convenience without compromise on health. Through eco-friendly packaging and sustainable sourcing, we aim to
+        make organic living accessible to everyone.</p>
 
       <h3>Our Vision</h3>
-      <p>To be recognized as the leading brand for traditional and nutritious South Indian meals, offering convenient,
-        wholesome products derived from native seeds and millets, and promoting wellness through heritage foods.</p>
+      <p>To revive traditional food culture with healthy, convenient, and eco-friendly food mixes, making every Indian
+        household choose natural wellness over processed fast foods.</p>
     </div>
-
   </section>
 
   <!-- Our Values -->
@@ -464,99 +596,96 @@
     <div class="values-grid">
       <div class="value-card">
         <i class='bx bx-leaf'></i>
-        <h3>100% Organic</h3>
-        <p>All our products are certified organic, grown without harmful chemicals or pesticides.</p>
+        <h3>Purity in Every Pack</h3>
+        <p>We use only clean, chemical-free ingredients so your family enjoys nature’s true goodness.</p>
       </div>
       <div class="value-card">
-        <i class='bx bx-book'></i>
-        <h3>Traditional Recipes</h3>
-        <p>We preserve age-old recipes passed down through generations of Tamil Nadu families.</p>
+        <i class='bx bx-bowl-hot'></i>
+        <h3>Native Nutrition</h3>
+        <p>Every mix celebrates the power of ancient grains, millets, and traditional herbs.</p>
       </div>
       <div class="value-card">
-        <i class='bx bx-group'></i>
-        <h3>Community First</h3>
-        <p>Supporting local farmers and communities while delivering healthy food to your table.</p>
+        <i class='bx bx-recycle'></i>
+        <h3>Sustainable Choices</h3>
+        <p>Eco-friendly packaging and responsible sourcing protect the planet for future generations.</p>
       </div>
       <div class="value-card">
-        <i class='bx bx-check-shield'></i>
-        <h3>Quality Assured</h3>
-        <p>Every product undergoes rigorous quality checks to ensure the highest standards.</p>
+        <i class='bx bx-user-check'></i>
+        <h3>Farmer Empowerment</h3>
+        <p>By partnering with local farmers, we ensure fair pay and preserve indigenous farming practices.</p>
       </div>
       <div class="value-card">
-        <i class='bx bx-leaf'></i>
-        <h3>Farm Fresh</h3>
-        <p>Directly sourced from our organic farms.</p>
+        <i class='bx bx-heart'></i>
+        <h3>Health First</h3>
+        <p>Our recipes are designed to nourish, energize, and strengthen immunity.</p>
       </div>
       <div class="value-card">
         <i class='bx bx-time-five'></i>
-        <h3>Ready to Cook</h3>
-        <p>Convenient and quick preparation.</p>
+        <h3>Convenience Without Compromise</h3>
+        <p>Quick to cook, yet rich in authentic taste and nutrition.</p>
       </div>
       <div class="value-card">
-        <i class='bx bx-plus-medical'></i>
-        <h3>Herbal & Natural</h3>
-        <p>Traditional ayurvedic formulations.</p>
+        <i class='bx bx-book-open'></i>
+        <h3>Heritage Inspired</h3>
+        <p>Each product carries forward the culinary wisdom of our ancestors.</p>
       </div>
       <div class="value-card">
         <i class='bx bx-smile'></i>
-        <h3>Customer Care</h3>
+        <h3>Customer Happiness</h3>
         <p>Your satisfaction is our priority, with dedicated support always.</p>
       </div>
     </div>
   </section>
 
 
+  <!-- ✅ Footer -->
   <footer>
     <div class="footer-container">
       <div class="footer-section about">
-        <h3>Erumunai Organic Farm Foods</h3>
-        <p>Bringing you the finest organic farm products with traditional recipes and modern quality standards for
-          healthy living.</p>
-        <p><i class="fa fa-map-marker-alt"></i> 123 Farm Road, Organic Valley, Tamil Nadu 600001</p>
-        <p><i class="fa fa-phone"></i> +91 98765 43210</p>
-        <p><i class="fa fa-envelope"></i> hello@ermunaiorganicfarms.com</p>
+        <h3>Ermunai Organic Farm Foods</h3>
+        <p><i class="fa fa-map-marker-alt"></i> M/s. Ermunai Organic Farm Foods,<br>Plot No. 8, Ramalingam
+          St.,BFI,<br>Muraliram Srinivas Flats,<br>Ullagaram,<br>Chennai - 600 091.</p>
+        <p><i class="fa fa-phone"></i> +91 9841231996</p>
+        <p><i class="fab fa-whatsapp"></i> +91 9840752833</p>
+        <p><i class="fa fa-envelope"></i> ermunaiorganicfarm@gmail.com</p>
       </div>
 
       <div class="footer-section company">
         <h4>Company</h4>
         <ul>
-          <li><a href="#">About Us</a></li>
-          <li><a href="#">Our Story</a></li>
-          <li><a href="#">Careers</a></li>
-          <li><a href="#">Press</a></li>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="contact.html">Contact Us</a></li>
         </ul>
       </div>
 
       <div class="footer-section products">
         <h4>Products</h4>
         <ul>
-          <li><a href="#">Spice Powders</a></li>
+          <li><a href="#">Ready-to-cook Instant Mixes</a></li>
+          <li><a href="#">Instant Soup Mix</a></li>
+          <li><a href="#">Idli Podi's</a></li>
           <li><a href="#">Herbal Products</a></li>
-          <li><a href="#">Ready Mixes</a></li>
-          <li><a href="#">Pickles & Thokku</a></li>
         </ul>
       </div>
 
-      <div class="footer-section support">
-        <h4>Support</h4>
+      <div class="footer-section follow-us">
+        <h4><i class="fas fa-share-alt"></i> Follow Us</h4>
         <ul>
-          <li><a href="#">Contact Us</a></li>
-          <li><a href="#">FAQ</a></li>
-          <li><a href="#">Shipping Info</a></li>
-          <li><a href="#">Returns</a></li>
+          <li><i class="fab fa-facebook-f"></i> <a href="https://www.facebook.com/ermunaiorganicfoods"
+              target="_blank">Facebook</a></li>
+          <li><i class="fab fa-instagram"></i> <a href="https://www.instagram.com/ermunaiorganic"
+              target="_blank">Instagram</a></li>
+          <li><i class="fab fa-linkedin"></i> <a href="https://www.linkedin.com/in/ermunai-organic-farm-217035363"
+              target="_blank">LinkedIn</a></li>
+          <li><i class="fab fa-youtube"></i> <a href="https://youtube.com/@ermunaiorganicfarm"
+              target="_blank">YouTube</a></li>
         </ul>
       </div>
     </div>
 
-    <!-- Social & WhatsApp -->
-    <div class="social">
-      <a href="#"><i class="fab fa-facebook-f"></i></a>
-      <a href="#"><i class="fab fa-instagram"></i></a>
-      <a href="#"><i class="fab fa-twitter"></i></a>
-      <a href="#"><i class="fab fa-youtube"></i></a>
-    </div>
     <div class="whatsapp">
-      <a href="https://wa.me/919876543210" target="_blank">
+      <a href="https://wa.me/919841231996" target="_blank">
         <i class="fab fa-whatsapp"></i> Order on WhatsApp
       </a>
     </div>
@@ -565,15 +694,6 @@
       <p>© 2024 Ermunai Organic Farm Foods. All rights reserved.</p>
     </div>
   </footer>
-  <script>
-    const hamburger = document.querySelector(".hamburger");
-    const nav = document.querySelector("header nav");
-
-    hamburger.addEventListener("click", () => {
-      nav.classList.toggle("active");
-    });
-  </script>
-
 </body>
 
 </html>
