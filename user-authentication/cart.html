@@ -204,7 +204,7 @@
       <div class="summary-item"><span>Tax (5%)</span> <span id="tax">₹0</span></div>
       <div class="summary-item"><span>Shipping</span> <span id="shipping">Free</span></div>
       <div class="summary-item total"><span>Total</span> <span id="total">₹0</span></div>
-      <button class="checkout-btn">Proceed to Checkout</button>
+      <button class="checkout-btn" id="checkout-btn">Proceed to Checkout</button>
     </div>
   </div>
 
@@ -266,6 +266,16 @@
       localStorage.setItem("cart", JSON.stringify(cart));
       renderCart();
     }
+
+    document.getElementById("checkout-btn").addEventListener("click", () => {
+      // optional: check if cart is non-empty
+      if (cart.length === 0) {
+        alert("Your cart is empty!");
+        return;
+      }
+      // redirect to checkout.html
+      window.location.href = "checkout.html";
+    });
 
     renderCart();
   </script>
