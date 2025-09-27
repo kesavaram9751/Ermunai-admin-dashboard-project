@@ -186,6 +186,7 @@
         </div>
     </div>
 
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
         // Load cart from localStorage
         let cart = JSON.parse(localStorage.getItem("cart") || "[]");
@@ -283,6 +284,32 @@
             // For demonstration:
             alert("Proceeding to payment with total ₹" + order.total.toFixed(2));
             // TODO: integrate Razorpay payment API here
+
+
+            var options = {
+                "key": "rzp_test_1a2b3c4d5e6f7g", // Test or Live key
+                "amount": "50000", // 500 = ₹5.00
+                "currency": "INR",
+                "name": "Your Website Name",
+                "description": "Test Transaction",
+                "image": "https://yourlogo.com/logo.png",
+                "handler": function (response) {
+                    alert("Payment ID: " + response.razorpay_payment_id);
+                },
+                "prefill": {
+                    "name": "Customer Name",
+                    "email": "customer@email.com",
+                    "contact": "9999999999"
+                },
+                "theme": {
+                    "color": "#3399cc"
+                }
+            };
+            var rzp1 = new Razorpay(options);
+            document.getElementById('btnPay').onclick = function (e) {
+                rzp1.open();
+                e.preventDefault();
+            }
         });
     </script>
 </body>
