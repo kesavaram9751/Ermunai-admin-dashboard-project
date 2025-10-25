@@ -175,7 +175,8 @@
                 <tr>
                     <th>Order ID</th>
                     <th>Customer</th>
-                    <th>Phone</th> <th>Address</th>
+                    <th>Phone</th>
+                    <th>Address</th>
                     <th>Payment</th>
                     <th>Date</th>
                     <th>Products</th>
@@ -185,7 +186,7 @@
             <tbody id="ordersTable">
                 <tr>
                     <td colspan="8" style="text-align:center; padding:20px;">⏳ Loading orders...</td>
-                    </tr>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -196,7 +197,7 @@
         import { getFirestore, collection, getDocs, updateDoc, doc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-        // 🔑 Firebase Config
+        // 🔑 Firebase Config (Kept same as provided)
         const firebaseConfig = {
             apiKey: "AIzaSyCbfdG2XU302FuZx0MapVTRmb3Qtaa-hA8",
             authDomain: "ermunai-e-commerce-project.firebaseapp.com",
@@ -220,7 +221,6 @@
                 loadOrders(); // load only after login
             } else {
                 console.log("❌ No user is logged in");
-                // Changed colspan to 8
                 ordersTable.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:20px;">🚫 Please log in as admin</td></tr>`;
             }
         });
@@ -230,16 +230,16 @@
         // 🔹 Fetch orders
         async function loadOrders() {
             try {
-                // 🛠️ Updated query to order by 'date' in descending (desc) order
                 const ordersCollectionRef = collection(db, "orders");
-                // Assuming 'date' is stored as a proper timestamp or a sortable string
-                const q = query(ordersCollectionRef, orderBy("date", "desc")); 
                 
+                // 🛠️ CORRECTED: Using 'datePlaced' as seen in the Firestore screenshot 
+                // and sorting in descending ('desc') order for "most recent first".
+                const q = query(ordersCollectionRef, orderBy("datePlaced", "desc"));
+
                 const querySnapshot = await getDocs(q);
                 ordersTable.innerHTML = "";
 
                 if (querySnapshot.empty) {
-                    // Changed colspan to 8
                     ordersTable.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:20px;">🚫 No orders found</td></tr>`;
                     return;
                 }
@@ -250,10 +250,16 @@
                     const itemsHtml = order.items && Array.isArray(order.items)
                         ? order.items.map(i => `${i.name} (x${i.quantity})`).join("<br>")
                         : "No items";
+                    
+                    // Helper function to format the date
+                    const formatDate = (dateValue) => {
+                        // If it's a Firestore Timestamp, convert it. If it's a string, use it directly.
+                        if (dateValue && typeof dateValue.seconds === 'number') {
+                            return new Date(dateValue.seconds * 1000).toLocaleString();
+                        }
+                        return dateValue || "N/A"; // Use the string value (like '25 October...')
+                    };
 
-                    // ⚠️ A note on date: You were displaying new Date().toLocaleString() as a fallback, 
-                    // which isn't ideal for sorting. For proper sorting, ensure the 'date' field 
-                    // in your Firebase documents is a **Firebase Timestamp**.
 
                     const tr = document.createElement("tr");
                     tr.innerHTML = `
@@ -261,8 +267,7 @@
                         <td>${order.customerName || "N/A"}</td>
                         <td>${order.phone || "N/A"}</td> <td>${order.address || "N/A"}</td>
                         <td>${order.paymentMethod || "N/A"} - ₹${order.amount || 0}</td>
-                        <td>${order.date ? new Date(order.date.seconds * 1000).toLocaleString() : new Date().toLocaleString()}</td>
-                        <td class="products-list">${itemsHtml}</td>
+                        <td>${formatDate(order.datePlaced)}</td> <td class="products-list">${itemsHtml}</td>
                         <td>
                             <select data-id="${docSnap.id}">
                                 <option value="Pending" ${order.status === "Pending" ? "selected" : ""}>Pending</option>
@@ -286,7 +291,6 @@
                 });
             } catch (error) {
                 console.error("❌ Error loading orders:", error);
-                // Changed colspan to 8
                 ordersTable.innerHTML = `<tr><td colspan="8" style="text-align:center; color:red; padding:20px;">⚠️ Error loading orders</td></tr>`;
             }
         }
