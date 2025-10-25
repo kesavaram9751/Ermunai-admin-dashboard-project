@@ -270,13 +270,15 @@
                         <td>${order.customerName || "N/A"}</td>
                         <td>${order.phone || "N/A"}</td>
                         <td>${order.address || "N/A"}</td>
-                        <td>${order.paymentMethod || "N/A"} - ₹${order.amount || 0}</td>
+                        
+                        <td>${order.paymentStatus || "N/A"} - ₹${order.totalAmount || 0}</td>
+                        
                         <td>${formatDate(order.datePlaced)}</td>
                         <td class="products-list">${itemsHtml}</td>
                         <td>
                             <select data-id="${docSnap.id}">
-                                <option value="Paid/Pending" ${order.status === "Paid/Pending" || order.status === "Paid" ? "selected" : ""}>Paid/Pending</option>
-                                <option value="Pending" ${order.status === "Pending" ? "selected" : ""}>Pending</option>
+                                <option value="Paid/Pending" ${(order.status === "Paid/Pending" || order.paymentStatus === "Paid") ? "selected" : ""}>Paid/Pending</option>
+                                <option value="Pending" ${order.status === "Pending" || (order.paymentStatus !== "Paid" && !order.status) ? "selected" : ""}>Pending</option>
                                 <option value="Shipped" ${order.status === "Shipped" ? "selected" : ""}>Shipped</option>
                                 <option value="Delivered" ${order.status === "Delivered" ? "selected" : ""}>Delivered</option>
                                 <option value="Cancelled" ${order.status === "Cancelled" ? "selected" : ""}>Cancelled</option>
@@ -302,4 +304,5 @@
         }
     </script>
 </body>
+
 </html>
