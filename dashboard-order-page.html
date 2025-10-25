@@ -226,14 +226,26 @@
         });
 
 
+        // Helper function to format the date
+        const formatDate = (dateValue) => {
+            // 1. Handles Firebase Timestamp (object with seconds/nanoseconds)
+            if (dateValue && typeof dateValue.seconds === 'number') {
+                return new Date(dateValue.seconds * 1000).toLocaleString();
+            }
+            // 2. Handles numeric timestamp (from new Date().getTime() in checkout.html)
+            if (typeof dateValue === 'number' && dateValue > 1000000000000) {
+                 return new Date(dateValue).toLocaleString();
+            }
+            // 3. Handles string fallback (like '25 October...')
+            return dateValue || "N/A"; 
+        };
 
         // 🔹 Fetch orders
         async function loadOrders() {
             try {
                 const ordersCollectionRef = collection(db, "orders");
-                
-                // 🛠️ CORRECTED: Using 'datePlaced' as seen in the Firestore screenshot 
-                // and sorting in descending ('desc') order for "most recent first".
+
+                // 🛠️ Sorting by 'datePlaced' in descending ('desc') order.
                 const q = query(ordersCollectionRef, orderBy("datePlaced", "desc"));
 
                 const querySnapshot = await getDocs(q);
@@ -251,25 +263,19 @@
                         ? order.items.map(i => `${i.name} (x${i.quantity})`).join("<br>")
                         : "No items";
                     
-                    // Helper function to format the date
-                    const formatDate = (dateValue) => {
-                        // If it's a Firestore Timestamp, convert it. If it's a string, use it directly.
-                        if (dateValue && typeof dateValue.seconds === 'number') {
-                            return new Date(dateValue.seconds * 1000).toLocaleString();
-                        }
-                        return dateValue || "N/A"; // Use the string value (like '25 October...')
-                    };
-
 
                     const tr = document.createElement("tr");
                     tr.innerHTML = `
                         <td>${docSnap.id}</td>
                         <td>${order.customerName || "N/A"}</td>
-                        <td>${order.phone || "N/A"}</td> <td>${order.address || "N/A"}</td>
+                        <td>${order.phone || "N/A"}</td>
+                        <td>${order.address || "N/A"}</td>
                         <td>${order.paymentMethod || "N/A"} - ₹${order.amount || 0}</td>
-                        <td>${formatDate(order.datePlaced)}</td> <td class="products-list">${itemsHtml}</td>
+                        <td>${formatDate(order.datePlaced)}</td>
+                        <td class="products-list">${itemsHtml}</td>
                         <td>
                             <select data-id="${docSnap.id}">
+                                <option value="Paid/Pending" ${order.status === "Paid/Pending" || order.status === "Paid" ? "selected" : ""}>Paid/Pending</option>
                                 <option value="Pending" ${order.status === "Pending" ? "selected" : ""}>Pending</option>
                                 <option value="Shipped" ${order.status === "Shipped" ? "selected" : ""}>Shipped</option>
                                 <option value="Delivered" ${order.status === "Delivered" ? "selected" : ""}>Delivered</option>
