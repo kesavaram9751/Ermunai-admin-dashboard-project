@@ -103,7 +103,7 @@
       font-size: 1.5rem;
     }
 
-    .logout-btn {
+    .logoutBtn {
       background: #ff5f5f;
       color: white;
       border: none;
@@ -112,7 +112,7 @@
       cursor: pointer;
     }
 
-    .logout-btn:hover {
+    .logoutBtn:hover {
       background: #e65050;
     }
 
@@ -241,7 +241,7 @@
     <header>
       <img src="logo.jpg" alt="Erumunai Logo" class="logo" />
       <h1>Settings</h1>
-      <button class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+      <button class="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
     </header>
 
     <div class="content">
@@ -319,6 +319,16 @@
       await setDoc(doc(db, "settings", "notifications"), { email, whatsapp });
       alert("Notification settings saved!");
     };
+    // Logout button
+        logoutBtn.addEventListener("click", async () => {
+            try {
+                await signOut(auth);
+                alert("Logged out");
+                console.log("Signed out");
+            } catch (e) {
+                console.error("Sign out error:", e);
+            }
+        });
   </script>
 </body>
 
