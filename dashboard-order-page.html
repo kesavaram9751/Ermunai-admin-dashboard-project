@@ -2,9 +2,11 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Erumunai Admin — Orders</title>
+
+  <!-- icons / fonts -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     crossorigin="anonymous" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -17,206 +19,156 @@
       --bg: #f7f7f7;
       --white: #fff;
       --radius: 8px;
-      --transition: 0.3s ease;
-      --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      --transition: 0.25s;
     }
 
     * {
-      margin: 0;
-      padding: 0;
       box-sizing: border-box;
+      margin: 0;
+      padding: 0
     }
 
     body {
-      font-family: "Inter", sans-serif;
-      color: var(--text);
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
       background: var(--bg);
+      color: var(--text);
       display: flex;
-      height: 100vh;
+      min-height: 100vh;
       overflow: hidden;
     }
 
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-
+    /* Sidebar */
     .sidebar {
       width: 250px;
       background: var(--primary);
       color: var(--white);
+      padding: 24px 12px;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      padding: 2rem 1rem;
-      border-top-right-radius: var(--radius);
-      border-bottom-right-radius: var(--radius);
+      align-items: flex-start;
+      gap: 8px;
     }
 
     .sidebar h2 {
-      margin-bottom: 2rem;
-      font-size: 1.25rem;
-      font-weight: 700;
+      font-size: 18px;
+      margin-bottom: 8px;
+      font-weight: 700
     }
 
     .nav {
       list-style: none;
-      width: 100%;
-    }
-
-    .nav li+li {
-      margin-top: 1rem;
+      width: 100%
     }
 
     .nav a {
       display: flex;
       align-items: center;
       gap: 10px;
-      padding: 0.75rem 1rem;
-      border-radius: var(--radius);
-      transition: background var(--transition);
+      padding: 10px;
+      border-radius: 8px;
+      color: inherit;
+      text-decoration: none;
       font-weight: 600;
     }
 
-    .nav a:hover,
-    .nav a.active {
+    .nav a.active,
+    .nav a:hover {
       background: var(--accent);
-      color: var(--text);
-      box-shadow: var(--shadow);
+      color: #222;
+      box-shadow: var(--shadow)
     }
 
+    /* Main */
     .main {
       flex: 1;
-      background: #f7f7f7;
-      padding: 2rem;
-      overflow-y: auto;
+      padding: 24px;
+      overflow: auto
     }
 
     .main h1 {
-      color: #386144;
-      margin-bottom: 1.5rem;
-      font-weight: 700;
-      letter-spacing: -0.5px;
+      color: var(--primary);
+      margin-bottom: 12px
     }
 
+    /* Status message */
     #statusMessage {
-      padding: 12px;
-      margin-bottom: 1.5rem;
-      border-radius: var(--radius);
-      font-weight: 600;
       display: none;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      font-weight: 600
     }
 
-    .success {
+    #statusMessage.success {
       background: #d4edda;
       color: #155724;
       border: 1px solid #c3e6cb;
+      display: block
     }
 
-    .error {
+    #statusMessage.error {
       background: #f8d7da;
       color: #721c24;
       border: 1px solid #f5c6cb;
+      display: block
     }
 
     table {
       width: 100%;
-      border-collapse: separate;
-      border-spacing: 0;
+      border-collapse: collapse;
       background: var(--white);
       box-shadow: var(--shadow);
       border-radius: 8px;
       overflow: hidden;
+      font-size: 13px;
     }
 
     thead {
       background: var(--primary);
-      color: var(--white);
+      color: #fff
     }
 
     th,
     td {
-      padding: 12px 15px;
+      padding: 12px 14px;
       text-align: left;
       border-bottom: 1px solid #eee;
-      vertical-align: middle;
-    }
-
-    thead th:first-child {
-      border-top-left-radius: 8px;
-    }
-
-    thead th:last-child {
-      border-top-right-radius: 8px;
+      vertical-align: top
     }
 
     tbody tr:hover {
-      background: #fafafa;
+      background: #fafafa
     }
 
-    tbody tr:last-child td {
-      border-bottom: none;
+    .products-list {
+      font-size: 0.92rem;
+      color: #333;
+      white-space: pre-wrap
     }
 
     select {
       padding: 6px;
       border-radius: 6px;
       border: 1px solid #ccc;
-      cursor: pointer;
-      background-color: var(--white);
-      transition: border-color var(--transition);
+      cursor: pointer
     }
 
-    select:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 2px rgba(74, 124, 89, 0.2);
-    }
-
-    .products-list {
-      font-size: 0.9rem;
-      color: #555;
-    }
-
-    @media (max-width:768px) {
+    /* Responsive */
+    @media (max-width:800px) {
       body {
-        flex-direction: column;
-        height: auto;
-        overflow-y: auto;
+        flex-direction: column
       }
 
       .sidebar {
         width: 100%;
         flex-direction: row;
         justify-content: space-around;
-        padding: 1rem;
-        border-radius: 0;
-      }
-
-      .sidebar h2 {
-        display: none;
-      }
-
-      .nav {
-        display: flex;
-        justify-content: space-between;
-        gap: 0.5rem;
-      }
-
-      .nav li+li {
-        margin-top: 0;
-      }
-
-      .nav a {
-        padding: 0.5rem;
-        font-size: 0.85rem;
-        text-align: center;
-        flex-direction: column;
-        gap: 5px;
+        padding: 12px
       }
 
       .main {
-        padding: 1rem;
+        padding: 12px
       }
 
       table,
@@ -225,60 +177,44 @@
       th,
       td,
       tr {
-        display: block;
+        display: block
       }
 
       thead {
-        display: none;
+        display: none
       }
 
       tr {
-        margin-bottom: 15px;
-        border: 1px solid #ddd;
+        margin-bottom: 12px;
+        border: 1px solid #eee;
         border-radius: 8px;
+        padding: 10px;
+        background: #fff
       }
 
       td {
-        text-align: right;
-        padding-left: 50%;
+        padding: 6px 10px 6px 110px;
         position: relative;
-        border: none;
+        border-bottom: 0;
+        text-align: right
       }
 
       td:before {
         content: attr(data-label);
         position: absolute;
-        left: 10px;
-        width: calc(50% - 20px);
-        padding-right: 10px;
-        white-space: nowrap;
-        text-align: left;
-        font-weight: 600;
+        left: 12px;
+        top: 8px;
+        width: 86px;
+        font-weight: 700;
         color: var(--primary);
+        text-align: left;
       }
 
       .products-list {
-        text-align: right;
-      }
-
-      select {
-        width: 100%;
+        text-align: right
       }
     }
   </style>
-
-  <!-- Firebase config & app ID -->
-  <script>
-    const __firebase_config = JSON.stringify({
-      apiKey: "AIzaSyCbfdG2XU302FuZx0MapVTRmb3Qtaa-hA8",
-      authDomain: "ermunai-e-commerce-project.firebaseapp.com",
-      projectId: "ermunai-e-commerce-project",
-      storageBucket: "ermunai-e-commerce-project.appspot.com",
-      messagingSenderId: "365240050790",
-      appId: "1:365240050790:web:2d4867d6ab4f93a661f9a7"
-    });
-    const __app_id = "ermunai-dashboard";
-  </script>
 </head>
 
 <body>
@@ -287,23 +223,25 @@
     <ul class="nav">
       <li><a href="admin-dashboard.html" data-page="dashboard"><i class="fas fa-home"></i> Dashboard</a></li>
       <li><a href="dashboard-product-page.html" data-page="products"><i class="fas fa-box"></i> Products</a></li>
-      <li><a href="#" data-page="orders" class="active"><i class="fas fa-clipboard-list"></i> Orders</a></li>
+      <li><a href="dashboard-order-page.html" data-page="orders" class="active"><i class="fas fa-clipboard-list"></i>
+          Orders</a></li>
       <li><a href="dashboard-setting.html" data-page="settings"><i class="fas fa-cog"></i> Settings</a></li>
     </ul>
   </aside>
 
   <div class="main">
     <h1>Customer Orders</h1>
+
     <div id="statusMessage"></div>
 
     <table>
       <thead>
         <tr>
           <th>Order ID</th>
-          <th>Customer (User ID)</th>
+          <th>Customer</th>
+          <th>Phone</th>
           <th>Address</th>
-          <th>Total Amount</th>
-          <th>Contact Number</th>
+          <th>Payment / Total</th>
           <th>Date</th>
           <th>Products</th>
           <th>Status</th>
@@ -311,161 +249,127 @@
       </thead>
       <tbody id="ordersTable">
         <tr>
-          <td colspan="8" style="text-align:center; padding:20px;">
-            <i class="fas fa-circle-notch fa-spin"></i> Initializing Firebase and loading authentication...
-          </td>
+          <td colspan="8" style="text-align:center;padding:20px">⏳ Loading orders…</td>
         </tr>
       </tbody>
     </table>
-
   </div>
 
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getFirestore, collection, getDocs, updateDoc, doc, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-    import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    // Firebase v10 modular imports
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, collection, getDocs, updateDoc, doc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-    setLogLevel('Debug');
+    // Paste your Firebase config here (kept same as your provided config)
+    const firebaseConfig = {
+      apiKey: "AIzaSyCbfdG2XU302FuZx0MapVTRmb3Qtaa-hA8",
+      authDomain: "ermunai-e-commerce-project.firebaseapp.com",
+      projectId: "ermunai-e-commerce-project",
+      storageBucket: "ermunai-e-commerce-project.appspot.com",
+      messagingSenderId: "365240050790",
+      appId: "1:365240050790:web:2d4867d6ab4f93a661f9a7"
+    };
 
-    const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-    const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
-    const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-
-    if (Object.keys(firebaseConfig).length === 0) {
-      console.error("FATAL: Firebase configuration is missing.");
-      document.getElementById("ordersTable").innerHTML =
-        `<tr><td colspan="8" style="text-align:center; color:red; padding:20px;">⚠️ Firebase configuration error.</td></tr>`;
+    // Basic safety: ensure config present
+    if (!firebaseConfig || !firebaseConfig.projectId) {
+      document.getElementById('ordersTable').innerHTML = '<tr><td colspan="8" style="text-align:center;color:red;padding:20px">⚠️ Firebase configuration missing.</td></tr>';
+      throw new Error('Missing Firebase config');
     }
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const auth = getAuth(app);
 
-    const ordersTable = document.getElementById("ordersTable");
-    const statusMessage = document.getElementById("statusMessage");
+    const ordersTable = document.getElementById('ordersTable');
+    const statusMessage = document.getElementById('statusMessage');
 
-    function showStatus(message, type) {
+    function showStatus(message, kind = 'success') {
       statusMessage.textContent = message;
-      statusMessage.className = type;
+      statusMessage.className = kind;
       statusMessage.style.display = 'block';
-      setTimeout(() => {
-        statusMessage.style.display = 'none';
-      }, 5000);
+      setTimeout(() => statusMessage.style.display = 'none', 5000);
     }
 
-    async function setupAuth() {
-      try {
-        if (initialAuthToken) {
-          await signInWithCustomToken(auth, initialAuthToken);
-        } else {
-          await signInAnonymously(auth);
-        }
-        console.log("✅ Auth setup done");
-      } catch (error) {
-        console.error("❌ Authentication failed:", error);
-      }
-    }
+    const formatDate = (value) => {
+      if (!value) return 'N/A';
+      // Firestore Timestamp (has seconds property)
+      if (typeof value.seconds === 'number') return new Date(value.seconds * 1000).toLocaleString();
+      if (typeof value === 'number') return new Date(value).toLocaleString();
+      return value.toString();
+    };
 
+    // load orders — sorts by datePlaced (descending)
     async function loadOrders() {
-      ordersTable.innerHTML =
-        `<tr><td colspan="8" style="text-align:center; padding:20px;">
-          <i class="fas fa-circle-notch fa-spin"></i> Loading orders...
-        </td></tr>`;
-
+      ordersTable.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:20px"><i class="fas fa-circle-notch fa-spin"></i> Loading orders...</td></tr>';
       try {
-        const querySnapshot = await getDocs(collection(db, "orders"));
-        ordersTable.innerHTML = "";
-        if (querySnapshot.empty) {
-          ordersTable.innerHTML =
-            `<tr><td colspan="8" style="text-align:center; padding:20px;">🚫 No orders found</td></tr>`;
+        const ordersRef = collection(db, 'orders');
+        const q = query(ordersRef, orderBy('datePlaced', 'desc'));
+        const snap = await getDocs(q);
+
+        if (snap.empty) {
+          ordersTable.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:20px">🚫 No orders found</td></tr>';
           return;
         }
 
-        querySnapshot.forEach(docSnap => {
-          const order = docSnap.data();
+        ordersTable.innerHTML = '';
+        snap.forEach(docSnap => {
+          const o = docSnap.data();
+          const itemsHtml = Array.isArray(o.items) ? o.items.map(i => `${i.name} (x${i.quantity})`).join('<br>') : 'No items';
+          const tr = document.createElement('tr');
 
-          // Handle datePlaced field
-          const rawDate = order.datePlaced;
-          let dateDisplay = 'N/A';
-          if (rawDate) {
-            if (typeof rawDate === 'string') {
-              dateDisplay = rawDate;
-            } else if (rawDate.toDate) {
-              dateDisplay = new Date(rawDate.toDate()).toLocaleString();
-            } else if (rawDate instanceof Date) {
-              dateDisplay = rawDate.toLocaleString();
-            } else if (typeof rawDate === 'number') {
-              dateDisplay = new Date(rawDate).toLocaleString();
-            }
-          }
-
-          const itemsHtml = order.items && Array.isArray(order.items)
-            ? order.items.map(i => `${i.name} (x${i.quantity})`).join("<br>")
-            : "No items";
-
-          const tr = document.createElement("tr");
           tr.innerHTML = `
-            <td data-label="Order ID">${docSnap.id.substring(0, 8)}...</td>
-            <td data-label="Customer ID">${order.customerName || "N/A"} (ID: ${order.userId ? order.userId.substring(0, 8) + '...' : 'N/A'})</td>
-            <td data-label="Address">${order.address || "N/A"}</td>
-            <td data-label="Total Amount">₹${order.totalAmount != null ? order.totalAmount : "N/A"}</td>
-            <td data-label="Contact Number">${order.phone || "N/A"}</td>
-            <td data-label="Date">${dateDisplay}</td>
+            <td data-label="Order ID">${docSnap.id}</td>
+            <td data-label="Customer">${o.customerName || 'N/A'}${o.userId ? ' (ID:' + o.userId.slice(0, 8) + '...)' : ''}</td>
+            <td data-label="Phone">${o.phone || 'N/A'}</td>
+            <td data-label="Address">${o.address || 'N/A'}</td>
+            <td data-label="Payment / Total">${o.paymentStatus || 'N/A'} - ₹${o.totalAmount ?? 0}</td>
+            <td data-label="Date">${formatDate(o.datePlaced)}</td>
             <td data-label="Products" class="products-list">${itemsHtml}</td>
             <td data-label="Status">
-              <select data-id="${docSnap.id}" data-current-status="${order.status}">
-                <option value="Pending" ${order.status === "Pending" ? "selected" : ""}>Pending</option>
-                <option value="Shipped" ${order.status === "Shipped" ? "selected" : ""}>Shipped</option>
-                <option value="Delivered" ${order.status === "Delivered" ? "selected" : ""}>Delivered</option>
-                <option value="Cancelled" ${order.status === "Cancelled" ? "selected" : ""}>Cancelled</option>
+              <select data-id="${docSnap.id}">
+                <option value="Pending" ${o.status === 'Pending' ? 'selected' : ''}>Pending</option>
+                <option value="Shipped" ${o.status === 'Shipped' ? 'selected' : ''}>Shipped</option>
+                <option value="Delivered" ${o.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
+                <option value="Cancelled" ${o.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
               </select>
             </td>
           `;
           ordersTable.appendChild(tr);
         });
 
-        document.querySelectorAll("select").forEach(sel => {
-          sel.addEventListener("change", async (e) => {
+        // attach listeners for status selects
+        document.querySelectorAll('select[data-id]').forEach(sel => {
+          sel.addEventListener('change', async (e) => {
             const id = e.target.dataset.id;
             const newStatus = e.target.value;
-            const previousStatus = e.target.dataset.currentStatus;
-
-            if (newStatus === previousStatus) return;
-
-            showStatus(`Updating order ${id.substring(0, 8)}... to ${newStatus}...`, 'success');
-
+            showStatus(`Updating ${id} → ${newStatus}...`, 'success');
             try {
-              await updateDoc(doc(db, "orders", id), { status: newStatus });
-              e.target.dataset.currentStatus = newStatus;
-              showStatus(`✅ Order ${id.substring(0, 8)}… status updated to ${newStatus}`, 'success');
-            } catch (error) {
-              console.error("❌ Error updating order status:", error);
-              e.target.value = previousStatus;
-              showStatus(`❌ Failed to update order ${id.substring(0, 8)} status. Check console.`, 'error');
+              await updateDoc(doc(db, 'orders', id), { status: newStatus, updatedAt: Date.now() });
+              showStatus(`✅ Order ${id} updated to ${newStatus}`, 'success');
+            } catch (err) {
+              console.error('Update failed', err);
+              showStatus('❌ Failed to update order. See console.', 'error');
             }
           });
         });
 
-      } catch (error) {
-        console.error("❌ Error loading orders:", error);
-        ordersTable.innerHTML =
-          `<tr><td colspan="8" style="text-align:center; color:red; padding:20px;">
-            ⚠️ Access Denied or Error loading orders.
-          </td></tr>`;
-        showStatus('❌ Failed to load orders. Check console for details.', 'error');
+      } catch (err) {
+        console.error('Failed to load orders', err);
+        ordersTable.innerHTML = '<tr><td colspan="8" style="text-align:center;color:red;padding:20px">⚠️ Error loading orders (check console)</td></tr>';
+        showStatus('❌ Failed to load orders. See console for details.', 'error');
       }
     }
 
+    // require auth before loading orders — adjust to your auth flow if needed
     onAuthStateChanged(auth, (user) => {
       if (user) {
         loadOrders();
       } else {
-        ordersTable.innerHTML =
-          `<tr><td colspan="8" style="text-align:center; padding:20px;">🚫 Please wait while we authenticate...</td></tr>`;
+        // if your admin is not required to login via Firebase auth, call loadOrders() directly.
+        ordersTable.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:20px">🚫 Not authenticated — log in as admin to load orders</td></tr>';
       }
     });
-
-    setupAuth();
   </script>
 </body>
 
