@@ -123,6 +123,7 @@
             margin-bottom: 1rem;
             display: flex;
             gap: 0.5rem;
+            flex-wrap: wrap;
         }
 
         .filter-btn {
@@ -158,13 +159,18 @@
 
         .product-card {
             width: 220px;
-            /* ✅ fixed width per card */
             max-width: 100%;
             background: var(--white);
             padding: 1rem;
             border-radius: var(--radius);
             box-shadow: var(--shadow);
             text-align: center;
+            transition: transform var(--transition);
+        }
+
+        .product-card.disabled {
+            opacity: 0.5;
+            filter: grayscale(0.2);
         }
 
         .product-card img {
@@ -217,34 +223,56 @@
             background: rgba(0, 0, 0, 0.6);
             justify-content: center;
             align-items: center;
+            padding: 1rem;
         }
 
+        /* new modal layout: image left, form right */
         .modal-content {
             background: var(--white);
-            padding: 1.5rem;
+            padding: 1rem;
             border-radius: var(--radius);
-            width: 400px;
-            max-width: 95%;
+            width: 800px;
+            max-width: 100%;
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
         }
 
-        .modal-content label {
+        .modal-image {
+            width: 45%;
+        }
+
+        .modal-image img {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            border-radius: var(--radius);
+            display: block;
+        }
+
+        .modal-form {
+            width: 55%;
+        }
+
+        .modal-form label {
             display: block;
             margin: 0.5rem 0 0.25rem;
         }
 
-        .modal-content input,
-        .modal-content textarea,
-        .modal-content select {
+        .modal-form input,
+        .modal-form textarea,
+        .modal-form select {
             width: 100%;
             padding: 0.5rem;
             border: 1px solid #ccc;
             border-radius: var(--radius);
+            margin-bottom: 0.5rem;
         }
 
         .modal-actions {
             display: flex;
             justify-content: space-between;
-            margin-top: 1rem;
+            margin-top: 0.5rem;
         }
 
         .save-btn,
@@ -262,6 +290,11 @@
 
         .cancel-btn {
             background: #ccc;
+        }
+
+        .small-muted {
+            font-size: 0.85rem;
+            color: #666;
         }
     </style>
 </head>
@@ -298,6 +331,7 @@
                     <button class="filter-btn" data-category="idliPodi">Idli Podi's</button>
                     <button class="filter-btn" data-category="instant">Instant Products</button>
                     <button class="filter-btn" data-category="herbal">Herbal Products</button>
+                    <button class="filter-btn" data-category="disabled">Disabled</button>
                 </div>
 
                 <!-- Add Product -->
@@ -309,40 +343,59 @@
         </div>
     </div>
 
-    <!-- Add/Edit Product Modal -->
+    <!-- Add/Edit Product Modal (new layout) -->
     <div class="modal" id="productModal">
         <div class="modal-content">
-            <h2 id="modalTitle">Add Product</h2>
-            <form id="productForm">
-                <input type="hidden" id="productId" />
-                <label>Upload Product Image</label>
-                <input type="file" id="productImageFile" accept="image/*" />
-                <label>Name</label>
-                <input type="text" id="productName" required />
-                <label>Price (₹)</label>
-                <input type="number" id="productPrice" required />
-                <label>Discount (%)</label>
-                <input type="number" id="productDiscount" />
-                <label>Available Stock</label>
-                <input type="number" id="productStock" required />
-                <label>Description</label>
-                <textarea id="productDescription" rows="3"></textarea>
-                <label>Shipping Charge (₹)</label>
-                <input type="number" id="productShipping" />
-                <label>Category</label>
-                <select id="productCategory" required>
-                    <option value="readyToCookMixes">Ready-to-Cook Instant Mixes</option>
-                    <option value="instantSoup">Instant Soup Mix</option>
-                    <option value="idliPodi">Idli Podi's</option>
-                    <option value="instant">Instant Products</option>
-                    <option value="herbal">Herbal Products</option>
-                </select>
 
-                <div class="modal-actions">
-                    <button type="submit" class="save-btn">Save</button>
-                    <button type="button" id="closeModal" class="cancel-btn">Cancel</button>
+            <div class="modal-image">
+                <label class="small-muted">Current Image (if any)</label>
+                <img id="imagePreview" src="" alt="preview" style="display:none" />
+                <div class="small-muted">Leave image input empty to keep existing image.</div>
+                <div style="margin-top:0.5rem">
+                    <label>Upload Product Image</label>
+                    <input type="file" id="productImageFile" accept="image/*" />
                 </div>
-            </form>
+            </div>
+
+            <div class="modal-form">
+                <h2 id="modalTitle">Add Product</h2>
+                <form id="productForm">
+                    <input type="hidden" id="productId" />
+
+                    <label>Name</label>
+                    <input type="text" id="productName" required />
+
+                    <label>Price (₹)</label>
+                    <input type="number" id="productPrice" required />
+
+                    <label>Discount (%)</label>
+                    <input type="number" id="productDiscount" />
+
+                    <label>Available Stock</label>
+                    <input type="number" id="productStock" required />
+
+                    <label>Description</label>
+                    <textarea id="productDescription" rows="4"></textarea>
+
+                    <label>Category</label>
+                    <select id="productCategory" required>
+                        <option value="readyToCookMixes">Ready-to-Cook Instant Mixes</option>
+                        <option value="instantSoup">Instant Soup Mix</option>
+                        <option value="idliPodi">Idli Podi's</option>
+                        <option value="instant">Instant Products</option>
+                        <option value="herbal">Herbal Products</option>
+                    </select>
+
+                    <label style="margin-top:0.5rem"><input type="checkbox" id="productDisabled" /> Disable product
+                        (hide from shop)</label>
+
+                    <div class="modal-actions">
+                        <button type="submit" class="save-btn">Save</button>
+                        <button type="button" id="closeModal" class="cancel-btn">Cancel</button>
+                    </div>
+                </form>
+            </div>
+
         </div>
     </div>
 
@@ -367,8 +420,8 @@
         import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
         // ---------- CONFIG ----------
-        const ADMIN_EMAIL = "ermunai.12543@gmail.com";
-        const ADMIN_PASSWORD = "admin.12543"; // ← replace for testing (or leave and use login form)
+        const ADMIN_EMAIL = "ermunaiorganicfarm@gmail.com";
+        const ADMIN_PASSWORD = "foods1125$"; // ← replace for testing (or leave and use login form)
         // Firebase config (keep your current values)
         const firebaseConfig = {
             apiKey: "AIzaSyCbfdG2XU302FuZx0MapVTRmb3Qtaa-hA8",
@@ -398,13 +451,16 @@
         const addProductBtn = document.getElementById("addProductBtn");
         const productForm = document.getElementById("productForm");
         const logoutBtn = document.querySelector(".logout-btn");
+        const imagePreview = document.getElementById("imagePreview");
+        const productImageFile = document.getElementById("productImageFile");
 
         let currentProductId = null;
         let isAdmin = false;
+        let editingExistingImageUrl = ""; // <-- store existing image when editing
 
         // ---------- AUTH HELPERS ----------
         async function loginAdminIfPasswordProvided() {
-            if (!ADMIN_PASSWORD || ADMIN_PASSWORD === "REPLACE_WITH_ADMIN_PASSWORD") {
+            if (!ADMIN_PASSWORD || ADMIN_PASSWORD === "foods1125$") {
                 console.warn("ADMIN_PASSWORD not set. Skipping auto-login. Use login form or set ADMIN_PASSWORD for testing.");
                 return;
             }
@@ -414,7 +470,7 @@
                 console.log("Auto-login success:", cred.user.email, "uid:", cred.user.uid);
             } catch (err) {
                 console.error("Auto-login failed:", err);
-                alert("Auto login failed: " + err.message);
+                // don't alert in production
             }
         }
 
@@ -450,22 +506,36 @@
         // ---------- UI behavior ----------
         addProductBtn.onclick = () => {
             currentProductId = null;
+            editingExistingImageUrl = "";
             productForm.reset();
+            imagePreview.style.display = "none";
             document.getElementById("modalTitle").textContent = "Add Product";
             productModal.style.display = "flex";
         };
         closeModalBtn.onclick = () => productModal.style.display = "none";
 
-        // ---------- Save Product (with auth checks + error messages) ----------
+        // show preview when file selected
+        productImageFile.addEventListener('change', (e) => {
+            const f = e.target.files[0];
+            if (f) {
+                const url = URL.createObjectURL(f);
+                imagePreview.src = url;
+                imagePreview.style.display = 'block';
+            } else if (editingExistingImageUrl) {
+                imagePreview.src = editingExistingImageUrl;
+                imagePreview.style.display = 'block';
+            } else {
+                imagePreview.style.display = 'none';
+            }
+        });
+
+        // ---------- Save Product (with auth checks + keep previous image if not changed) ----------
         productForm.onsubmit = async (e) => {
             e.preventDefault();
 
-            // 1) Ensure current user is admin BEFORE trying to upload or write
             const user = auth.currentUser;
             if (!user) {
                 alert("⚠️ Please login as admin to add products.");
-                // Optionally attempt auto-login again:
-                // await loginAdminIfPasswordProvided();
                 return;
             }
             if (user.email !== ADMIN_EMAIL) {
@@ -473,9 +543,9 @@
                 return;
             }
 
-            // 2) Upload image (Supabase)
-            const file = document.getElementById("productImageFile").files[0];
-            let imageUrl = "";
+            // 1) Determine image URL: if a new file selected upload it, otherwise keep editingExistingImageUrl
+            const file = productImageFile.files[0];
+            let imageUrl = editingExistingImageUrl || "";
             if (file) {
                 try {
                     const fileName = `products/${Date.now()}-${file.name}`;
@@ -494,7 +564,7 @@
                 }
             }
 
-            // 3) Prepare product data and write to Firestore
+            // 2) Prepare product data and write to Firestore (preserve existing fields when appropriate)
             const productData = {
                 image: imageUrl,
                 name: document.getElementById("productName").value,
@@ -502,10 +572,10 @@
                 discount: parseFloat(document.getElementById("productDiscount").value) || 0,
                 stock: parseInt(document.getElementById("productStock").value),
                 description: document.getElementById("productDescription").value,
-                shipping: parseFloat(document.getElementById("productShipping").value) || 0,
                 category: document.getElementById("productCategory").value,
-                createdBy: user.uid, // helpful metadata to debug rules
-                createdAt: new Date().toISOString()
+                disabled: document.getElementById("productDisabled").checked,
+                updatedBy: user.uid,
+                updatedAt: new Date().toISOString()
             };
 
             try {
@@ -513,16 +583,19 @@
                     const productDoc = doc(db, "products", currentProductId);
                     await updateDoc(productDoc, productData);
                 } else {
+                    // when creating new product, add createdAt + createdBy
+                    productData.createdAt = new Date().toISOString();
+                    productData.createdBy = user.uid;
                     await addDoc(productRef, productData);
                 }
                 productModal.style.display = "none";
-                loadProducts();
+                // Clear file input and editing image
+                productImageFile.value = '';
+                editingExistingImageUrl = "";
+                loadProducts(getCurrentFilterCategory());
             } catch (err) {
                 console.error("Firestore write failed:", err);
-                alert("Firestore write failed: " + err.message + "\nSigned-in user: " + (user.email || user.uid));
-                // If permission denied, you'll get a clear error message here:
-                // - Check your Firestore rules
-                // - Consider using UID check rather than email check (see notes below)
+                alert("Firestore write failed: " + err.message + "Signed-in user: " + (user.email || user.uid));
             }
         };
 
@@ -533,32 +606,57 @@
                 const snapshot = await getDocs(productRef);
                 snapshot.forEach(docSnap => {
                     const p = docSnap.data();
-                    if (category === "all" || p.category === category) {
+
+                    // treat missing disabled as false
+                    const isDisabled = !!p.disabled;
+
+                    const matchesCategory = (category === 'all')
+                        || (category === 'disabled' && isDisabled)
+                        || (category !== 'disabled' && category !== 'all' && p.category === category)
+                        || (category === 'all');
+
+                    if (matchesCategory) {
                         const card = document.createElement("div");
-                        card.className = "product-card";
+                        card.className = 'product-card' + (isDisabled ? ' disabled' : '');
                         card.innerHTML = `
-            <img src="${p.image}" alt="${p.name}" />
+            <img src="${p.image || 'https://via.placeholder.com/220x150?text=No+Image'}" alt="${p.name}" />
             <h3>${p.name}</h3>
             <p>₹${p.price} (${p.discount}% off)</p>
             <p>Stock: ${p.stock}</p>
             <div class="card-actions">
-              <button class="edit-btn"><i class="fas fa-edit"></i></button>
-              <button class="delete-btn"><i class="fas fa-trash"></i></button>
+              <button class="edit-btn" title="Edit"><i class="fas fa-edit"></i></button>
+              <button class="delete-btn" title="Delete"><i class="fas fa-trash"></i></button>
+              <button class="toggle-btn" title="Toggle disable"><i class="fas fa-toggle-on"></i></button>
             </div>
           `;
+
                         // Edit
                         card.querySelector(".edit-btn").onclick = () => {
                             currentProductId = docSnap.id;
                             document.getElementById("modalTitle").textContent = "Edit Product";
-                            document.getElementById("productName").value = p.name;
-                            document.getElementById("productPrice").value = p.price;
-                            document.getElementById("productDiscount").value = p.discount;
-                            document.getElementById("productStock").value = p.stock;
-                            document.getElementById("productDescription").value = p.description;
-                            document.getElementById("productShipping").value = p.shipping;
-                            document.getElementById("productCategory").value = p.category;
+                            document.getElementById("productName").value = p.name || "";
+                            document.getElementById("productPrice").value = p.price || 0;
+                            document.getElementById("productDiscount").value = p.discount || 0;
+                            document.getElementById("productStock").value = p.stock || 0;
+                            document.getElementById("productDescription").value = p.description || "";
+                            document.getElementById("productCategory").value = p.category || 'readyToCookMixes';
+                            document.getElementById("productDisabled").checked = !!p.disabled;
+
+                            // show existing image preview and remember it
+                            editingExistingImageUrl = p.image || "";
+                            if (editingExistingImageUrl) {
+                                imagePreview.src = editingExistingImageUrl;
+                                imagePreview.style.display = 'block';
+                            } else {
+                                imagePreview.style.display = 'none';
+                            }
+
+                            // clear file input so it's empty unless user chooses new file
+                            productImageFile.value = '';
+
                             productModal.style.display = "flex";
                         };
+
                         // Delete
                         card.querySelector(".delete-btn").onclick = async () => {
                             if (confirm(`Delete product "${p.name}"?`)) {
@@ -566,6 +664,19 @@
                                 loadProducts(category);
                             }
                         };
+
+                        // Toggle disable (quick action)
+                        card.querySelector('.toggle-btn').onclick = async () => {
+                            try {
+                                const productDoc = doc(db, "products", docSnap.id);
+                                await updateDoc(productDoc, { disabled: !isDisabled, updatedAt: new Date().toISOString() });
+                                loadProducts(getCurrentFilterCategory());
+                            } catch (err) {
+                                console.error('Toggle disable failed:', err);
+                                alert('Failed to toggle disable: ' + err.message);
+                            }
+                        };
+
                         productList.appendChild(card);
                     }
                 });
@@ -576,6 +687,11 @@
         }
 
         // filters
+        function getCurrentFilterCategory() {
+            const active = document.querySelector('.filter-btn.active');
+            return active ? active.dataset.category : 'all';
+        }
+
         document.querySelectorAll(".filter-btn").forEach(btn => {
             btn.onclick = () => {
                 document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
