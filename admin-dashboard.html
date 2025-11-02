@@ -242,6 +242,7 @@
 
     <!-- Firestore Integration -->
     <script type="module">
+        // Firestore integration & other setup remains unchanged
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
         import {
             getFirestore, collection, onSnapshot
@@ -302,30 +303,42 @@
                 const productAgg = new Map();
 
                 orders.forEach(o => {
-                    totalRevenue += parseFloat(o.amount) || 0;
+                    // Use totalAmount if available, else fallback to amount
+                    const revenue = parseFloat(o.totalAmount) || parseFloat(o.amount) || 0;
+                    totalRevenue += revenue;
+
                     const date = toDate(o.date) || new Date();
                     const m = date.getMonth();
                     monthlyOrders[m] += 1;
-                    monthlyRevenue[m] += parseFloat(o.amount) || 0;
+                    monthlyRevenue[m] += revenue;
 
+                    // Build items array: supports array in o.items or numeric keys
+                    let itemsArray = [];
                     if (Array.isArray(o.items)) {
-                        o.items.forEach(it => {
-                            const name = (it.name || "").replace(/(^"+|"+$)/g, "") || "Unknown";
-                            const qty = Number(it.quantity) || 1;
-                            const productDoc = productsMap.get(name) || {};
-                            const price = Number(productDoc.amount ?? productDoc.price ?? it.price ?? 0);
-                            const revenue = price * qty;
-
-                            const entry = productAgg.get(name) || { qty: 0, revenue: 0, stock: productDoc.stock ?? "—" };
-                            entry.qty += qty;
-                            entry.revenue += revenue;
-                            entry.stock = productDoc.stock ?? entry.stock;
-                            productAgg.set(name, entry);
+                        itemsArray = o.items;
+                    } else {
+                        Object.keys(o).forEach(k => {
+                            if (!isNaN(k)) {  // numeric field keys like "0", "1"
+                                itemsArray.push(o[k]);
+                            }
                         });
                     }
+
+                    itemsArray.forEach(it => {
+                        const name = (it.name || "").replace(/(^"+|"+$)/g, "") || "Unknown";
+                        const qty = Number(it.quantity) || 1;
+                        const productDoc = productsMap.get(name) || {};
+                        const price = Number(productDoc.amount ?? productDoc.price ?? it.price ?? 0);
+                        const rev = price * qty;
+
+                        const entry = productAgg.get(name) || { qty: 0, revenue: 0, stock: productDoc.stock ?? "—" };
+                        entry.qty += qty;
+                        entry.revenue += rev;
+                        entry.stock = productDoc.stock ?? entry.stock;
+                        productAgg.set(name, entry);
+                    });
                 });
 
-                // only 3 cards now
                 renderSummary([
                     { label: "Total Revenue (₹)", value: totalRevenue.toFixed(0), sub: "" },
                     { label: "Total Orders", value: totalOrders, sub: "" },
@@ -345,7 +358,6 @@
                     }))
                     .sort((a, b) => b.sold - a.sold)
                     .slice(0, 10);
-
                 renderProductsTable(topProducts);
 
                 orders.sort((a, b) => (toDate(b.date) || 0) - (toDate(a.date) || 0));
@@ -359,8 +371,8 @@
                 const div = document.createElement("div");
                 div.className = "card";
                 div.innerHTML = `<div style="font-weight:600;margin-bottom:.4rem">${it.label}</div>
-                     <div class="value">${it.value}</div>
-                     <div style="color:#666;font-size:.85rem">${it.sub || ""}</div>`;
+                         <div class="value">${it.value}</div>
+                         <div style="color:#666;font-size:.85rem">${it.sub || ""}</div>`;
                 summaryContainer.appendChild(div);
             });
         }
@@ -386,7 +398,7 @@
             }
             list.forEach(o => {
                 const cust = o.customerName || o.customer || "—";
-                const amount = Number(o.amount) ? Number(o.amount).toFixed(2) : o.amount || "0.00";
+                const amount = Number(o.totalAmount)?.toFixed(2) || o.amount || "0.00";
                 const tr = document.createElement("tr");
                 tr.innerHTML = `<td>${o.id}</td><td>${cust}</td><td>${o.status || "—"}</td><td>${amount}</td>`;
                 ordersTable.appendChild(tr);
@@ -400,7 +412,7 @@
                 chartRef.update();
                 return;
             }
-            const cfg = {
+            const config = {
                 type,
                 data: {
                     labels,
@@ -415,7 +427,7 @@
                 },
                 options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
             };
-            const ch = new Chart(ctx, cfg);
+            const ch = new Chart(ctx, config);
             setter && setter(ch);
         }
         logoutBtn.addEventListener("click", async () => {
@@ -428,9 +440,12 @@
             }
         });
 
+        // At the end of your script:
         listenProducts();
         listenOrdersAndAggregate();
+
     </script>
 
 </body>
+
 </html>
