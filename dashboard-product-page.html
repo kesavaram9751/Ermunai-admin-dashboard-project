@@ -106,20 +106,67 @@
     .card-actions button:hover { background:#f1f1f1; }
 
     .modal {
-      display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6);
-      justify-content:center; align-items:center; padding:1rem;
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: var(--white);
+  border-radius: var(--radius);
+  width: 90%;
+  max-width: 800px;         /* limit on large screens */
+  max-height: 90vh;         /* prevent overflow off screen vertically */
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+}
+
+@media (max-width: 720px) {
+  .modal-content {
+    flex-direction: column;
+    width: 100%;
+    max-width: none;
+    max-height: none;
+    height: auto;
+  }
+}
+
+
+        .modal-image {
+      width: 45%;
+      overflow: hidden;
+      /* keep image from causing scroll on outer container */
     }
 
-    /* modal: image left, form right */
-    .modal-content {
-      background: var(--white); padding: 1rem; border-radius: var(--radius);
-      width: 800px; max-width: 100%; display:flex; gap:1rem; align-items:flex-start;
+    .modal-image img {
+      width: 100%;
+      height: 320px;
+      object-fit: cover;
+      border-radius: var(--radius);
+      display: block;
     }
 
-    .modal-image { width:45%; }
-    .modal-image img { width:100%; height:320px; object-fit:cover; border-radius:var(--radius); display:block; }
-
-    .modal-form { width:55%; }
+    .modal-form {
+      width: 55%;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      /* allow this container to scroll if content is long */
+      max-height: calc(90vh - 3rem);
+      /* adjust so it fits inside .modal-content with padding */
+    }
     .modal-form label { display:block; margin:0.5rem 0 0.25rem; }
     .modal-form input, .modal-form textarea, .modal-form select {
       width:100%; padding:0.5rem; border:1px solid #ccc; border-radius:var(--radius); margin-bottom:0.5rem;
@@ -132,7 +179,7 @@
     .small-muted { font-size:0.85rem; color:#666; }
 
     @media (max-width:720px) {
-      .modal-content { flex-direction:column; width:100%; }
+  
       .modal-image, .modal-form { width:100% }
       .modal-image img { height:200px; }
     }
@@ -168,7 +215,7 @@
           <button class="filter-btn active" data-category="all">All</button>
           <button class="filter-btn" data-category="readyToCookMixes">Ready-to-Cook Instant Mixes</button>
           <button class="filter-btn" data-category="instantSoup">Instant Soup Mix</button>
-          <button class="filter-btn" data-category="idliPodi">Idli Podi's</button>
+          <button class="filter-btn" data-category="idliPodi">Idli Podi’s</button>
           <button class="filter-btn" data-category="instant">Ready to Serve</button>
           <button class="filter-btn" data-category="herbal">Herbal Products</button>
           <button class="filter-btn" data-category="disabled">Disabled</button>
@@ -214,6 +261,16 @@
           <label>Available Stock</label>
           <input type="number" id="productStock" required />
 
+          <!-- New: Quantity selector -->
+          <label>Quantity Type</label>
+          <div style="display:flex; gap:1rem; margin-bottom:0.5rem;">
+            <label><input type="radio" name="quantityType" value="g" required /> Grams (g)</label>
+            <label><input type="radio" name="quantityType" value="ml" /> Millilitres (ml)</label>
+          </div>
+
+          <label>Quantity (<span id="quantityUnitLabel">g</span>)</label>
+          <input type="number" id="productQuantity" required min="0" />
+
           <label>Description</label>
           <textarea id="productDescription" rows="4"></textarea>
 
@@ -221,7 +278,7 @@
           <select id="productCategory" required>
             <option value="readyToCookMixes">Ready-to-Cook Instant Mixes</option>
             <option value="instantSoup">Instant Soup Mix</option>
-            <option value="idliPodi">Idli Podi's</option>
+            <option value="idliPodi">Idli Podi’s</option>
             <option value="instant">Ready to Serve</option>
             <option value="herbal">Herbal Products</option>
           </select>
@@ -250,7 +307,7 @@
 
     // ---------- CONFIG ----------
     const ADMIN_EMAIL = "ermunaiorganicfarm@gmail.com";
-    const ADMIN_PASSWORD = "foods1125$"; // <-- keep or change for testing
+    const ADMIN_PASSWORD = "foods1125$";
     const firebaseConfig = {
       apiKey: "AIzaSyCbfdG2XU302FuZx0MapVTRmb3Qtaa-hA8",
       authDomain: "ermunai-e-commerce-project.firebaseapp.com",
@@ -260,8 +317,7 @@
       appId: "1:365240050790:web:2d4867d6ab4f93a661f9a7"
     };
     const SUPABASE_URL = "https://svbsrgxqgzuibrrsywix.supabase.co";
-    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN2YnNyZ3hxZ3p1aWJycnN5d2l4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcxNjYwODIsImV4cCI6MjA3Mjc0MjA4Mn0.hlwbWVsEn7hNCuEn-u7pQL9B3d5IbfiMSSvbVAX2bx0"; // replace with your anon key
-
+    const SUPABASE_KEY = "eyJ...replace_with_your_key";
     // ---------- INIT ----------
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
@@ -278,6 +334,7 @@
     const logoutBtn = document.querySelector(".logout-btn");
     const imagePreview = document.getElementById("imagePreview");
     const productImageFile = document.getElementById("productImageFile");
+    const quantityUnitLabel = document.getElementById("quantityUnitLabel");
 
     let currentProductId = null;
     let isAdmin = false;
@@ -285,31 +342,28 @@
 
     // ---------- AUTH HELPERS ----------
     async function loginAdminIfPasswordProvided() {
-      // Only skip auto-login if ADMIN_PASSWORD is falsy (empty/null)
       if (!ADMIN_PASSWORD) {
-        console.warn("ADMIN_PASSWORD not set. Skipping auto-login. Use login form or set ADMIN_PASSWORD for testing.");
+        console.warn("ADMIN_PASSWORD not set. Skipping auto-login.");
         return;
       }
       try {
         await setPersistence(auth, browserLocalPersistence);
-        const cred = await signInWithEmailAndPassword(auth, ADMIN_EMAIL, ADMIN_PASSWORD);
-        console.log("Auto-login success:", cred.user.email, "uid:", cred.user.uid);
+        await signInWithEmailAndPassword(auth, ADMIN_EMAIL, ADMIN_PASSWORD);
+        console.log("Auto-login success");
       } catch (err) {
         console.error("Auto-login failed:", err);
       }
     }
 
     onAuthStateChanged(auth, (user) => {
-      console.log("Auth state changed:", user);
       if (user && user.email === ADMIN_EMAIL) {
         isAdmin = true;
-        console.log("✅ Signed in as admin:", user.email, "uid:", user.uid);
+        console.log("✅ Signed in as admin:", user.email);
       } else {
         isAdmin = false;
       }
     });
 
-    // Logout button
     logoutBtn.addEventListener("click", async () => {
       try {
         await signOut(auth);
@@ -320,19 +374,27 @@
       }
     });
 
-    // Run auto-login (only if ADMIN_PASSWORD set)
     loginAdminIfPasswordProvided();
 
-    // ---------- UI behavior ----------
+    // ---------- UI behaviour ----------
     addProductBtn.onclick = () => {
       currentProductId = null;
       editingExistingImageUrl = "";
       productForm.reset();
       imagePreview.style.display = "none";
       document.getElementById("modalTitle").textContent = "Add Product";
+      // default quantity unit label
+      quantityUnitLabel.textContent = "g";
       productModal.style.display = "flex";
     };
     closeModalBtn.onclick = () => productModal.style.display = "none";
+
+    // update unit label when radio changes
+    productForm.querySelectorAll('input[name="quantityType"]').forEach(r => {
+      r.addEventListener("change", (e) => {
+        quantityUnitLabel.textContent = e.target.value === "ml" ? "ml" : "g";
+      });
+    });
 
     // show preview when file selected
     productImageFile.addEventListener('change', (e) => {
@@ -359,11 +421,15 @@
         return;
       }
       if (user.email !== ADMIN_EMAIL) {
-        alert("⚠️ You are logged in, but not as the admin account. Please login as: " + ADMIN_EMAIL);
+        alert("⚠️ You are logged in, but not as admin account.");
         return;
       }
 
-      // 1) Image handling
+      // get quantity type and value
+      const qType = productForm.querySelector('input[name="quantityType"]:checked').value;
+      const qValue = parseFloat(document.getElementById("productQuantity").value);
+
+      // Image handling
       const file = productImageFile.files[0];
       let imageUrl = editingExistingImageUrl || "";
       if (file) {
@@ -384,13 +450,15 @@
         }
       }
 
-      // 2) Prepare product data
+      // Prepare product data
       const productData = {
         image: imageUrl,
         name: document.getElementById("productName").value,
         price: parseFloat(document.getElementById("productPrice").value),
         discount: parseFloat(document.getElementById("productDiscount").value) || 0,
-        stock: parseInt(document.getElementById("productStock").value),
+        stock: parseInt(document.getElementById("productStock").value, 10),
+        quantityType: qType,      // either "g" or "ml"
+        quantityValue: qValue,
         description: document.getElementById("productDescription").value,
         category: document.getElementById("productCategory").value,
         disabled: document.getElementById("productDisabled").checked,
@@ -413,7 +481,7 @@
         loadProducts(getCurrentFilterCategory());
       } catch (err) {
         console.error("Firestore write failed:", err);
-        alert("Firestore write failed: " + err.message + "\nSigned-in user: " + (user.email || user.uid));
+        alert("Firestore write failed: " + err.message);
       }
     };
 
@@ -424,7 +492,6 @@
         const snapshot = await getDocs(productRef);
         snapshot.forEach(docSnap => {
           const p = docSnap.data();
-
           const isDisabled = !!p.disabled;
           const matchesCategory = (category === 'all')
             || (category === 'disabled' && isDisabled)
@@ -434,11 +501,15 @@
           if (matchesCategory) {
             const card = document.createElement("div");
             card.className = 'product-card' + (isDisabled ? ' disabled' : '');
+            const qtyDisplay = (p.quantityType && p.quantityValue != null)
+              ? `${p.quantityValue}${p.quantityType}`
+              : "–";
             card.innerHTML = `
               <img src="${p.image || 'https://via.placeholder.com/220x150?text=No+Image'}" alt="${p.name}" />
               <h3>${p.name}</h3>
               <p>₹${p.price} (${p.discount}% off)</p>
               <p>Stock: ${p.stock}</p>
+              <p>Quantity: ${qtyDisplay}</p>
               <div class="card-actions">
                 <button class="edit-btn" title="Edit"><i class="fas fa-edit"></i></button>
                 <button class="delete-btn" title="Delete"><i class="fas fa-trash"></i></button>
@@ -454,11 +525,21 @@
               document.getElementById("productPrice").value = p.price || 0;
               document.getElementById("productDiscount").value = p.discount || 0;
               document.getElementById("productStock").value = p.stock || 0;
+              // quantity fields
+              if (p.quantityType === "ml") {
+                productForm.querySelector('input[name="quantityType"][value="ml"]').checked = true;
+                quantityUnitLabel.textContent = "ml";
+              } else {
+                productForm.querySelector('input[name="quantityType"][value="g"]').checked = true;
+                quantityUnitLabel.textContent = "g";
+              }
+              document.getElementById("productQuantity").value = p.quantityValue || 0;
+
               document.getElementById("productDescription").value = p.description || "";
               document.getElementById("productCategory").value = p.category || 'readyToCookMixes';
               document.getElementById("productDisabled").checked = !!p.disabled;
 
-              // show existing image preview and remember it
+              // show existing image preview
               editingExistingImageUrl = p.image || "";
               if (editingExistingImageUrl) {
                 imagePreview.src = editingExistingImageUrl;
@@ -467,9 +548,7 @@
                 imagePreview.style.display = 'none';
               }
 
-              // clear file input so it's empty unless user chooses new file
               productImageFile.value = '';
-
               productModal.style.display = "flex";
             };
 
@@ -481,7 +560,7 @@
               }
             };
 
-            // Toggle disable (quick action)
+            // Toggle disable
             card.querySelector('.toggle-btn').onclick = async () => {
               try {
                 const productDoc = doc(db, "products", docSnap.id);
@@ -502,7 +581,6 @@
       }
     }
 
-    // filters
     function getCurrentFilterCategory() {
       const active = document.querySelector('.filter-btn.active');
       return active ? active.dataset.category : 'all';
@@ -516,7 +594,6 @@
       };
     });
 
-    // initial
     loadProducts();
   </script>
 </body>
