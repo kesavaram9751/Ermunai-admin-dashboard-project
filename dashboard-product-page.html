@@ -1,600 +1,925 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <title>Erumunai Organic Farm — Product Management</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <meta charset="utf-8" />
+    <title>Erumunai Organic Farm — Product Management</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        :root {
+            --primary: #4a7c59;
+            --accent: #f0ad4e;
+            --text: #333;
+            --bg: #f7f7f7;
+            --white: #fff;
+            --radius: 8px;
+            --transition: 0.3s ease;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
 
-  <style>
-    :root {
-      --primary: #4a7c59;
-      --accent: #f0ad4e;
-      --text: #333;
-      --bg: #f7f7f7;
-      --white: #fff;
-      --radius: 8px;
-      --transition: 0.3s ease;
-      --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: "Segoe UI", Roboto, system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            display: flex;
+            min-height: 100vh;
+        }
 
-    body {
-      font-family: "Segoe UI", sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      display: flex;
-      height: 100vh;
-      overflow: hidden;
-    }
+        .sidebar {
+            width: 250px;
+            background: var(--primary);
+            color: var(--white);
+            padding: 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-    a { text-decoration: none; color: inherit; }
+        .sidebar h2 {
+            margin-bottom: 1.5rem;
+        }
 
-    .sidebar {
-      width: 250px;
-      background: var(--primary);
-      color: var(--white);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 2rem 1rem;
-    }
+        .nav {
+            list-style: none;
+            width: 100%;
+        }
 
-    .sidebar h2 { margin-bottom: 2rem; font-size: 1.25rem; }
+        .nav a {
+            display: block;
+            padding: 0.6rem 0.75rem;
+            color: inherit;
+            border-radius: 6px;
+            text-decoration: none;
+        }
 
-    .nav { list-style: none; width: 100%; }
-    .nav li+li { margin-top: 1rem; }
-    .nav a { display: block; padding: 0.75rem 1rem; border-radius: var(--radius); }
-    .nav a:hover, .nav a.active { background: var(--accent); }
+        .nav a.active,
+        .nav a:hover {
+            background: var(--accent);
+            color: #222;
+        }
 
-    .main { flex: 1; display: flex; flex-direction: column; }
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
 
-    header {
-      background: var(--white);
-      padding: 1rem 2rem;
-      box-shadow: var(--shadow);
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-    header h1 { flex-grow: 1; color: var(--primary); }
+        header {
+            background: var(--white);
+            padding: 1rem 1.5rem;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
 
-    .logout-btn {
-      background: #ff5f5f;
-      color: white;
-      border: none;
-      padding: 8px 16px;
-      border-radius: var(--radius);
-      cursor: pointer;
-    }
-    .logout-btn:hover { background: #e65050; }
+        header h1 {
+            color: var(--primary);
+            flex: 1;
+            font-size: 1.15rem;
+        }
 
-    .content { padding: 2rem; overflow-y: auto; }
-    .section-title { font-size: 1.5rem; margin-bottom: 1.5rem; color: var(--primary); }
+        .logout-btn {
+            background: #ff5f5f;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: inline-flex;
+            gap: 8px;
+            align-items: center;
+        }
 
-    .filters { margin-bottom: 1rem; display:flex; gap:0.5rem; flex-wrap:wrap; }
-    .filter-btn {
-      background: var(--primary); color: white; border: none; padding: 0.5rem 1rem;
-      border-radius: var(--radius); cursor: pointer;
-    }
-    .filter-btn.active, .filter-btn:hover { background: var(--accent); }
+        .content {
+            padding: 1.5rem;
+            overflow: auto;
+        }
 
-    .add-btn { background: var(--accent); color: white; border:none; padding:0.5rem 1rem; border-radius:var(--radius); cursor:pointer; margin-bottom:1rem; }
+        .section-title {
+            font-size: 1.25rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
 
-    .product-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, max-content));
-      gap: 1rem;
-      justify-content: center;
-    }
+        .filters {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
 
-    .product-card {
-      width: 220px; max-width:100%; background: var(--white); padding:1rem; border-radius:var(--radius);
-      box-shadow: var(--shadow); text-align:center; transition: transform var(--transition);
-    }
-    .product-card.disabled { opacity:0.5; filter:grayscale(0.2); }
+        .filter-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.45rem 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+        }
 
-    .product-card img { width:100%; height:150px; object-fit:cover; border-radius:var(--radius); }
-    .product-card h3 { margin:0.5rem 0; color:var(--primary); }
+        .filter-btn.active,
+        .filter-btn:hover {
+            background: var(--accent);
+            color: #222;
+        }
 
-    .card-actions { display:flex; justify-content:center; gap:0.5rem; margin-top:0.5rem; }
-    .card-actions button { background:none; border:none; cursor:pointer; font-size:1.1rem; padding:0.4rem; border-radius:6px; }
-    .card-actions .edit-btn { color:var(--primary); }
-    .card-actions .delete-btn { color:#e74c3c; }
-    .card-actions button:hover { background:#f1f1f1; }
+        .add-btn {
+            background: var(--accent);
+            color: #222;
+            border: none;
+            padding: 0.5rem 0.9rem;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-bottom: 1rem;
+            display: inline-flex;
+            gap: 8px;
+            align-items: center;
+        }
 
-    .modal {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.6);
-  justify-content: center;
-  align-items: center;
-  padding: 1rem;
-  overflow-y: auto;
-  z-index: 1000;
-}
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1rem;
+        }
 
-.modal-content {
-  background: var(--white);
-  border-radius: var(--radius);
-  width: 90%;
-  max-width: 800px;         /* limit on large screens */
-  max-height: 90vh;         /* prevent overflow off screen vertically */
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
-  padding: 1.5rem;
-  box-shadow: var(--shadow);
-}
+        .product-card {
+            background: var(--white);
+            padding: 0.9rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
 
-@media (max-width: 720px) {
-  .modal-content {
-    flex-direction: column;
-    width: 100%;
-    max-width: none;
-    max-height: none;
-    height: auto;
-  }
-}
+        .product-card.disabled {
+            opacity: 0.6;
+            filter: grayscale(0.2);
+        }
 
+        .product-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .product-card h3 {
+            color: var(--primary);
+            font-size: 1rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .product-meta {
+            font-size: 0.95rem;
+            color: #444;
+        }
+
+        .small-muted {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .card-actions {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-top: 0.75rem;
+            align-items: center;
+        }
+
+        .card-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: none;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+            transition: 0.25s ease;
+        }
+
+        .card-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .card-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
+        }
+
+        /* Color-coded buttons */
+        .btn-edit svg {
+            stroke: #1d8cf8;
+        }
+
+        /* Blue */
+        .btn-delete svg {
+            stroke: #e63946;
+        }
+
+        /* Red */
+        .btn-toggle svg {
+            stroke: #2fa360;
+        }
+
+        /* Green */
+        .disabled .btn-toggle svg {
+            stroke: #666;
+        }
+
+        /* Disabled toggle gray */
+
+        .icon-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon-btn:hover {
+            background: #f1f1f1;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.55);
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            z-index: 999;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--white);
+            width: 860px;
+            max-width: 100%;
+            border-radius: 10px;
+            padding: 1rem;
+            display: flex;
+            gap: 1rem;
+            box-shadow: var(--shadow);
+            align-items: flex-start;
+        }
 
         .modal-image {
-      width: 45%;
-      overflow: hidden;
-      /* keep image from causing scroll on outer container */
-    }
+            width: 42%;
+        }
 
-    .modal-image img {
-      width: 100%;
-      height: 320px;
-      object-fit: cover;
-      border-radius: var(--radius);
-      display: block;
-    }
+        .modal-image img {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            border-radius: 8px;
+            display: block;
+        }
 
-    .modal-form {
-      width: 55%;
-      display: flex;
-      flex-direction: column;
-      overflow-y: auto;
-      /* allow this container to scroll if content is long */
-      max-height: calc(90vh - 3rem);
-      /* adjust so it fits inside .modal-content with padding */
-    }
-    .modal-form label { display:block; margin:0.5rem 0 0.25rem; }
-    .modal-form input, .modal-form textarea, .modal-form select {
-      width:100%; padding:0.5rem; border:1px solid #ccc; border-radius:var(--radius); margin-bottom:0.5rem;
-    }
+        .modal-form {
+            width: 58%;
+        }
 
-    .modal-actions { display:flex; justify-content:space-between; margin-top:0.5rem; }
-    .save-btn, .cancel-btn { padding:0.5rem 1rem; border:none; border-radius:var(--radius); cursor:pointer; }
-    .save-btn { background:var(--primary); color:white; } .cancel-btn { background:#ccc; }
+        .modal-form label {
+            display: block;
+            margin: 0.45rem 0 0.2rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
 
-    .small-muted { font-size:0.85rem; color:#666; }
+        .modal-form input,
+        .modal-form textarea,
+        .modal-form select {
+            width: 100%;
+            padding: 0.45rem;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
 
-    @media (max-width:720px) {
-  
-      .modal-image, .modal-form { width:100% }
-      .modal-image img { height:200px; }
-    }
-  </style>
+        .modal-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.6rem;
+        }
+
+        .save-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 0.9rem;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .cancel-btn {
+            background: #ccc;
+            border: none;
+            padding: 0.45rem 0.8rem;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        /* Toggle switch styles (checkbox + label) */
+        .toggle-wrap {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toggle-checkbox {
+            /* hide native checkbox but keep accessible for screen readers */
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-label {
+            display: inline-block;
+            position: relative;
+            width: 46px;
+            height: 26px;
+            background: #e2e8f0;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: background 0.18s ease;
+            box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.03);
+        }
+
+        .toggle-label::after {
+            content: "";
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: calc(26px - 6px);
+            height: calc(26px - 6px);
+            background: #fff;
+            border-radius: 50%;
+            transition: transform 0.18s ease, background 0.18s ease;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+        }
+
+        /* checked state */
+        .toggle-checkbox:checked+.toggle-label {
+            background: #2fa360;
+        }
+
+        .toggle-checkbox:checked+.toggle-label::after {
+            transform: translateX(calc(46px - 26px));
+        }
+
+        .toggle-text {
+            font-size: 0.85rem;
+            color: #444;
+            user-select: none;
+        }
+
+        @media (max-width:900px) {
+            .modal-content {
+                flex-direction: column;
+            }
+
+            .modal-image,
+            .modal-form {
+                width: 100%;
+            }
+
+            .modal-image img {
+                height: 220px;
+            }
+        }
+    </style>
 </head>
 
 <body>
-  <!-- Sidebar -->
-  <aside class="sidebar">
-    <h2>Ermunai Admin</h2>
-    <ul class="nav">
-      <li><a href="admin-dashboard.html" data-page="dashboard">Dashboard</a></li>
-      <li><a href="dashboard-product-page.html" data-page="products" class="active">Product Details</a></li>
-      <li><a href="dashboard-order-page.html" data-page="orders">Order Details</a></li>
-      <li><a href="daashboard-setting.html" data-page="settings">Settings</a></li>
-    </ul>
-  </aside>
+    <aside class="sidebar">
+        <h2>Erumunai Admin</h2>
+        <ul class="nav">
+            <li><a href="#" data-page="dashboard">Dashboard</a></li>
+            <li><a href="#" data-page="products" class="active">Product Details</a></li>
+            <li><a href="#" data-page="orders">Order Details</a></li>
+            <li><a href="#" data-page="settings">Settings</a></li>
+        </ul>
+    </aside>
 
-  <!-- Main -->
-  <div class="main">
-    <header>
-      <h1>Product Management</h1>
-      <button class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
-    </header>
+    <div class="main">
+        <header>
+            <h1>Product Management</h1>
+            <button class="logout-btn" id="logoutBtn" title="Logout">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden>
+                    <path d="M16 17l5-5-5-5" stroke="white" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    <path d="M21 12H9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M12 19H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h6" stroke="white" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                Logout
+            </button>
+        </header>
 
-    <div class="content">
-      <!-- Product Page -->
-      <section id="products" class="page active">
-        <div class="section-title">Manage Products</div>
+        <div class="content">
+            <section id="products" class="page active">
+                <div class="section-title">Manage Products</div>
 
-        <!-- Filters -->
-        <div class="filters">
-          <button class="filter-btn active" data-category="all">All</button>
-          <button class="filter-btn" data-category="readyToCookMixes">Ready-to-Cook Instant Mixes</button>
-          <button class="filter-btn" data-category="instantSoup">Instant Soup Mix</button>
-          <button class="filter-btn" data-category="idliPodi">Idli Podi’s</button>
-          <button class="filter-btn" data-category="readytoserve">Ready to Serve</button>
-          <button class="filter-btn" data-category="herbal">Herbal Products</button>
-          <button class="filter-btn" data-category="disabled">Disabled</button>
+                <div class="filters">
+                    <button class="filter-btn active" data-category="all">All</button>
+                    <button class="filter-btn" data-category="readyToCookMixes">Ready-to-Cook Mixes</button>
+                    <button class="filter-btn" data-category="instantSoup">Instant Soup Mix</button>
+                    <button class="filter-btn" data-category="idliPodi">Idli Podi's</button>
+                    <button class="filter-btn" data-category="instant">Instant Products</button>
+                    <button class="filter-btn" data-category="herbal">Herbal Products</button>
+                    <button class="filter-btn" data-category="disabled">Disabled</button>
+                </div>
+
+                <button id="addProductBtn" class="add-btn" title="Add product">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden>
+                        <path d="M12 5v14M5 12h14" stroke="#000" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                    Add Product
+                </button>
+
+                <div class="product-grid" id="productList" aria-live="polite"></div>
+            </section>
         </div>
-
-        <!-- Add Product -->
-        <button id="addProductBtn" class="add-btn"><i class="fas fa-plus"></i> Add Product</button>
-
-        <!-- Product Listing -->
-        <div class="product-grid" id="productList"></div>
-      </section>
     </div>
-  </div>
 
-  <!-- Add/Edit Product Modal -->
-  <div class="modal" id="productModal">
-    <div class="modal-content">
+    <!-- Modal -->
+    <div class="modal" id="productModal" aria-hidden="true">
+        <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+            <div class="modal-image">
+                <div class="small-muted">Current Image (if any)</div>
+                <img id="imagePreview" src="" alt="product preview" style="display:none" />
+                <div class="small-muted" style="margin-top:0.5rem">Leave image input empty to keep existing image.</div>
+                <div style="margin-top:0.5rem">
+                    <label style="font-weight:600; display:block; margin-bottom:0.3rem">Upload Product Image</label>
+                    <input type="file" id="productImageFile" accept="image/*" />
+                </div>
+            </div>
 
-      <div class="modal-image">
-        <label class="small-muted">Current Image (if any)</label>
-        <img id="imagePreview" src="" alt="preview" style="display:none" />
-        <div class="small-muted">Leave image input empty to keep existing image.</div>
-        <div style="margin-top:0.5rem">
-          <label>Upload Product Image</label>
-          <input type="file" id="productImageFile" accept="image/*" />
+            <div class="modal-form">
+                <h2 id="modalTitle">Add Product</h2>
+                <form id="productForm">
+                    <input type="hidden" id="productId" />
+                    <label>Name</label>
+                    <input type="text" id="productName" required />
+                    <label>Price (₹)</label>
+                    <input type="number" id="productPrice" required step="0.01" min="0" />
+                    <label>Discount (%)</label>
+                    <input type="number" id="productDiscount" min="0" max="100" />
+                    <label>Available Stock</label>
+                    <input type="number" id="productStock" required min="0" />
+                    <label>Description</label>
+                    <textarea id="productDescription" rows="4"></textarea>
+                    <label>Category</label>
+                    <select id="productCategory" required>
+                        <option value="readyToCookMixes">Ready-to-Cook Instant Mixes</option>
+                        <option value="instantSoup">Instant Soup Mix</option>
+                        <option value="idliPodi">Idli Podi's</option>
+                        <option value="instant">Instant Products</option>
+                        <option value="herbal">Herbal Products</option>
+                    </select>
+                    <label style="margin-top:0.5rem"><input type="checkbox" id="productDisabled" /> Disable product
+                        (hide from shop)</label>
+                    <div class="modal-actions" style="margin-top:0.6rem">
+                        <button type="submit" class="save-btn">Save</button>
+                        <button type="button" id="closeModal" class="cancel-btn">Cancel</button>
+                    </div>
+                </form>
+            </div>
         </div>
-      </div>
-
-      <div class="modal-form">
-        <h2 id="modalTitle">Add Product</h2>
-        <form id="productForm">
-          <input type="hidden" id="productId" />
-
-          <label>Name</label>
-          <input type="text" id="productName" required />
-
-          <label>Price (₹)</label>
-          <input type="number" id="productPrice" required />
-
-          <label>Discount (%)</label>
-          <input type="number" id="productDiscount" />
-
-          <label>Available Stock</label>
-          <input type="number" id="productStock" required />
-
-          <!-- New: Quantity selector -->
-          <label>Quantity Type</label>
-          <div style="display:flex; gap:1rem; margin-bottom:0.5rem;">
-            <label><input type="radio" name="quantityType" value="g" required /> Grams (g)</label>
-            <label><input type="radio" name="quantityType" value="ml" /> Millilitres (ml)</label>
-          </div>
-
-          <label>Quantity (<span id="quantityUnitLabel">g</span>)</label>
-          <input type="number" id="productQuantity" required min="0" />
-
-          <label>Description</label>
-          <textarea id="productDescription" rows="4"></textarea>
-
-          <label>Category</label>
-          <select id="productCategory" required>
-            <option value="readyToCookMixes">Ready-to-Cook Instant Mixes</option>
-            <option value="instantSoup">Instant Soup Mix</option>
-            <option value="idliPodi">Idli Podi’s</option>
-            <option value="readytoserve">Ready to Serve</option>
-            <option value="herbal">Herbal Products</option>
-          </select>
-
-          <label style="margin-top:0.5rem"><input type="checkbox" id="productDisabled" /> Disable product (hide from shop)</label>
-
-          <div class="modal-actions">
-            <button type="submit" class="save-btn">Save</button>
-            <button type="button" id="closeModal" class="cancel-btn">Cancel</button>
-          </div>
-        </form>
-      </div>
-
     </div>
-  </div>
 
-  <!-- Firebase + Supabase -->
-  <script type="module">
-    // Firebase
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-    import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    <!-- Firebase & script -->
+    <script type="module">
+        // ---------- FIREBASE (client) imports ----------
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-    // Supabase
-    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+        // ---------- CONFIG (replace with secure approach in production) ----------
+        const ADMIN_EMAIL = "ermunaiorganicfarm@gmail.com";
+        const ADMIN_PASSWORD = "foods1125$"; // remove or replace in production!
 
-    // ---------- CONFIG ----------
-    const ADMIN_EMAIL = "ermunaiorganicfarm@gmail.com";
-    const ADMIN_PASSWORD = "foods1125$";
-    const firebaseConfig = {
-      apiKey: "AIzaSyCbfdG2XU302FuZx0MapVTRmb3Qtaa-hA8",
-      authDomain: "ermunai-e-commerce-project.firebaseapp.com",
-      projectId: "ermunai-e-commerce-project",
-      storageBucket: "ermunai-e-commerce-project.appspot.com",
-      messagingSenderId: "365240050790",
-      appId: "1:365240050790:web:2d4867d6ab4f93a661f9a7"
-    };
-    const SUPABASE_URL = "https://svbsrgxqgzuibrrsywix.supabase.co";
-    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN2YnNyZ3hxZ3p1aWJycnN5d2l4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcxNjYwODIsImV4cCI6MjA3Mjc0MjA4Mn0.hlwbWVsEn7hNCuEn-u7pQL9B3d5IbfiMSSvbVAX2bx0";
-    // ---------- INIT ----------
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const productRef = collection(db, "products");
-    const auth = getAuth(app);
-    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+        const firebaseConfig = {
+            apiKey: "AIzaSyCbfdG2XU302FuZx0MapVTRmb3Qtaa-hA8",
+            authDomain: "ermunai-e-commerce-project.firebaseapp.com",
+            projectId: "ermunai-e-commerce-project",
+            storageBucket: "ermunai-e-commerce-project.appspot.com",
+            messagingSenderId: "365240050790",
+            appId: "1:365240050790:web:2d4867d6ab4f93a661f9a7"
+        };
 
-    // UI elements
-    const productList = document.getElementById("productList");
-    const productModal = document.getElementById("productModal");
-    const closeModalBtn = document.getElementById("closeModal");
-    const addProductBtn = document.getElementById("addProductBtn");
-    const productForm = document.getElementById("productForm");
-    const logoutBtn = document.querySelector(".logout-btn");
-    const imagePreview = document.getElementById("imagePreview");
-    const productImageFile = document.getElementById("productImageFile");
-    const quantityUnitLabel = document.getElementById("quantityUnitLabel");
+        // Supabase config (anon key). Exposing anon key in client is okay for public-scope but avoid in production if possible.
+        const SUPABASE_URL = "https://svbsrgxqgzuibrrsywix.supabase.co";
+        const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN2YnNyZ3hxZ3p1aWJycnN5d2l4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcxNjYwODIsImV4cCI6MjA3Mjc0MjA4Mn0.hlwbWVsEn7hNCuEn-u7pQL9B3d5IbfiMSSvbVAX2bx0";
 
-    let currentProductId = null;
-    let isAdmin = false;
-    let editingExistingImageUrl = "";
+        // ---------- INIT ----------
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const productRef = collection(db, "products");
+        const auth = getAuth(app);
 
-    // ---------- AUTH HELPERS ----------
-    async function loginAdminIfPasswordProvided() {
-      if (!ADMIN_PASSWORD) {
-        console.warn("ADMIN_PASSWORD not set. Skipping auto-login.");
-        return;
-      }
-      try {
-        await setPersistence(auth, browserLocalPersistence);
-        await signInWithEmailAndPassword(auth, ADMIN_EMAIL, ADMIN_PASSWORD);
-        console.log("Auto-login success");
-      } catch (err) {
-        console.error("Auto-login failed:", err);
-      }
-    }
+        // Supabase will be dynamically imported and created below.
+        let supabase = null;
 
-    onAuthStateChanged(auth, (user) => {
-      if (user && user.email === ADMIN_EMAIL) {
-        isAdmin = true;
-        console.log("✅ Signed in as admin:", user.email);
-      } else {
-        isAdmin = false;
-      }
-    });
+        // UI elements
+        const productList = document.getElementById("productList");
+        const productModal = document.getElementById("productModal");
+        const closeModalBtn = document.getElementById("closeModal");
+        const addProductBtn = document.getElementById("addProductBtn");
+        const productForm = document.getElementById("productForm");
+        const logoutBtn = document.getElementById("logoutBtn");
+        const imagePreview = document.getElementById("imagePreview");
+        const productImageFile = document.getElementById("productImageFile");
 
-    logoutBtn.addEventListener("click", async () => {
-      try {
-        await signOut(auth);
-        alert("Logged out");
-        console.log("Signed out");
-      } catch (e) {
-        console.error("Sign out error:", e);
-      }
-    });
+        let currentProductId = null;
+        let editingExistingImageUrl = "";
+        let isAdmin = false;
 
-    loginAdminIfPasswordProvided();
-
-    // ---------- UI behaviour ----------
-    addProductBtn.onclick = () => {
-      currentProductId = null;
-      editingExistingImageUrl = "";
-      productForm.reset();
-      imagePreview.style.display = "none";
-      document.getElementById("modalTitle").textContent = "Add Product";
-      // default quantity unit label
-      quantityUnitLabel.textContent = "g";
-      productModal.style.display = "flex";
-    };
-    closeModalBtn.onclick = () => productModal.style.display = "none";
-
-    // update unit label when radio changes
-    productForm.querySelectorAll('input[name="quantityType"]').forEach(r => {
-      r.addEventListener("change", (e) => {
-        quantityUnitLabel.textContent = e.target.value === "ml" ? "ml" : "g";
-      });
-    });
-
-    // show preview when file selected
-    productImageFile.addEventListener('change', (e) => {
-      const f = e.target.files[0];
-      if (f) {
-        const url = URL.createObjectURL(f);
-        imagePreview.src = url;
-        imagePreview.style.display = 'block';
-      } else if (editingExistingImageUrl) {
-        imagePreview.src = editingExistingImageUrl;
-        imagePreview.style.display = 'block';
-      } else {
-        imagePreview.style.display = 'none';
-      }
-    });
-
-    // ---------- Save Product (keep previous image if not changed) ----------
-    productForm.onsubmit = async (e) => {
-      e.preventDefault();
-
-      const user = auth.currentUser;
-      if (!user) {
-        alert("⚠️ Please login as admin to add products.");
-        return;
-      }
-      if (user.email !== ADMIN_EMAIL) {
-        alert("⚠️ You are logged in, but not as admin account.");
-        return;
-      }
-
-      // get quantity type and value
-      const qType = productForm.querySelector('input[name="quantityType"]:checked').value;
-      const qValue = parseFloat(document.getElementById("productQuantity").value);
-
-      // Image handling
-      const file = productImageFile.files[0];
-      let imageUrl = editingExistingImageUrl || "";
-      if (file) {
-        try {
-          const fileName = `products/${Date.now()}-${file.name}`;
-          const { data, error } = await supabase.storage.from("ermunai-product-images").upload(fileName, file);
-          if (error) {
-            console.error("Supabase upload error:", error);
-            alert("Upload failed: " + error.message);
-            return;
-          }
-          const { data: publicUrl } = supabase.storage.from("ermunai-product-images").getPublicUrl(fileName);
-          imageUrl = publicUrl.publicUrl;
-        } catch (err) {
-          console.error("Upload exception:", err);
-          alert("Upload failed: " + err.message);
-          return;
+        // ---------- Safe dynamic import for Supabase ----------
+        async function initSupabase() {
+            try {
+                // dynamic import avoids import-time exceptions stopping the whole module
+                const mod = await import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm");
+                // createClient might attempt to use browser storage during init in some builds,
+                // so wrap in try/catch to avoid crashing the app when storage is blocked.
+                try {
+                    supabase = mod.createClient(SUPABASE_URL, SUPABASE_KEY);
+                    console.log("Supabase initialized");
+                } catch (err) {
+                    console.warn("Supabase createClient failed (storage might be blocked):", err);
+                    supabase = null;
+                }
+            } catch (err) {
+                console.warn("Dynamic import of Supabase failed:", err);
+                supabase = null;
+            }
         }
-      }
 
-      // Prepare product data
-      const productData = {
-        image: imageUrl,
-        name: document.getElementById("productName").value,
-        price: parseFloat(document.getElementById("productPrice").value),
-        discount: parseFloat(document.getElementById("productDiscount").value) || 0,
-        stock: parseInt(document.getElementById("productStock").value, 10),
-        quantityType: qType,      // either "g" or "ml"
-        quantityValue: qValue,
-        description: document.getElementById("productDescription").value,
-        category: document.getElementById("productCategory").value,
-        disabled: document.getElementById("productDisabled").checked,
-        updatedBy: user.uid,
-        updatedAt: new Date().toISOString()
-      };
+        // call it early but non-blocking for Firestore reads we'll await it once.
+        await initSupabase();
 
-      try {
-        if (currentProductId) {
-          const productDoc = doc(db, "products", currentProductId);
-          await updateDoc(productDoc, productData);
-        } else {
-          productData.createdAt = new Date().toISOString();
-          productData.createdBy = user.uid;
-          await addDoc(productRef, productData);
+        // ---------- Auth helpers ----------
+        async function loginAdminIfPasswordProvided() {
+            if (!ADMIN_PASSWORD || ADMIN_PASSWORD === "foods1125$") {
+                console.warn("ADMIN_PASSWORD is placeholder or empty - skipping auto-login.");
+                return;
+            }
+            try {
+                await setPersistence(auth, browserLocalPersistence);
+                const cred = await signInWithEmailAndPassword(auth, ADMIN_EMAIL, ADMIN_PASSWORD);
+                console.log("Auto-login success:", cred.user.email);
+            } catch (err) {
+                console.warn("Auto-login failed:", err);
+            }
         }
-        productModal.style.display = "none";
-        productImageFile.value = '';
-        editingExistingImageUrl = "";
-        loadProducts(getCurrentFilterCategory());
-      } catch (err) {
-        console.error("Firestore write failed:", err);
-        alert("Firestore write failed: " + err.message);
-      }
-    };
 
-    // ---------- Load products ----------
-    async function loadProducts(category = "all") {
-      productList.innerHTML = "";
-      try {
-        const snapshot = await getDocs(productRef);
-        snapshot.forEach(docSnap => {
-          const p = docSnap.data();
-          const isDisabled = !!p.disabled;
-          const matchesCategory = (category === 'all')
-            || (category === 'disabled' && isDisabled)
-            || (category !== 'disabled' && category !== 'all' && p.category === category)
-            || (category === 'all');
-
-          if (matchesCategory) {
-            const card = document.createElement("div");
-            card.className = 'product-card' + (isDisabled ? ' disabled' : '');
-            const qtyDisplay = (p.quantityType && p.quantityValue != null)
-              ? `${p.quantityValue}${p.quantityType}`
-              : "–";
-            card.innerHTML = `
-              <img src="${p.image || 'https://via.placeholder.com/220x150?text=No+Image'}" alt="${p.name}" />
-              <h3>${p.name}</h3>
-              <p>₹${p.price} (${p.discount}% off)</p>
-              <p>Stock: ${p.stock}</p>
-              <p>Quantity: ${qtyDisplay}</p>
-              <div class="card-actions">
-                <button class="edit-btn" title="Edit"><i class="fas fa-edit"></i></button>
-                <button class="delete-btn" title="Delete"><i class="fas fa-trash"></i></button>
-                <button class="toggle-btn" title="Toggle disable"><i class="fas fa-toggle-on"></i></button>
-              </div>
-            `;
-
-            // Edit
-            card.querySelector(".edit-btn").onclick = () => {
-              currentProductId = docSnap.id;
-              document.getElementById("modalTitle").textContent = "Edit Product";
-              document.getElementById("productName").value = p.name || "";
-              document.getElementById("productPrice").value = p.price || 0;
-              document.getElementById("productDiscount").value = p.discount || 0;
-              document.getElementById("productStock").value = p.stock || 0;
-              // quantity fields
-              if (p.quantityType === "ml") {
-                productForm.querySelector('input[name="quantityType"][value="ml"]').checked = true;
-                quantityUnitLabel.textContent = "ml";
-              } else {
-                productForm.querySelector('input[name="quantityType"][value="g"]').checked = true;
-                quantityUnitLabel.textContent = "g";
-              }
-              document.getElementById("productQuantity").value = p.quantityValue || 0;
-
-              document.getElementById("productDescription").value = p.description || "";
-              document.getElementById("productCategory").value = p.category || 'readyToCookMixes';
-              document.getElementById("productDisabled").checked = !!p.disabled;
-
-              // show existing image preview
-              editingExistingImageUrl = p.image || "";
-              if (editingExistingImageUrl) {
-                imagePreview.src = editingExistingImageUrl;
-                imagePreview.style.display = 'block';
-              } else {
-                imagePreview.style.display = 'none';
-              }
-
-              productImageFile.value = '';
-              productModal.style.display = "flex";
-            };
-
-            // Delete
-            card.querySelector(".delete-btn").onclick = async () => {
-              if (confirm(`Delete product "${p.name}"?`)) {
-                await deleteDoc(doc(db, "products", docSnap.id));
-                loadProducts(category);
-              }
-            };
-
-            // Toggle disable
-            card.querySelector('.toggle-btn').onclick = async () => {
-              try {
-                const productDoc = doc(db, "products", docSnap.id);
-                await updateDoc(productDoc, { disabled: !isDisabled, updatedAt: new Date().toISOString() });
-                loadProducts(getCurrentFilterCategory());
-              } catch (err) {
-                console.error('Toggle disable failed:', err);
-                alert('Failed to toggle disable: ' + err.message);
-              }
-            };
-
-            productList.appendChild(card);
-          }
+        onAuthStateChanged(auth, (user) => {
+            if (user && user.email === ADMIN_EMAIL) {
+                isAdmin = true;
+                console.log("Signed in as admin:", user.email);
+            } else {
+                isAdmin = false;
+                if (user) console.log("Signed in but not admin:", user.email);
+                else console.log("No user signed in.");
+            }
         });
-      } catch (err) {
-        console.error("Failed to load products:", err);
-        alert("Failed to load products: " + err.message);
-      }
-    }
 
-    function getCurrentFilterCategory() {
-      const active = document.querySelector('.filter-btn.active');
-      return active ? active.dataset.category : 'all';
-    }
+        logoutBtn.addEventListener("click", async () => {
+            try {
+                await signOut(auth);
+                alert("Logged out");
+            } catch (err) {
+                console.error("Sign out failed:", err);
+            }
+        });
 
-    document.querySelectorAll(".filter-btn").forEach(btn => {
-      btn.onclick = () => {
-        document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        loadProducts(btn.dataset.category);
-      };
-    });
+        // try auto-login for dev convenience (won't run if placeholder password)
+        loginAdminIfPasswordProvided();
 
-    loadProducts();
-  </script>
+        // ---------- UI behavior ----------
+        addProductBtn.addEventListener("click", () => {
+            currentProductId = null;
+            editingExistingImageUrl = "";
+            productForm.reset();
+            imagePreview.style.display = "none";
+            document.getElementById("modalTitle").textContent = "Add Product";
+            productModal.classList.add("show");
+            productModal.setAttribute("aria-hidden", "false");
+        });
+
+        closeModalBtn.addEventListener("click", () => {
+            productModal.classList.remove("show");
+            productModal.setAttribute("aria-hidden", "true");
+        });
+
+        productModal.addEventListener("click", (e) => {
+            if (e.target === productModal) {
+                productModal.classList.remove("show");
+                productModal.setAttribute("aria-hidden", "true");
+            }
+        });
+
+        productImageFile.addEventListener("change", (e) => {
+            const f = e.target.files[0];
+            if (f) {
+                const url = URL.createObjectURL(f);
+                imagePreview.src = url;
+                imagePreview.style.display = "block";
+            } else if (editingExistingImageUrl) {
+                imagePreview.src = editingExistingImageUrl;
+                imagePreview.style.display = "block";
+            } else {
+                imagePreview.style.display = "none";
+            }
+        });
+
+        // ---------- Save product (with Supabase guard) ----------
+        productForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const user = auth.currentUser;
+            if (!user || user.email !== ADMIN_EMAIL) {
+                alert("⚠️ Please login as admin to add/edit products.");
+                return;
+            }
+
+            const file = productImageFile.files[0];
+            let imageUrl = editingExistingImageUrl || "";
+
+            if (file) {
+                // if supabase didn't initialize (e.g. tracking prevention), do not fail whole page
+                if (!supabase) {
+                    alert("Image upload is unavailable in this browser (storage/tracking blocked). The product will be saved without changing the image.");
+                    // Keep imageUrl as existing or empty, continue saving product without upload.
+                } else {
+                    try {
+                        // create friendly filename
+                        const fileName = `products/${Date.now()}-${file.name.replace(/\s+/g, "_")}`;
+                        const { data, error } = await supabase.storage.from("ermunai-product-images").upload(fileName, file);
+                        if (error) {
+                            console.error("Supabase upload error:", error);
+                            alert("Upload failed: " + (error.message || JSON.stringify(error)));
+                            return;
+                        }
+                        const { data: publicData } = supabase.storage.from("ermunai-product-images").getPublicUrl(fileName);
+                        imageUrl = publicData ? publicData.publicUrl : imageUrl;
+                    } catch (err) {
+                        console.error("Upload exception:", err);
+                        alert("Upload failed: " + (err.message || err));
+                        return;
+                    }
+                }
+            }
+
+            // prepare product object
+            const productData = {
+                image: imageUrl,
+                name: (document.getElementById("productName").value || "").trim(),
+                price: parseFloat(document.getElementById("productPrice").value) || 0,
+                discount: parseFloat(document.getElementById("productDiscount").value) || 0,
+                stock: parseInt(document.getElementById("productStock").value) || 0,
+                description: document.getElementById("productDescription").value || "",
+                category: document.getElementById("productCategory").value,
+                disabled: !!document.getElementById("productDisabled").checked,
+                updatedBy: user.uid,
+                updatedAt: new Date().toISOString()
+            };
+
+            try {
+                if (currentProductId) {
+                    await updateDoc(doc(db, "products", currentProductId), productData);
+                } else {
+                    productData.createdAt = new Date().toISOString();
+                    productData.createdBy = user.uid;
+                    await addDoc(productRef, productData);
+                }
+                productModal.classList.remove("show");
+                productModal.setAttribute("aria-hidden", "true");
+                productImageFile.value = "";
+                editingExistingImageUrl = "";
+                loadProducts(getCurrentFilterCategory());
+            } catch (err) {
+                console.error("Firestore write failed:", err);
+                alert("Failed to save product: " + (err.message || err));
+            }
+        });
+
+        // ---------- Load products (Firestore) ----------
+        async function loadProducts(category = "all") {
+            productList.innerHTML = "";
+            try {
+                const snapshot = await getDocs(productRef);
+                const products = [];
+                snapshot.forEach(s => products.push({ id: s.id, ...(s.data() || {}) }));
+                // sort newest first if possible
+                products.sort((a, b) => {
+                    const ta = a.createdAt ? Date.parse(a.createdAt) : 0;
+                    const tb = b.createdAt ? Date.parse(b.createdAt) : 0;
+                    return tb - ta;
+                });
+
+                products.forEach(p => {
+                    const isDisabled = !!p.disabled;
+                    const matchesCategory = (category === "all")
+                        || (category === "disabled" && isDisabled)
+                        || (category !== "disabled" && category !== "all" && p.category === category);
+
+                    if (!matchesCategory) return;
+
+                    const card = document.createElement("div");
+                    card.className = "product-card" + (isDisabled ? " disabled" : "");
+
+                    const img = document.createElement("img");
+                    img.src = p.image || "https://via.placeholder.com/420x300?text=No+Image";
+                    img.alt = p.name || "Product image";
+                    card.appendChild(img);
+
+                    const h3 = document.createElement("h3");
+                    h3.textContent = p.name || "Untitled";
+                    card.appendChild(h3);
+
+                    const meta = document.createElement("div");
+                    meta.className = "product-meta";
+                    const priceText = `₹${Number(p.price || 0).toFixed(2)}`;
+                    const discountText = (Number(p.discount) > 0) ? ` (${Number(p.discount)}% off)` : "";
+                    meta.textContent = priceText + discountText;
+                    card.appendChild(meta);
+
+                    const stock = document.createElement("div");
+                    stock.className = "small-muted";
+                    stock.textContent = `Stock: ${p.stock || 0}`;
+                    card.appendChild(stock);
+
+                    const actions = document.createElement("div");
+                    actions.className = "card-actions";
+
+                    // --- Edit button (circular) ---
+                    const editBtn = document.createElement("button");
+                    editBtn.className = "card-btn btn-edit";
+                    editBtn.title = "Edit";
+                    editBtn.setAttribute("aria-label", "Edit product");
+                    editBtn.innerHTML = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+          <path d="M3 21v-3l11-11 3 3L6 21H3z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>`;
+                    editBtn.addEventListener("click", () => {
+                        if (!isAdmin) { alert("Please login as admin to edit."); return; }
+                        currentProductId = p.id;
+                        document.getElementById("modalTitle").textContent = "Edit Product";
+                        document.getElementById("productName").value = p.name || "";
+                        document.getElementById("productPrice").value = p.price || 0;
+                        document.getElementById("productDiscount").value = p.discount || 0;
+                        document.getElementById("productStock").value = p.stock || 0;
+                        document.getElementById("productDescription").value = p.description || "";
+                        document.getElementById("productCategory").value = p.category || "readyToCookMixes";
+                        document.getElementById("productDisabled").checked = !!p.disabled;
+                        editingExistingImageUrl = p.image || "";
+                        if (editingExistingImageUrl) { imagePreview.src = editingExistingImageUrl; imagePreview.style.display = "block"; } else { imagePreview.style.display = "none"; }
+                        productImageFile.value = "";
+                        productModal.classList.add("show");
+                        productModal.setAttribute("aria-hidden", "false");
+                    });
+
+                    // --- Delete button (circular) ---
+                    const deleteBtn = document.createElement("button");
+                    deleteBtn.className = "card-btn btn-delete";
+                    deleteBtn.title = "Delete";
+                    deleteBtn.setAttribute("aria-label", "Delete product");
+                    deleteBtn.innerHTML = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+          <path d="M3 6h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M8 6v14a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M10 6V4a2 2 0 0 1 2-2h0a2 2 0 0 1 2 2v2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>`;
+                    deleteBtn.addEventListener("click", async () => {
+                        if (!isAdmin) { alert("Please login as admin to delete."); return; }
+                        if (!confirm(`Delete product "${p.name}"?`)) return;
+                        try {
+                            await deleteDoc(doc(db, "products", p.id));
+                            loadProducts(getCurrentFilterCategory());
+                        } catch (err) {
+                            console.error("Delete failed:", err);
+                            alert("Failed to delete product: " + (err.message || err));
+                        }
+                    });
+
+                    // --- Toggle switch (checkbox) ---
+                    // create unique id for checkbox
+                    const toggleId = `toggle-${p.id}`;
+
+                    const wrap = document.createElement("div");
+                    wrap.className = "toggle-wrap";
+
+                    const checkbox = document.createElement("input");
+                    checkbox.type = "checkbox";
+                    checkbox.id = toggleId;
+                    checkbox.className = "toggle-checkbox";
+                    // checked means enabled -> disabled === false
+                    checkbox.checked = !isDisabled;
+
+                    const label = document.createElement("label");
+                    label.className = "toggle-label";
+                    label.setAttribute("for", toggleId);
+                    // accessibility text (optional)
+                    const txt = document.createElement("div");
+                    txt.className = "toggle-text";
+                    txt.textContent = checkbox.checked ? "Enabled" : "Disabled";
+
+                    // optimistic update handler
+                    checkbox.addEventListener("change", async (ev) => {
+                        if (!isAdmin) {
+                            alert("Please login as admin to change status.");
+                            // rollback
+                            checkbox.checked = !checkbox.checked;
+                            return;
+                        }
+
+                        // determine new disabled value (disabled = !checked)
+                        const newDisabled = !checkbox.checked;
+
+                        // optimistic UI: update card class and label text immediately
+                        if (newDisabled) {
+                            card.classList.add("disabled");
+                        } else {
+                            card.classList.remove("disabled");
+                        }
+                        txt.textContent = checkbox.checked ? "Enabled" : "Disabled";
+
+                        try {
+                            await updateDoc(doc(db, "products", p.id), {
+                                disabled: newDisabled,
+                                updatedAt: new Date().toISOString()
+                            });
+                            // success - nothing else needed
+                        } catch (err) {
+                            console.error("Toggle failed:", err);
+                            // rollback UI
+                            checkbox.checked = !checkbox.checked;
+                            if (!checkbox.checked) card.classList.add("disabled"); else card.classList.remove("disabled");
+                            txt.textContent = checkbox.checked ? "Enabled" : "Disabled";
+                            alert("Failed to change status: " + (err.message || err));
+                        }
+                    });
+
+                    wrap.appendChild(checkbox);
+                    wrap.appendChild(label);
+                    wrap.appendChild(txt);
+
+                    // append action buttons and toggle
+                    actions.appendChild(editBtn);
+                    actions.appendChild(deleteBtn);
+                    actions.appendChild(wrap);
+
+                    card.appendChild(actions);
+
+                    productList.appendChild(card);
+                });
+
+            } catch (err) {
+                console.error("Failed to load products:", err);
+                alert("Failed to load products: " + (err.message || err));
+            }
+        }
+
+        // ---------- Filters ----------
+        function getCurrentFilterCategory() {
+            const active = document.querySelector(".filter-btn.active");
+            return active ? active.dataset.category : "all";
+        }
+
+        document.querySelectorAll(".filter-btn").forEach(btn => {
+            btn.addEventListener("click", () => {
+                document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+                btn.classList.add("active");
+                loadProducts(btn.dataset.category);
+            });
+        });
+
+        // initial load
+        loadProducts();
+    </script>
+
 </body>
+
 </html>
