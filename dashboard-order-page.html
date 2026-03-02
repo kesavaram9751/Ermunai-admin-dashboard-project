@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -244,6 +244,7 @@
           <th>Date</th>
           <th>Products</th>
           <th>Status</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody id="ordersTable">
@@ -314,15 +315,29 @@
         ordersTable.innerHTML = '';
         snap.forEach(docSnap => {
           const o = docSnap.data();
-          const itemsHtml = Array.isArray(o.items) ? o.items.map(i => `${i.name} (x${i.quantity})`).join('<br>') : 'No items';
+          const itemsHtml = Array.isArray(o.items) ? o.items.map(i => `${i.name} (x${i.quantity}) - ₹${i.price * i.quantity}`).join('<br>') : 'No items';
           const tr = document.createElement('tr');
+
+          const productTotal = o.subtotal || 0;
+          const shippingAmount = o.shipping || 0;
+          const gstAmount = (productTotal + shippingAmount) * 0.05;
+          const totalAmount = productTotal + shippingAmount + gstAmount;
+
+          const paymentBreakdown = `
+            <table>
+              <tr><td>Product Total:</td><td>₹${productTotal.toFixed(2)}</td></tr>
+              <tr><td>Shipping:</td><td>₹${shippingAmount.toFixed(2)}</td></tr>
+              <tr><td>GST (5%):</td><td>₹${gstAmount.toFixed(2)}</td></tr>
+              <tr><td><strong>Total:</strong></td><td><strong>₹${totalAmount.toFixed(2)}</strong></td></tr>
+            </table>
+          `;
 
           tr.innerHTML = `
             <td data-label="Order ID">${docSnap.id}</td>
             <td data-label="Customer">${o.customerName || 'N/A'}${o.userId ? ' (ID:' + o.userId.slice(0, 8) + '...)' : ''}</td>
             <td data-label="Phone">${o.phone || 'N/A'}</td>
             <td data-label="Address">${o.address || 'N/A'}</td>
-            <td data-label="Payment / Total">${o.paymentStatus || 'N/A'} - ₹${o.totalAmount ?? 0}</td>
+            <td data-label="Payment / Total">${paymentBreakdown}</td>
             <td data-label="Date">${formatDate(o.datePlaced)}</td>
             <td data-label="Products" class="products-list">${itemsHtml}</td>
             <td data-label="Status">
@@ -332,6 +347,9 @@
                 <option value="Delivered" ${o.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
                 <option value="Cancelled" ${o.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
               </select>
+            </td>
+            <td data-label="Actions">
+              <button class="download-invoice" data-id="${docSnap.id}">Download Invoice</button>
             </td>
           `;
           ordersTable.appendChild(tr);
@@ -350,6 +368,65 @@
               console.error('Update failed', err);
               showStatus('❌ Failed to update order. See console.', 'error');
             }
+          });
+        });
+
+        // Attach event listener for Download Invoice buttons
+        document.querySelectorAll('.download-invoice').forEach(button => {
+          button.addEventListener('click', async (e) => {
+            const orderId = e.target.dataset.id;
+            const orderData = snap.docs.find(doc => doc.id === orderId)?.data();
+
+            if (!orderData) {
+              alert('Order data not found!');
+              return;
+            }
+
+            const productTotal = orderData.subtotal || 0;
+            const shippingAmount = orderData.shipping || 0;
+            const gstAmount = (productTotal + shippingAmount) * 0.05;
+            const totalAmount = productTotal + shippingAmount + gstAmount;
+
+            const invoiceContent = `
+              <div style="font-family: Arial, sans-serif;">
+                <h1 style="text-align: center;">Invoice</h1>
+                <p><strong>Order ID:</strong> ${orderId}</p>
+                <p><strong>Customer:</strong> ${orderData.customerName || 'N/A'}</p>
+                <p><strong>Address:</strong> ${orderData.address || 'N/A'}</p>
+                <p><strong>Phone:</strong> ${orderData.phone || 'N/A'}</p>
+                <h2>Products</h2>
+                <table style="width: 100%; border-collapse: collapse;">
+                  <thead>
+                    <tr>
+                      <th style="border: 1px solid #ddd; padding: 8px;">QTY</th>
+                      <th style="border: 1px solid #ddd; padding: 8px;">Description</th>
+                      <th style="border: 1px solid #ddd; padding: 8px;">Unit Price</th>
+                      <th style="border: 1px solid #ddd; padding: 8px;">Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${orderData.items.map(item => `
+                      <tr>
+                        <td style="border: 1px solid #ddd; padding: 8px;">${item.quantity}</td>
+                        <td style="border: 1px solid #ddd; padding: 8px;">${item.name}</td>
+                        <td style="border: 1px solid #ddd; padding: 8px;">₹${item.price}</td>
+                        <td style="border: 1px solid #ddd; padding: 8px;">₹${item.price * item.quantity}</td>
+                      </tr>
+                    `).join('')}
+                  </tbody>
+                </table>
+                <p><strong>Product Total:</strong> ₹${productTotal.toFixed(2)}</p>
+                <p><strong>Shipping:</strong> ₹${shippingAmount.toFixed(2)}</p>
+                <p><strong>GST (5%):</strong> ₹${gstAmount.toFixed(2)}</p>
+                <h3>Total: ₹${totalAmount.toFixed(2)}</h3>
+              </div>
+            `;
+
+            const blob = new Blob([invoiceContent], { type: 'text/html' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `Invoice_${orderId}.html`;
+            link.click();
           });
         });
 
