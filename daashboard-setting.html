@@ -31,8 +31,8 @@
       color: var(--text);
       background: var(--bg);
       display: flex;
-      height: 100vh;
-      overflow: hidden;
+      min-height: 100vh;
+      overflow-x: hidden;
     }
 
     a {
@@ -48,6 +48,46 @@
       flex-direction: column;
       align-items: center;
       padding: 2rem 1rem;
+    }
+
+    .menu-toggle {
+      display: none;
+      width: 42px;
+      height: 42px;
+      border: none;
+      border-radius: var(--radius);
+      background: var(--primary);
+      color: var(--white);
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 42px;
+    }
+
+    .menu-toggle span,
+    .menu-toggle span::before,
+    .menu-toggle span::after {
+      content: "";
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: currentColor;
+      border-radius: 999px;
+      position: relative;
+    }
+
+    .menu-toggle span::before {
+      position: absolute;
+      top: -6px;
+    }
+
+    .menu-toggle span::after {
+      position: absolute;
+      top: 6px;
+    }
+
+    .sidebar-backdrop {
+      display: none;
     }
 
     .sidebar h2 {
@@ -221,24 +261,155 @@
       transform: scale(1.2);
       color: var(--accent);
     }
+
+    @media (max-width: 800px) {
+      body {
+        display: block;
+        height: auto;
+      }
+
+      .sidebar {
+        position: fixed;
+        inset: 0 auto 0 0;
+        width: min(82vw, 290px);
+        max-width: 290px;
+        padding: 1.25rem 1rem;
+        align-items: center;
+        transform: translateX(-105%);
+        transition: transform var(--transition);
+        z-index: 1200;
+        box-shadow: 8px 0 24px rgba(0, 0, 0, 0.18);
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .sidebar-backdrop.show {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.45);
+        z-index: 1100;
+      }
+
+      .sidebar h2 {
+        margin-bottom: 1.25rem;
+        text-align: center;
+        font-size: 1.1rem;
+      }
+
+      .nav {
+        display: block;
+        overflow: visible;
+        padding-bottom: 0;
+      }
+
+      .nav li+li {
+        margin-top: 0.75rem;
+      }
+
+      .nav a {
+        white-space: normal;
+        padding: 0.75rem 1rem;
+        font-size: 0.95rem;
+      }
+
+      .main {
+        min-width: 0;
+      }
+
+      header {
+        padding: 0.85rem 1rem;
+      }
+
+      .menu-toggle {
+        display: inline-flex;
+      }
+
+      header .logo {
+        height: 54px;
+      }
+
+      header h1 {
+        font-size: 1.25rem;
+      }
+
+      .content {
+        padding: 1rem;
+      }
+
+      .banner-item {
+        width: calc(50% - 0.5rem);
+      }
+    }
+
+    @media (max-width: 520px) {
+      .sidebar {
+        width: min(86vw, 280px);
+        padding: 1rem 0.85rem;
+      }
+
+      header h1 {
+        flex-basis: auto;
+        order: 0;
+        font-size: 1.12rem;
+      }
+
+      .logoutBtn {
+        margin-left: auto;
+        padding: 0.45rem 0.7rem;
+      }
+
+      .content {
+        padding: 0.8rem;
+      }
+
+      .section-title {
+        font-size: 1.2rem;
+      }
+
+      form {
+        padding: 0.85rem;
+      }
+
+      input,
+      select {
+        min-height: 42px;
+        font-size: 16px;
+      }
+
+      .save-btn {
+        width: 100%;
+        min-height: 42px;
+      }
+
+      .banner-item {
+        width: 100%;
+      }
+    }
   </style>
 </head>
 
 <body>
   <!-- Sidebar -->
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
   <aside class="sidebar">
     <h2>Ermunai Admin</h2>
     <ul class="nav">
       <li><a href="admin-dashboard.html">Dashboard</a></li>
       <li><a href="dashboard-product-page.html">Product Details</a></li>
       <li><a href="dashboard-order-page.html">Order Details</a></li>
-      <li><a href="dashboard-setting.html" class="active">Settings</a></li>
+      <li><a href="daashboard-setting.html" class="active">Settings</a></li>
     </ul>
   </aside>
 
   <!-- Main -->
   <div class="main">
     <header>
+      <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open menu" aria-expanded="false">
+        <span></span>
+      </button>
       <img src="logo.jpg" alt="Erumunai Logo" class="logo" />
       <h1>Settings</h1>
       <button class="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
@@ -283,7 +454,7 @@
   <!-- Firebase + Logic -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
     // Firebase Config
     const firebaseConfig = {
@@ -297,6 +468,33 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+
+    const sidebar = document.querySelector(".sidebar");
+    const menuToggle = document.getElementById("menuToggle");
+    const sidebarBackdrop = document.getElementById("sidebarBackdrop");
+
+    function closeSidebar() {
+      sidebar.classList.remove("open");
+      sidebarBackdrop.classList.remove("show");
+      menuToggle.setAttribute("aria-expanded", "false");
+    }
+
+    function openSidebar() {
+      sidebar.classList.add("open");
+      sidebarBackdrop.classList.add("show");
+      menuToggle.setAttribute("aria-expanded", "true");
+    }
+
+    menuToggle.addEventListener("click", () => {
+      if (sidebar.classList.contains("open")) closeSidebar();
+      else openSidebar();
+    });
+
+    sidebarBackdrop.addEventListener("click", closeSidebar);
+    document.querySelectorAll(".nav a").forEach(link => link.addEventListener("click", closeSidebar));
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") closeSidebar();
+    });
 
     // ✅ Load saved settings when page opens
   async function loadSettings() {

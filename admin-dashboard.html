@@ -34,8 +34,8 @@
             color: var(--text);
             background: var(--bg);
             display: flex;
-            height: 100vh;
-            overflow: hidden
+            min-height: 100vh;
+            overflow-x: hidden
         }
 
         a {
@@ -51,6 +51,46 @@
             flex-direction: column;
             align-items: center;
             padding: 2rem 1rem;
+        }
+
+        .menu-toggle {
+            display: none;
+            width: 42px;
+            height: 42px;
+            border: none;
+            border-radius: var(--radius);
+            background: var(--primary);
+            color: var(--white);
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            flex: 0 0 42px;
+        }
+
+        .menu-toggle span,
+        .menu-toggle span::before,
+        .menu-toggle span::after {
+            content: "";
+            display: block;
+            width: 20px;
+            height: 2px;
+            background: currentColor;
+            border-radius: 999px;
+            position: relative;
+        }
+
+        .menu-toggle span::before {
+            position: absolute;
+            top: -6px;
+        }
+
+        .menu-toggle span::after {
+            position: absolute;
+            top: 6px;
+        }
+
+        .sidebar-backdrop {
+            display: none;
         }
 
         .sidebar h2 {
@@ -124,6 +164,11 @@
             overflow-y: auto
         }
 
+        .table-scroll {
+            overflow-x: auto;
+            width: 100%;
+        }
+
         .card-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -172,8 +217,121 @@
         }
 
         @media(max-width:768px) {
+            body {
+                display: block;
+                height: auto;
+            }
+
+            .sidebar {
+                position: fixed;
+                inset: 0 auto 0 0;
+                width: min(82vw, 290px);
+                max-width: 290px;
+                padding: 1.25rem 1rem;
+                align-items: center;
+                transform: translateX(-105%);
+                transition: transform 0.3s ease;
+                z-index: 1200;
+                box-shadow: 8px 0 24px rgba(0, 0, 0, 0.18);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .sidebar-backdrop.show {
+                display: block;
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.45);
+                z-index: 1100;
+            }
+
+            .sidebar h2 {
+                margin-bottom: 1.25rem;
+                text-align: center;
+                font-size: 1.1rem;
+            }
+
+            .nav {
+                display: block;
+                overflow: visible;
+                padding-bottom: 0;
+            }
+
+            .nav li+li {
+                margin-top: 0.75rem;
+            }
+
+            .nav a {
+                white-space: normal;
+                padding: 0.75rem 1rem;
+                font-size: 0.95rem;
+            }
+
+            .main {
+                min-width: 0;
+                width: 100%;
+            }
+
+            header {
+                padding: 0.85rem 1rem;
+            }
+
+            .menu-toggle {
+                display: inline-flex;
+            }
+
+            header .logo {
+                height: 54px;
+            }
+
+            header h1 {
+                font-size: 1.25rem;
+            }
+
+            .content {
+                padding: 1rem;
+            }
+
+            .card-grid {
+                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+                gap: 1rem;
+            }
+
             .grid-2x2 {
                 grid-template-columns: 1fr
+            }
+
+            .card {
+                padding: 1rem;
+            }
+        }
+
+        @media(max-width:520px) {
+            header h1 {
+                flex-basis: auto;
+                order: 0;
+                font-size: 1.12rem;
+            }
+
+            .logoutBtn {
+                margin-left: auto;
+                padding: 0.45rem 0.7rem;
+            }
+
+            .content {
+                padding: 0.8rem;
+            }
+
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+
+            th,
+            td {
+                padding: 0.65rem;
+                font-size: 0.9rem;
             }
         }
     </style>
@@ -181,6 +339,7 @@
 
 <body>
 
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
     <aside class="sidebar">
         <h2>Ermunai Admin</h2>
         <ul class="nav">
@@ -193,6 +352,9 @@
 
     <div class="main">
         <header>
+            <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open menu" aria-expanded="false">
+                <span></span>
+            </button>
             <img src="logo.jpg" alt="Erumunai Logo" class="logo" />
             <h1>Dashboard</h1>
             <button class="logoutBtn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
@@ -209,6 +371,7 @@
 
                 <div class="card">
                     <div style="font-weight:700;margin-bottom:.75rem;color:var(--primary)">Best Selling Products</div>
+                    <div class="table-scroll">
                     <table>
                         <thead>
                             <tr>
@@ -220,10 +383,12 @@
                         </thead>
                         <tbody id="productTable"></tbody>
                     </table>
+                    </div>
                 </div>
 
                 <div class="card">
                     <div style="font-weight:700;margin-bottom:.75rem;color:var(--primary)">Recent Orders</div>
+                    <div class="table-scroll">
                     <table>
                         <thead>
                             <tr>
@@ -235,6 +400,7 @@
                         </thead>
                         <tbody id="ordersTable"></tbody>
                     </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -261,6 +427,33 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const auth = getAuth(app);
+
+        const sidebar = document.querySelector(".sidebar");
+        const menuToggle = document.getElementById("menuToggle");
+        const sidebarBackdrop = document.getElementById("sidebarBackdrop");
+
+        function closeSidebar() {
+            sidebar.classList.remove("open");
+            sidebarBackdrop.classList.remove("show");
+            menuToggle.setAttribute("aria-expanded", "false");
+        }
+
+        function openSidebar() {
+            sidebar.classList.add("open");
+            sidebarBackdrop.classList.add("show");
+            menuToggle.setAttribute("aria-expanded", "true");
+        }
+
+        menuToggle.addEventListener("click", () => {
+            if (sidebar.classList.contains("open")) closeSidebar();
+            else openSidebar();
+        });
+
+        sidebarBackdrop.addEventListener("click", closeSidebar);
+        document.querySelectorAll(".nav a").forEach(link => link.addEventListener("click", closeSidebar));
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "Escape") closeSidebar();
+        });
 
         const summaryContainer = document.getElementById("summaryCards");
         const productTable = document.getElementById("productTable");

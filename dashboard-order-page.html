@@ -35,7 +35,7 @@
       color: var(--text);
       display: flex;
       min-height: 100vh;
-      overflow: hidden;
+      overflow-x: hidden;
     }
 
     /* Sidebar */
@@ -52,6 +52,46 @@
             flex-direction: column;
             align-items: center;
             padding: 2rem 1rem;
+        }
+
+        .menu-toggle {
+            display: none;
+            width: 42px;
+            height: 42px;
+            border: none;
+            border-radius: var(--radius);
+            background: var(--primary);
+            color: var(--white);
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            flex: 0 0 42px;
+        }
+
+        .menu-toggle span,
+        .menu-toggle span::before,
+        .menu-toggle span::after {
+            content: "";
+            display: block;
+            width: 20px;
+            height: 2px;
+            background: currentColor;
+            border-radius: 999px;
+            position: relative;
+        }
+
+        .menu-toggle span::before {
+            position: absolute;
+            top: -6px;
+        }
+
+        .menu-toggle span::after {
+            position: absolute;
+            top: 6px;
+        }
+
+        .sidebar-backdrop {
+            display: none;
         }
 
         .sidebar h2 {
@@ -89,6 +129,17 @@
     .main h1 {
       color: var(--primary);
       margin-bottom: 12px
+    }
+
+    .admin-heading {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 12px;
+    }
+
+    .admin-heading h1 {
+      margin-bottom: 0;
     }
 
     /* Status message */
@@ -157,18 +208,68 @@
     /* Responsive */
     @media (max-width:800px) {
       body {
-        flex-direction: column
+        display: block;
+        height: auto;
       }
 
-     /* .sidebar {
-        width: 100%;
-        flex-direction: row;
-        justify-content: space-around;
-        padding: 12px
-      } */
+      .sidebar {
+        position: fixed;
+        inset: 0 auto 0 0;
+        width: min(82vw, 290px);
+        max-width: 290px;
+        padding: 1.25rem 1rem;
+        align-items: center;
+        transform: translateX(-105%);
+        transition: transform var(--transition);
+        z-index: 1200;
+        box-shadow: 8px 0 24px rgba(0, 0, 0, 0.18);
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .sidebar-backdrop.show {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.45);
+        z-index: 1100;
+      }
+
+      .sidebar h2 {
+        margin-bottom: 1.25rem;
+        text-align: center;
+        font-size: 1.1rem;
+      }
+
+      .nav {
+        display: block;
+        overflow: visible;
+        padding-bottom: 0;
+      }
+
+      .nav li+li {
+        margin-top: 0.75rem;
+      }
+
+      .nav a {
+        white-space: normal;
+        padding: 0.75rem 1rem;
+        font-size: 0.95rem;
+      }
 
       .main {
-        padding: 12px
+        padding: 1rem;
+        min-width: 0;
+      }
+
+      .main h1 {
+        font-size: 1.35rem;
+      }
+
+      .menu-toggle {
+        display: inline-flex;
       }
 
       table,
@@ -193,7 +294,8 @@
       }
 
       td {
-        padding: 6px 10px 6px 110px;
+        min-height: 34px;
+        padding: 8px 10px 8px 116px;
         position: relative;
         border-bottom: 0;
         text-align: right
@@ -214,10 +316,36 @@
         text-align: right
       }
     }
+
+    @media (max-width:520px) {
+      .sidebar {
+        width: min(86vw, 280px);
+        padding: 1rem 0.85rem;
+      }
+
+      .main {
+        padding: 0.8rem;
+      }
+
+      td {
+        padding-left: 104px;
+        font-size: 0.9rem;
+      }
+
+      td:before {
+        left: 10px;
+        width: 82px;
+      }
+
+      select {
+        max-width: 100%;
+      }
+    }
   </style>
 </head>
 
 <body>
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
     <aside class="sidebar">
         <h2>Ermunai Admin</h2>
         <ul class="nav">
@@ -229,7 +357,12 @@
     </aside>
 
   <div class="main">
-    <h1>Customer Orders</h1>
+    <div class="admin-heading">
+      <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open menu" aria-expanded="false">
+        <span></span>
+      </button>
+      <h1>Customer Orders</h1>
+    </div>
 
     <div id="statusMessage"></div>
 
@@ -280,6 +413,33 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const auth = getAuth(app);
+
+    const sidebar = document.querySelector(".sidebar");
+    const menuToggle = document.getElementById("menuToggle");
+    const sidebarBackdrop = document.getElementById("sidebarBackdrop");
+
+    function closeSidebar() {
+      sidebar.classList.remove("open");
+      sidebarBackdrop.classList.remove("show");
+      menuToggle.setAttribute("aria-expanded", "false");
+    }
+
+    function openSidebar() {
+      sidebar.classList.add("open");
+      sidebarBackdrop.classList.add("show");
+      menuToggle.setAttribute("aria-expanded", "true");
+    }
+
+    menuToggle.addEventListener("click", () => {
+      if (sidebar.classList.contains("open")) closeSidebar();
+      else openSidebar();
+    });
+
+    sidebarBackdrop.addEventListener("click", closeSidebar);
+    document.querySelectorAll(".nav a").forEach(link => link.addEventListener("click", closeSidebar));
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") closeSidebar();
+    });
 
     const ordersTable = document.getElementById('ordersTable');
     const statusMessage = document.getElementById('statusMessage');
